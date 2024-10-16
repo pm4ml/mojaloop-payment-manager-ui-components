@@ -76,7 +76,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-17": "^1.0.5",  // Updated to match React 17
+    "enzyme-adapter-react-17": "^1.0.5",
     "enzyme-to-json": "^3.6.2",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -103,6 +103,6 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-middleware": "^5.3.3",
     "webpack-hot-middleware": "^2.25.3",
-    "webpack-dev-server": "^4.13.3"  // Replaces webpack-serve
+    "webpack-dev-server": "^4.13.3"
   }
 }
