@@ -1,0 +1,45 @@
+name: CI Build and Test
+
+# This specifies when the workflow should run. This example runs it on every push or pull request to the main branch.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]  # Test on multiple Node.js versions
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Step 3: Install dependencies (this assumes switching to `sass`)
+      - name: Install Dependencies
+        run: |
+          npm uninstall node-sass
+          npm install sass --save-dev
+          npm install --legacy-peer-deps
+
+      # Step 4: Run the build
+      - name: Build the project
+        run: npm run build
+
+      # Step 5: Run tests (optional)
+      #- name: Run tests
+      #  run: npm test
