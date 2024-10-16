@@ -1,0 +1,335 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the ContentReader correctly when multiple props are set 1`] = `
+<ContentReader
+  data="$ echo $EDITOR
+                      vim
+                      $ git checkout master
+                      Switched to branch 'master'
+                      Your branch is up-to-date with 'origin/master'.
+                      $ git push
+                      Everything up-to-date
+                      "
+>
+  <div
+    className="content-reader"
+  >
+    <div
+      className="content-reader__layout-v"
+    >
+      <ScrollBox
+        flex={true}
+        handleStyle={Object {}}
+        showTrack={false}
+        style={Object {}}
+        trackStyle={Object {}}
+      >
+        <ResizeDetector
+          handleHeight={true}
+          handleWidth={true}
+          nodeType="div"
+          onResize={[Function]}
+          querySelector={null}
+          refreshRate={1000}
+          skipOnMount={false}
+          targetDomEl={null}
+          targetRef={
+            Object {
+              "current": <div
+                class="element el-scrollbox__wrapper"
+              >
+                <div
+                  class="el-scrollbox__content-box el-scrollbox__content-box--flexible"
+                >
+                  <div
+                    class="el-scrollbox__content el-scrollbox__content--flexible"
+                    style="min-width: NaNpx; max-width: NaNpx;"
+                  >
+                    <div
+                      class="content-reader__layout-h"
+                    >
+                      <div
+                        class="content-reader__lines"
+                      >
+                        <pre>
+                          <code>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              1
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              2
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              3
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              4
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              5
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              6
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              7
+                            </div>
+                            <div
+                              class="content-reader__lines__line-n"
+                            >
+                              8
+                            </div>
+                          </code>
+                        </pre>
+                      </div>
+                      <div
+                        class="content-reader__content"
+                        contenteditable="true"
+                        role="presentation"
+                        spellcheck="false"
+                      >
+                        <pre>
+                          <code
+                            class="hljs shell"
+                          >
+                            <span
+                              class="hljs-meta"
+                            >
+                              $
+                            </span>
+                             echo $EDITOR
+                      vim
+                      $ git checkout master
+                      Switched to branch 'master'
+                      Your branch is up-to-date with 'origin/master'.
+                      $ git push
+                      Everything up-to-date
+                      
+                          </code>
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>,
+            }
+          }
+        >
+          <div
+            className="element el-scrollbox__wrapper"
+            style={Object {}}
+          >
+            <div
+              className="el-scrollbox__content-box el-scrollbox__content-box--flexible"
+            >
+              <ResizeDetector
+                handleHeight={true}
+                handleWidth={true}
+                nodeType="div"
+                onResize={[Function]}
+                querySelector={null}
+                refreshRate={1000}
+                skipOnMount={false}
+                targetDomEl={null}
+                targetRef={
+                  Object {
+                    "current": <div
+                      class="el-scrollbox__content el-scrollbox__content--flexible"
+                      style="min-width: NaNpx; max-width: NaNpx;"
+                    >
+                      <div
+                        class="content-reader__layout-h"
+                      >
+                        <div
+                          class="content-reader__lines"
+                        >
+                          <pre>
+                            <code>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                1
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                2
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                3
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                4
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                5
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                6
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                7
+                              </div>
+                              <div
+                                class="content-reader__lines__line-n"
+                              >
+                                8
+                              </div>
+                            </code>
+                          </pre>
+                        </div>
+                        <div
+                          class="content-reader__content"
+                          contenteditable="true"
+                          role="presentation"
+                          spellcheck="false"
+                        >
+                          <pre>
+                            <code
+                              class="hljs shell"
+                            >
+                              <span
+                                class="hljs-meta"
+                              >
+                                $
+                              </span>
+                               echo $EDITOR
+                      vim
+                      $ git checkout master
+                      Switched to branch 'master'
+                      Your branch is up-to-date with 'origin/master'.
+                      $ git push
+                      Everything up-to-date
+                      
+                            </code>
+                          </pre>
+                        </div>
+                      </div>
+                    </div>,
+                  }
+                }
+              >
+                <div
+                  className="el-scrollbox__content el-scrollbox__content--flexible"
+                >
+                  <div
+                    className="content-reader__layout-h"
+                  >
+                    <div
+                      className="content-reader__lines"
+                    >
+                      <pre>
+                        <code>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="0"
+                          >
+                            1
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="1"
+                          >
+                            2
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="2"
+                          >
+                            3
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="3"
+                          >
+                            4
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="4"
+                          >
+                            5
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="5"
+                          >
+                            6
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="6"
+                          >
+                            7
+                          </div>
+                          <div
+                            className="content-reader__lines__line-n"
+                            key="7"
+                          >
+                            8
+                          </div>
+                        </code>
+                      </pre>
+                    </div>
+                    <div
+                      className="content-reader__content"
+                      contentEditable={true}
+                      onKeyDown={[Function]}
+                      role="presentation"
+                      spellCheck="false"
+                      suppressContentEditableWarning={true}
+                    >
+                      <pre>
+                        <code>
+                          $ echo $EDITOR
+                      vim
+                      $ git checkout master
+                      Switched to branch 'master'
+                      Your branch is up-to-date with 'origin/master'.
+                      $ git push
+                      Everything up-to-date
+                      
+                        </code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </ResizeDetector>
+            </div>
+            <ScrollBar
+              handleStyle={Object {}}
+              onDrag={[Function]}
+              showTrack={false}
+              trackStyle={Object {}}
+            />
+          </div>
+        </ResizeDetector>
+      </ScrollBox>
+    </div>
+  </div>
+</ContentReader>
+`;

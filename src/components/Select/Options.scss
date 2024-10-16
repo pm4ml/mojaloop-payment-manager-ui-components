@@ -1,0 +1,152 @@
+@import '../../assets/styles/vars/colors.scss';
+
+.input-select__options {
+  position: absolute;
+  left: -1px;
+  width: calc(100% + 2px);
+  top: 44px;
+}
+.input-select__options-wrapper {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  animation: fadeInOptions 0.15s ease-in-out;
+}
+.input-select__options-wrapper--regular {
+  border-bottom: 2px solid $color__main-tertiary;
+}
+.input-select__options-wrapper--reverse {
+  border-top: 2px solid $color__main-tertiary;
+}
+.input-select__options-wrapper--reverse-small {
+  bottom: 45px;
+}
+.input-select__options-wrapper--regular-small {
+  top: -14px;
+}
+.input-select__options-wrapper--reverse-medium {
+  bottom: 45px;
+}
+.input-select__options-wrapper--regular-medium {
+  top: -7px;
+}
+.input-select__options-wrapper--reverse-large {
+  bottom: 45px;
+}
+.input-select__options-wrapper--regular-large {
+  top: 0px;
+}
+
+.input-select__options-item {
+  outline: none;
+  display: flex;
+  align-items: center;
+  flex: 0 0 40px;
+  color: $color__dark-gray-3;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 40px;
+  font-size: 13px;
+  background: $color__white;
+
+  border-left: 2px solid $color__main-tertiary;
+  border-right: 2px solid $color__main-tertiary;
+  cursor: pointer;
+  color: $color__dark-gray-1;
+  fill: $color__dark-gray-1;
+
+  transition: border 0.05s ease-out, background 0.05s ease-out, color 0.05s ease-out;
+}
+
+.input-select__options-item--small {
+  padding-left: 6px;
+  padding-right: 6px;
+  line-height: 30px;
+  font-size: 11px;
+  flex-basis: 30px;
+}
+.input-select__options-item--medium {
+  padding-left: 8px;
+  padding-right: 8px;
+  line-height: 35px;
+  font-size: 12px;
+  flex-basis: 35px;
+}
+.input-select__options-item--large {
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 40px;
+  font-size: 13px;
+  flex-basis: 40px;
+}
+
+.input-select__options-item:hover,
+.input-select__options-item--highlighted {
+  background: $color__main-tertiary--active;
+  border-color: $color__main-tertiary--active;
+  color: $color__dark-gray-3;
+  fill: $color__dark-gray-3;
+}
+.input-select__options-item--selected,
+.input-select__options-item--selected:hover {
+  background: $color__main-secondary--active;
+  border-color: $color__main-secondary--active;
+  color: #fff;
+  fill: #fff;
+}
+.input-select__options-item--disabled,
+.input-select__options-item--disabled:hover {
+  background: $color__white;
+  color: $color__main-disabled;
+  border-color: $color__main-disabled;
+  cursor: auto;
+}
+.input-select__options-item--clear {
+  color: #999;
+  fill: #999;
+  background: #fee;
+}
+.input-select__options-item--clear:hover {
+  color: $color__main-danger;
+  fill: $color__main-danger;
+  background: #fee;
+}
+
+.input-select__options-item__icon {
+  margin-right: 5px;
+}
+.input-select__options-item__icon--clear {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.1);
+}
+.input-select__options-item__label {
+  min-width: 0;
+}
+.input-select__options-item__label--clear {
+  margin-left: 10px;
+}
+
+.input-select__options-item--no-options__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background: $color__white;
+  color: $color__gray-5;
+  fill: $color__gray-5;
+  line-height: 40px;
+  border-left: 2px solid $color__main-tertiary;
+  border-right: 2px solid $color__main-tertiary;
+}
+.input-select__options-item--no-options__message {
+  margin-left: 10px;
+}
+@keyframes fadeInOptions {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

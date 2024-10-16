@@ -1,0 +1,21 @@
+.el-datalist__error-box,
+.el-datalist__pending-box,
+.el-datalist__nodata-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  animation: fadeUp 0.3s ease-out 1 forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    transform: translate3d(0, 10px, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}

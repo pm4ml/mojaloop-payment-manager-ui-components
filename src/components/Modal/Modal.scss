@@ -1,0 +1,132 @@
+@import '../../assets/styles/vars/colors.scss';
+
+.el-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.el-modal__overlay {
+  opacity: 1;
+  position: absolute;
+  background-color: transparent;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.el-modal__container {
+  position: absolute;
+  opacity: 1;
+  background: #fff;
+  box-shadow: 0px 6px 0px $color__alpha-2;
+  width: 600px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  animation: fadeInModalBox 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) 1;
+
+  &.regular {
+  }
+  &.danger {
+    .el-modal__header {
+      background: $color__main-danger;
+      color: $color__white;
+    }
+  }
+
+  &.warning {
+    .el-modal__header {
+      background: $color__main-warning;
+      color: $color__white;
+    }
+  }
+}
+.el-modal__close {
+  margin-left: 10px;
+}
+.el-modal__submit {
+  margin-left: 10px;
+}
+
+.el-modal__header {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex: 0 0 60px;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #eee;
+  color: #666;
+  border-bottom: 2px solid $color__alpha-2;
+
+  .el-modal__header-title {
+    margin-left: 20px;
+    font-size: 24px;
+  }
+  .el-modal__header-close {
+    margin-right: 18px;
+  }
+}
+.el-modal__body {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+}
+.el-modal__body--tabbed {
+  overflow: hidden;
+}
+
+.el-modal__body__content {
+  padding: 20px;
+}
+.el-modal__body__content--flexible {
+  display: flex;
+  flex-direction: column;
+  flex: 2 1 auto;
+  width: 100%;
+}
+.el-modal__footer {
+  width: 100%;
+  background: #f8f8f8;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+}
+
+.el-modal__footer-left {
+}
+.el-modal__footer-right {
+  padding: 10px;
+  display: flex;
+}
+
+@keyframes fadeInModalBox {
+  0% {
+    transform: translate3d(0px, 20px, 0px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+@keyframes fadeInModalOverlay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

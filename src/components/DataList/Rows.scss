@@ -1,0 +1,50 @@
+@import '../../assets/styles/vars/colors.scss';
+
+.el-datalist__row {
+  border-bottom: 1px solid $color__gray-2;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-basis: auto;
+  align-items: center;
+  justify-content: space-between;
+
+  &:nth-child(odd) {
+    background: $color__gray-1;
+  }
+  &:nth-child(even) {
+    background: #fff;
+  }
+  &:hover {
+    background-color: #f8fcff;
+  }
+  &.el-datalist__row--selected {
+    border-bottom: 1px solid $color__blue-3;
+    background: linear-gradient(0deg, $color__blue-3 1px, #f4fcff 1px);
+  }
+}
+.el-datalist__row--filtered {
+  display: none;
+}
+
+.el-datalist__item-cell {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  min-height: 40px;
+  overflow: hidden;
+  padding: 5px;
+  font-size: 13px;
+}
+
+.el-datalist__item-cell--centered {
+  justify-content: center;
+}
+
+.el-datalist__item-cell--checkbox {
+  flex: 0 0 40px;
+  justify-content: center;
+}

@@ -1,0 +1,105 @@
+@import '../../assets/styles/vars/colors.scss';
+@import '../../assets/styles/vars/shadow.scss';
+
+.el-message-box {
+  display: flex;
+  max-width: 100%;
+  border-style: solid;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  overflow: hidden;
+  animation: fadeInOverlayMessage 0.2s ease-out 1 forwards;
+}
+
+.el-message-box--centered {
+  align-items: center;
+  justify-content: center;
+}
+
+.el-message-box--default {
+  fill: #333;
+  color: #333;
+  border-color: #333;
+  background-color: #eee;
+}
+.el-message-box--primary {
+  fill: $color__main-primary;
+  color: $color__main-primary;
+  border-color: $color__main-primary;
+  background-color: $shadow-color--primary-2;
+}
+.el-message-box--secondary {
+  fill: $color__main-secondary;
+  color: $color__main-secondary;
+  border-color: $color__main-secondary;
+  background-color: $shadow-color--secondary-2;
+}
+.el-message-box--tertiary {
+  fill: $color__main-tertiary;
+  color: $color__main-tertiary;
+  border-color: $color__main-tertiary;
+  background-color: $shadow-color--tertiary-2;
+}
+.el-message-box--success {
+  fill: $color__main-success;
+  color: $color__main-success;
+  border-color: $color__main-success;
+  background-color: $shadow-color--success-2;
+}
+.el-message-box--danger {
+  fill: $color__main-danger;
+  color: $color__main-danger;
+  border-color: $color__main-danger;
+  background-color: $shadow-color--danger-2;
+}
+.el-message-box--warning {
+  fill: $color__main-warning;
+  color: $color__main-warning;
+  border-color: $color__main-warning;
+  background-color: $shadow-color--warning-2;
+}
+.el-message-box--dark {
+  fill: #000;
+  color: #000;
+  border-color: #000;
+  background-color: $shadow-color--dark-2;
+}
+.el-message-box--light {
+  fill: $color__white;
+  color: $color__white;
+  border-color: $color__white;
+  background-color: shadow-color-0light;
+}
+
+.el-message-box--inactive {
+  border-color: transparent;
+}
+
+.el-message-box__icon-box {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.el-message-box__icon {
+}
+.el-message-box__messages {
+  flex: 1 1 auto;
+}
+.el-message-box__messages--centered {
+  flex: 0 0 auto;
+}
+
+.el-message-box__message {
+}
+
+@keyframes fadeInOverlayMessage {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

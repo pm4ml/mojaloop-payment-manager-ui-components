@@ -1,0 +1,122 @@
+@import '../../assets/styles/vars/colors.scss';
+@import '../../assets/styles/vars/transitions.scss';
+
+.input-textfield {
+}
+.input-textfield__component {
+  display: flex;
+  position: relative;
+  cursor: text;
+  transition: $input__main-transition;
+
+  &.input-textfield__mb-input--open {
+  }
+
+  &.input-textfield__mb-input--disabled {
+  }
+}
+.input-textfield__content {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+.input-textfield__value__tokens {
+  height: 100%;
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.mb-input--open .input-textfield__value__tokens {
+  //justify-content: flex-end;
+}
+
+.input-textfield__value__token {
+  flex: 0 0 auto;
+  font-family: inherit;
+  font-size: inherit;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  color: #333;
+  text-align: center;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0px;
+  transition: background 0.1s ease-out, color 0.1s ease-out;
+}
+.input-textfield__value__token--matching {
+  color: $color__main-secondary;
+  cursor: pointer;
+  font-weight: bold;
+
+  &.input-textfield__value__token--selected {
+    background: $color__main-secondary;
+    color: #fff;
+    border-radius: 3px;
+  }
+}
+.input-textfield__value__token--invalid {
+  color: $color__main-danger;
+  &.input-textfield__value__token--selected {
+    background: $color__main-danger;
+    color: #fff;
+  }
+}
+
+.input-textfield__value__token--missing {
+  color: $color__main-warning;
+  &.input-textfield__value__token--selected {
+    background: $color__main-warning;
+    color: #fff;
+  }
+}
+.input-textfield__value__token--selected {
+}
+.input-textfield__value__token:active {
+}
+
+.input-textfield__placeholder {
+}
+
+.input-textfield__value {
+  min-width: 0;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  color: $color__dark-gray-3;
+  flex: 1 0 auto;
+  font-family: inherit;
+  font-size: inherit;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0px;
+}
+.input-textfield__icon {
+  flex: 0 0 auto;
+}
+
+// Hide arrows for input type number
+.input-textfield__value[type='number']::-webkit-inner-spin-button,
+.input-textfield__value[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-textfield__value[type='number'] {
+  -moz-appearance: textfield;
+}

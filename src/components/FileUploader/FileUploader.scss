@@ -1,0 +1,74 @@
+@import '../../assets/styles/vars/colors.scss';
+@import '../../assets/styles/vars/transitions.scss';
+
+.input-fileuploader {
+}
+.input-fileuploader__component {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  transition: $input__main-transition;
+
+  &.input-fileuploader__mb-input--open {
+  }
+
+  &.input-fileuploader__mb-input--disabled {
+  }
+}
+.input-fileuploader-box {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.input-fileuploader__placeholder {
+}
+
+.input-fileuploader__content {
+}
+
+.input-fileuploader__input {
+  flex: 0 0 0px;
+  position: relative;
+  height: 20px;
+  opacity: 0;
+  width: 0px;
+  min-width: 0px;
+}
+
+.input-fileuploader__filename {
+  display: flex;
+  align-items: center;
+  flex: 2 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  font-size: 14px;
+  color: $color__dark-gray-3;
+  overflow: hidden;
+  padding: 0px;
+  padding-top: 5px;
+  height: 100%;
+
+  &.input-fileuploader__filename--no-file {
+    color: $color__gray-4;
+  }
+}
+.input-fileuploader__filename--small {
+  font-size: 10px;
+}
+.input-fileuploader__filename--medium {
+  font-size: 12px;
+}
+.input-fileuploader__filename--large {
+  font-size: 14px;
+}
+
+.input-fileuploader__button {
+}
+
+.input-fileuploader__icon {
+  flex: 0 0 auto;
+}

@@ -1,0 +1,59 @@
+{
+  "plugins": ["react", "simple-import-sort"],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "airbnb",
+    "prettier"
+  ],
+  "rules": {
+    "simple-import-sort/sort": "error",
+    "sort-imports": "off",
+    "import/order": "off",
+    "import/first": "off",
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "no-underscore-dangle": 0,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["webpack*.js", "**/*.test.js"]}],
+    "react/prefer-stateless-function": [1, { "ignorePureComponents": true }],
+    "react/prop-types": 0,
+    "react/jsx-indent": [2, 2],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/no-multi-comp": 0,
+    "react/no-did-update-set-state": 0,
+    "jsx-a11y/label-has-for": 0,
+    "jsx-a11y/no-noninteractive-tabindex": 0,
+    "jsx-a11y/tabindex-no-positive": 0,
+    "jsx-a11y/no-autofocus": 0,
+    "max-len": ["error", { "code": 100 }],
+    "no-mixed-operators": [
+      "error",
+      {
+        "groups": [
+          ["*", "/"],
+          ["&", "|", "^", "~", "<<", ">>", ">>>"],
+          ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+          ["&&", "||"],
+          ["in", "instanceof"]
+        ],
+        "allowSamePrecedence": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,217 @@
+@import '../vars/colors.scss';
+@import '../vars/border.scss';
+@import '../vars/background.scss';
+@import '../vars/shadow.scss';
+@import '../vars/general.scss';
+@import '../vars/fonts.scss';
+
+.mb-input * {
+  box-sizing: border-box;
+  font-style: normal;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/** COMPONENT */
+
+.mb-input {
+  font-family: $font__primary, $font__primary-fallback;
+  letter-spacing: $font__primary-spacing;
+  border-radius: $border-radius;
+}
+.mb-input--open {
+  box-shadow: $shadow-size;
+  padding: 0px $component-open-size;
+}
+.mb-input--disabled {
+  opacity: $component-opacity--disabled;
+  pointer-events: none;
+  cursor: auto;
+}
+
+.mb-input--small {
+  height: 31px;
+  padding-left: 10px;
+  padding-right: 6px;
+  font-size: 12px;
+}
+.mb-input--medium {
+  height: 38px;
+  padding-left: 13px;
+  padding-right: 8px;
+  font-size: 13px;
+}
+.mb-input--large {
+  height: 45px;
+  padding-left: 16px;
+  padding-right: 10px;
+  font-size: 14px;
+}
+
+/** COMPONENT SHADOW **/
+
+.mb-input__shadow {
+  color: transparent;
+}
+.mb-input--open {
+  &.mb-input__shadow {
+    color: $shadow-color--default;
+  }
+  &.mb-input__shadow--pending {
+    color: $shadow-color--pending;
+  }
+  &.mb-input__shadow--required {
+    color: $shadow-color--required;
+  }
+  &.mb-input__shadow--invalid {
+    color: $shadow-color--invalid;
+  }
+}
+
+/** COMPONENT BACKGROUND **/
+
+.mb-input__background {
+  background: $background--default;
+}
+.mb-input__background--open {
+  background: $background--open;
+}
+.mb-input__background--pending {
+  background: $background--pending;
+}
+.mb-input__background--required {
+  background: $background--required;
+}
+.mb-input__background--invalid {
+  background: $background--invalid;
+}
+
+/** COMPONENT BORDERS **/
+
+.mb-input__borders {
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-bottom-color: $border-color--default;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-top-width: 1px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-top-style: solid;
+  border-right-color: #e5e5e5;
+  border-left-color: #e5e5e5;
+  border-top-color: #e5e5e5;
+}
+.mb-input__borders--open {
+}
+.mb-input__borders--pending {
+  border-bottom-color: $border-color--pending;
+}
+.mb-input__borders--required {
+  border-bottom-color: $border-color--required;
+}
+.mb-input__borders--invalid {
+  border-bottom-color: $border-color--invalid;
+}
+
+/** COMPONENT BLOCKS */
+
+.mb-input__content {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+.mb-input__input {
+  flex: 2 1 auto;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0px;
+  padding-top: 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: inherit;
+  height: 100%;
+}
+.mb-input__holder {
+  padding: 0px;
+  margin: 0px;
+  width: 0px;
+  height: 0px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.mb-input__placeholder {
+  transition: all 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: absolute;
+  top: 50%;
+  color: $placeholder-color;
+  transform: translateY(-50%);
+}
+.mb-input__placeholder--small {
+  font-size: 12px;
+}
+.mb-input__placeholder--medium {
+  font-size: 13px;
+}
+.mb-input__placeholder--large {
+  font-size: 14px;
+}
+.mb-input__placeholder--active-small {
+  top: 5px;
+  font-size: 7px;
+}
+.mb-input__placeholder--active-medium {
+  top: 6px;
+  font-size: 9px;
+}
+.mb-input__placeholder--active-large {
+  top: 8px;
+  font-size: 11px;
+}
+
+/** COMPONENT INNER BLOCKS **/
+
+.mb-input__inner-button {
+  outline: none;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  .input-button__icon {
+    display: flex;
+  }
+
+  &:hover,
+  &.mb-input__inner-button--active {
+  }
+}
+
+.mb-input__inner-button--small {
+  padding: 2px 4px;
+  margin-left: 5px;
+}
+.mb-input__inner-button--medium {
+  padding: 4px 7px;
+  margin-left: 5px;
+}
+
+.mb-input__inner-button--large {
+  padding: 6px 10px;
+  margin-left: 10px;
+}
+
+.mb-input__inner-icon {
+  flex: 0 0 auto;
+  fill: #999;
+  margin-left: 5px;
+}
+.mb-input__inner-icon--invalid {
+  fill: $color__main-danger;
+}

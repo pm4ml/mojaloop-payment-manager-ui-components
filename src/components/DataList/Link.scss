@@ -1,0 +1,45 @@
+@import '../../assets/styles/vars/colors.scss';
+
+.el-datalist__link {
+  position: relative;
+  display: flex;
+  height: 20px;
+  cursor: pointer;
+  width: 100%;
+  align-items: center;
+}
+.el-datalist__link__container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  display: block;
+}
+.el-datalist__link__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  color: $color__blue-4;
+  fill: $color__blue-4;
+}
+.el-datalist__link__icon {
+  display: none;
+  flex: 0 0 25px;
+  padding-top: 2px;
+  padding-left: 5px;
+  animation: animateLinkFadeIn 0.2s ease-out 1 forwards;
+}
+.el-datalist__link:hover .el-datalist__link__icon {
+  display: block;
+}
+
+@keyframes animateLinkFadeIn {
+  0% {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-3px, 0px, 0px);
+    opacity: 1;
+  }
+}
