@@ -75,7 +75,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-17": "^1.0.5",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.8",  // Replaced with unofficial adapter
     "enzyme-to-json": "^3.6.2",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
