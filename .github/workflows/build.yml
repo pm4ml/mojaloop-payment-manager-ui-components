@@ -22,33 +22,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python (required by node-gyp)
-      - name: Set up Python 3.x
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      # Step 3: Set up Node.js
+      # Step 2: Set up Node.js
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Step 4: Uninstall node-sass and install sass
+      # Step 3: Uninstall node-sass and install sass
       - name: Replace node-sass with sass
         run: |
           npm uninstall node-sass --force
           npm install sass --save-dev --legacy-peer-deps
 
-      # Step 5: Install remaining dependencies
-      - name: Install dependencies
+      # Step 4: Install dependencies
+      - name: Install Dependencies
         run: npm install --legacy-peer-deps
 
-      # Step 6: Run the build
+      # Step 5: Run the build
       - name: Build the project
         run: npm run build
 
-      # Step 7: Run tests (optional)
+      # Step 6: Run tests (optional)
       - name: Run tests
         run: npm test
