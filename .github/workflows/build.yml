@@ -41,5 +41,5 @@ jobs:
         run: npm run build
 
       # Step 5: Run tests (optional)
-      #- name: Run tests
-      #  run: npm test
+      - name: Run tests
+        run: npm test
