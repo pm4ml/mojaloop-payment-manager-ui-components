@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -21,18 +21,19 @@ module.exports = {
     library: 'mojaloop-payment-manager-ui-components',
   },
   plugins: [
-    new CleanWebpackPlugin('dist', {}),
+    new CleanWebpackPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new MiniCssExtractPlugin('[name].css', {
-      disable: false,
-      allChunks: true,
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
     }),
-    new CopyWebpackPlugin([
-      {
-        from: colorsSass,
-        to: path.resolve(__dirname, 'dist'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: colorsSass,
+          to: path.resolve(__dirname, 'dist'),
+        },
+      ],
+    }),
   ],
   module: {
     rules: [
@@ -64,7 +65,7 @@ module.exports = {
       {
         test: /\.(png|jpg|gif)$/,
         loader: 'url-loader',
-        query: { limit: 8192, mimetype: 'image/png' },
+        options: { limit: 8192, mimetype: 'image/png' },
       },
       {
         test: /\.svg$/,
@@ -81,16 +82,14 @@ module.exports = {
       new TerserPlugin({
         cache: true,
         parallel: true,
-        sourceMap: false, // Must be set to true if using source-maps in production
+        sourceMap: false,
         terserOptions: {
-          keep_fnames: true, // IMPORTANT - https://github.com/facebook/create-react-app/issues/7236
+          keep_fnames: true, 
         },
       }),
     ],
   },
   externals: {
-    // This line says to just use the version of React that consumers of this
-    // library have installed.
     react: {
       root: 'React',
       commonjs2: 'react',
