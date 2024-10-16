@@ -1,6 +1,5 @@
 name: CI Build and Test
 
-# This specifies when the workflow should run. This example runs it on every push or pull request to the main branch.
 on:
   push:
     branches:
@@ -30,17 +29,21 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Step 3: Install dependencies (this assumes switching to `sass`)
-      - name: Install Dependencies
+      # Step 3: Clean install with legacy-peer-deps
+      - name: Clean install dependencies
         run: |
-          npm uninstall node-sass
-          npm install sass --save-dev
-          npm install --legacy-peer-deps
+          npm ci --legacy-peer-deps
 
-      # Step 4: Run the build
+      # Step 4: Uninstall node-sass and install sass
+      - name: Replace node-sass with sass
+        run: |
+          npm uninstall node-sass --legacy-peer-deps
+          npm install sass --save-dev --legacy-peer-deps
+
+      # Step 5: Run the build
       - name: Build the project
         run: npm run build
 
-      # Step 5: Run tests (optional)
+      # Step 6: Run tests (optional)
       - name: Run tests
         run: npm test
