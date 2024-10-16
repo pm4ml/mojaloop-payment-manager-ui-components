@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const colorsSass = path.resolve(__dirname, 'src', 'assets', 'styles', 'vars', 'colors.scss');
 
@@ -37,6 +38,11 @@ module.exports = {
         },
       ],
     }),
+    new ESLintPlugin({
+      extensions: ['js'],
+      fix: true, // Automatically fix linting errors
+      emitWarning: true, // Show warnings but do not fail the build
+    }),
   ],
   module: {
     rules: [
@@ -44,15 +50,12 @@ module.exports = {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /(node_modules|bower_components|build)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-            },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
           },
-          { loader: 'eslint-loader' },
-        ],
+        },
       },
       {
         test: /\.(css|scss)?$/,
@@ -88,7 +91,7 @@ module.exports = {
       new TerserPlugin({
         parallel: true,
         terserOptions: {
-          keep_fnames: true, // Keep function names for React components
+          keep_fnames: true,
         },
       }),
     ],
