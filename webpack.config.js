@@ -22,7 +22,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
@@ -65,7 +68,10 @@ module.exports = {
       {
         test: /\.(png|jpg|gif)$/,
         loader: 'url-loader',
-        options: { limit: 8192, mimetype: 'image/png' },
+        options: {
+          limit: 8192,
+          mimetype: 'image/png',
+        },
       },
       {
         test: /\.svg$/,
@@ -80,11 +86,9 @@ module.exports = {
   optimization: {
     minimizer: [
       new TerserPlugin({
-        cache: true,
         parallel: true,
-        sourceMap: false,
         terserOptions: {
-          keep_fnames: true, 
+          keep_fnames: true, // Keep function names for React components
         },
       }),
     ],
