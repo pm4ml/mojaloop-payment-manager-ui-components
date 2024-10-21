@@ -1,54 +1,35 @@
-name: CI Build and Test
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]  # Test on multiple Node.js versions
+        node-version: [16.x, 18.x, 20.x]
 
     steps:
       # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
+      # Step 2: Set up Node.js with caching
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Step 3: Uninstall node-sass
-      # - name: Uninstall node-sass
-      #  run: npm uninstall node-sass --force
+      # Step 3: Ensure package-lock.json is present
+      - name: Check for package-lock.json
+        run: ls -la package-lock.json
 
-      # Step 4: Install Dart Sass
-      # - name: Install Dart Sass
-      #  run: npm install sass --save-dev --legacy-peer-deps
-
-      # Step 5: Update ESLint
-      - name: Update ESLint
-        run: npm install eslint@^5.0.0 --save-dev --legacy-peer-deps
-
-      # Step 6: Install dependencies
+      # Step 4: Install dependencies
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
-      # Step 7: Build the project
+      # Step 5: Build the project
       - name: Build the project
         run: npm run build
 
-      # Step 8: Run tests
+      # Step 6: Run tests
       - name: Run tests
         run: npm test
