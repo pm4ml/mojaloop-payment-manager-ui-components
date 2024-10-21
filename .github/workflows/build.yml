@@ -30,12 +30,12 @@ jobs:
           cache: 'npm'
 
       # Step 3: Uninstall node-sass
-      - name: Uninstall node-sass
-        run: npm uninstall node-sass --force
+      # - name: Uninstall node-sass
+      #  run: npm uninstall node-sass --force
 
       # Step 4: Install Dart Sass
-      - name: Install Dart Sass
-        run: npm install sass --save-dev --legacy-peer-deps
+      # - name: Install Dart Sass
+      #  run: npm install sass --save-dev --legacy-peer-deps
 
       # Step 5: Update ESLint
       - name: Update ESLint
