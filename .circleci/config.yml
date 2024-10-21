@@ -47,8 +47,7 @@ executors:
   default-docker:
     working_directory: &WORKING_DIR /home/circleci/project/git
     docker:
-      - image: node:16.15.0-alpine # Ref: https://hub.docker.com/_/node?tab=tags&page=1&name=alpine
-#      - image: node:lts-alpine # Ref: https://hub.docker.com/_/node?tab=tags&page=1&name=alpine
+      - image: node:18-alpine # Ref: https://hub.docker.com/_/node?tab=tags&page=1&name=alpine
 
   default-machine:
     working_directory: *WORKING_DIR
@@ -89,8 +88,6 @@ jobs:
       - restore_cache:
           keys:
           - dependency-cache-v2-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
       - run:
           name: Execute unit tests
           command: yarn test
