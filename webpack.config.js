@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
+// Resolve the path to your Sass variables
 const colorsSass = path.resolve(__dirname, 'src', 'assets', 'styles', 'vars', 'colors.scss');
 
 module.exports = {
@@ -29,6 +30,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
+      chunkFilename: '[id].css', // Handle dynamically loaded styles
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -39,15 +41,17 @@ module.exports = {
       ],
     }),
     new ESLintPlugin({
-      extensions: ['js'],
-      fix: true,
-      emitWarning: true,
+      extensions: ['js', 'jsx'], // Ensures linting for JavaScript and JSX files
+      context: path.resolve(__dirname, 'src'), // Lint files in the src directory
+      overrideConfigFile: path.resolve(__dirname, 'eslint.config.js'), // Points to ESLint config
+      fix: true, // Automatically fix linting errors where possible
+      emitWarning: true, // Warn instead of failing the build on lint errors
     }),
   ],
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js$/, // Process JavaScript files
         include: path.resolve(__dirname, 'src'),
         exclude: /(node_modules|bower_components|build)/,
         use: {
@@ -58,7 +62,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(css|scss)$/,
+        test: /\.(css|scss)$/, // Process CSS/SCSS files
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -67,28 +71,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|gif)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8192,
-          mimetype: 'image/png',
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/i, // Process images and fonts
+        type: 'asset/resource', // Use Webpack 5's asset modules instead of file-loader
+        generator: {
+          filename: 'images/[name].[hash].[ext]', // Set output path for assets
         },
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'file-loader', // Replacing svg-sprite-loader with file-loader for better compatibility
-            options: {
-              name: '[name].[hash].[ext]',
-              outputPath: 'images/',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader',
       },
     ],
   },
@@ -97,7 +84,7 @@ module.exports = {
       new TerserPlugin({
         parallel: true,
         terserOptions: {
-          keep_fnames: true,
+          keep_fnames: true, // Keep function names for easier debugging
         },
       }),
     ],
