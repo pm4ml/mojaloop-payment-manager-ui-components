@@ -1,9 +1,12 @@
 module.exports = {
-  'setupFiles': [
+  setupFiles: [
     './test/jestsetup.js'
   ],
-  'testURL': 'http://localhost/',
-  'moduleNameMapper': {
+  testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    url: 'http://localhost/',
+  },
+  moduleNameMapper: {
     'ansi-styles': '<rootDir>/node_modules/ansi-styles',
     'jest-matcher-utils': '<rootDir>/node_modules/jest-matcher-utils',
     '^react-(.+)': '<rootDir>/node_modules/react-$1',
@@ -17,14 +20,20 @@ module.exports = {
     '^test[/](.+)': '<rootDir>/test/$1',
     '^.+\\.(css|png|scss|svg)$': '<rootDir>/src/test/__mocks__/staticMocks.js'
   },
-  'moduleFileExtensions': [
+  moduleFileExtensions: [
     'js',
     'json',
     'jsx'
   ],
-  'roots': [
+  roots: [
     'src/test',
     'src/reduxFetch',
     'src/reduxValidation'
-  ]
+  ],
+  transformIgnorePatterns: [
+    '/node_modules/(?!(cheerio|other-module)/)' // Allow cheerio and any other modules to be transformed
+  ],
+  transform: {
+    '^.+\\.jsx?$': 'babel-jest', // Ensure Babel transforms JS files
+  },
 }
