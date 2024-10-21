@@ -49,7 +49,7 @@ class Select extends PureComponent {
     this.highlightNextOption = this.highlightNextOption.bind(this);
     this.scrollToOption = this.scrollToOption.bind(this);
 
-    const { options, sortBy, sortAsc, selected } = this.props;
+    const { options, sortBy, sortAsc, selected } = props;
     const sortedOptions = Select.sortOptions(options, sortBy, sortAsc);
     const selectedItem = find(sortedOptions, { value: selected });
     const selectedLabel = selectedItem ? selectedItem.label : undefined;
@@ -70,25 +70,22 @@ class Select extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { options, sortBy, sortAsc, disabled } = this.props;
-    let { isOpen, highlightedOption, filter } = this.state;
+    const { options, sortBy, sortAsc, disabled, selected: propSelected } = this.props;
+    let { isOpen, highlightedOption, filter, selected: stateSelected } = this.state;
 
-    let selected;
-    if (this.props.selected !== prevProps.selected) {
-      ({ selected } = this.props);
-    } else {
-      ({ selected } = this.state);
-    }
+    const selected = propSelected !== prevProps.selected ? propSelected : stateSelected;
 
     if (disabled !== prevProps.disabled) {
       isOpen = false;
       highlightedOption = selected;
       filter = undefined;
     }
+
     let sortedOptions = this.state.options;
     if (options !== prevProps.options) {
       sortedOptions = Select.sortOptions(options, sortBy, sortAsc);
     }
+
     const selectedItem = find(sortedOptions, { value: selected });
     const selectedLabel = selectedItem ? selectedItem.label : undefined;
 
@@ -115,51 +112,54 @@ class Select extends PureComponent {
   }
 
   onPageClick(e) {
-    if (!this.state.isOpen) {
+    const { isOpen } = this.state;
+    if (!isOpen) {
       return;
     }
     const isClickWithinSelectBox = this.area.contains(e.target);
-
     const isClickWithinOptionsBox = this.optionsPosition.childNodes[0]
       ? this.optionsPosition.childNodes[0].contains(e.target)
       : false;
+
     if (!isClickWithinSelectBox && !isClickWithinOptionsBox) {
       this.closeSelect();
       this.inputFilter.blur();
     }
   }
 
-  // when opening the list of options...
   onClickSelect() {
-    const isOpen = !this.state.isOpen;
-    if (isOpen === true) {
+    const { isOpen } = this.state;
+    if (!isOpen) {
       this.onSelectFilter();
-      this.setState({ isOpen });
+      this.setState({ isOpen: true });
     } else {
       this.closeSelect();
     }
   }
 
   onClearOption() {
-    if (this.props.onClear) {
+    const { onClear } = this.props;
+    if (onClear) {
       this.setState({
         selected: undefined,
         selectedLabel: undefined,
       });
-      this.props.onClear();
+      onClear();
       this.closeSelect();
     }
   }
 
   onBlur(e) {
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur(e);
     }
   }
 
   onFocus(e) {
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
+    const { onFocus } = this.props;
+    if (onFocus) {
+      onFocus(e);
     }
     this.openSelect();
   }
@@ -168,20 +168,21 @@ class Select extends PureComponent {
     this.inputFilter.focus();
   }
 
-  // when selecting the options item itself
   onSelectOption({ value } = {}) {
     if (value === undefined) {
       return;
     }
-    if (value !== this.state.selected) {
-      const selectedItem = find(this.state.options, { value });
+    const { onChange } = this.props;
+    const { selected, options } = this.state;
+    if (value !== selected) {
+      const selectedItem = find(options, { value });
       const selectedLabel = selectedItem ? selectedItem.label : undefined;
       this.setState({
         selected: value,
         selectedLabel,
       });
-      if (typeof this.props.onChange === 'function') {
-        this.props.onChange(value);
+      if (typeof onChange === 'function') {
+        onChange(value);
       }
     }
     this.closeSelect();
@@ -193,15 +194,12 @@ class Select extends PureComponent {
 
   getOptions() {
     const { options, filter } = this.state;
-    if (filter === undefined || filter === '') {
+    if (!filter) {
       return options;
     }
     const lowerCaseFilter = filter.toLowerCase();
     return options.filter(item =>
-      item.label
-        .toString()
-        .toLowerCase()
-        .includes(lowerCaseFilter),
+      item.label.toString().toLowerCase().includes(lowerCaseFilter),
     );
   }
 
@@ -216,16 +214,17 @@ class Select extends PureComponent {
   }
 
   openSelect() {
-    this.setState({
+    this.setState(({ selected }) => ({
       isOpen: true,
-      highlightedOption: this.state.selected,
-    });
+      highlightedOption: selected,
+    }));
     this.handleResize();
   }
 
   handleResize() {
     const wrapper = utils.getParentOverflow(this.optionsPosition);
-    const maxOptionsHeight = Math.min(240, this.state.options.length * 30);
+    const { options } = this.state;
+    const maxOptionsHeight = Math.min(240, options.length * 30);
     const { maxLowerHeight, maxUpperHeight } = utils.getSpaceAvailability(
       maxOptionsHeight,
       this.optionsPosition,
@@ -240,7 +239,6 @@ class Select extends PureComponent {
 
   testKey(e) {
     const { keyCode, shiftKey } = e;
-
     if (keyCode === keyCodes.KEY_TAB) {
       e.preventDefault();
       this.leaveSelect(!shiftKey);
@@ -252,8 +250,9 @@ class Select extends PureComponent {
     }
     if (keyCode === keyCodes.KEY_RETURN) {
       e.preventDefault();
-      if (this.state.isOpen) {
-        this.onSelectOption({ value: this.state.highlightedOption });
+      const { isOpen, highlightedOption } = this.state;
+      if (isOpen) {
+        this.onSelectOption({ value: highlightedOption });
       } else {
         this.openSelect();
       }
@@ -278,7 +277,6 @@ class Select extends PureComponent {
       }
       currentIndex = nextIndex;
       const nextOption = options[nextIndex];
-
       if (nextOption.disabled) {
         return null;
       }
@@ -297,7 +295,6 @@ class Select extends PureComponent {
     const options = this.getOptions();
     const index = Select.getOptionIndex(options, value);
     const nextOption = this.options.items.children[index];
-
     if (nextOption) {
       nextOption.focus();
     }
@@ -333,7 +330,6 @@ class Select extends PureComponent {
       size === 's' && 'mb-input--small',
       size === 'm' && 'mb-input--medium',
       size === 'l' && 'mb-input--large',
-       
       isOpen &&
         'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
@@ -344,35 +340,9 @@ class Select extends PureComponent {
       required &&
         selectedLabel === undefined &&
         'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
-       
     ]);
 
-    let customPlaceholder = null;
-    if (placeholder) {
-      const isPlaceholderActive = isOpen || selectedLabel !== undefined;
-      customPlaceholder = (
-        <Placeholder size={size} label={placeholder} active={isPlaceholderActive} />
-      );
-    }
-
-    let optionsFilter = null;
-    if (filter) {
-      optionsFilter = (
-        <div className="mb-input__inner-icon input-select__icon">
-          <Icon size={iconSize} name="search-small" />
-        </div>
-      );
-    }
-
-    let invalidIcon = null;
-    if (invalid) {
-      invalidIcon = <InvalidIcon size={size} />;
-    }
-
-    let loader = null;
-    if (pending) {
-      loader = <Loader size={size} />;
-    }
+    const isPlaceholderActive = isOpen || selectedLabel !== undefined;
 
     return (
       <ValidationWrapper messages={invalidMessages} active={isOpen}>
@@ -387,7 +357,9 @@ class Select extends PureComponent {
           role="presentation"
         >
           <div className="mb-input__content input-select__content">
-            {customPlaceholder}
+            {placeholder && (
+              <Placeholder size={size} label={placeholder} active={isPlaceholderActive} />
+            )}
             <input
               className={`mb-input__input input-select__value ${filter ? 'has-filter' : ''}`}
               type="text"
@@ -402,9 +374,13 @@ class Select extends PureComponent {
               disabled={disabled}
             />
             <input type="hidden" disabled value={JSON.stringify(options)} />
-            {optionsFilter}
-            {invalidIcon}
-            {loader}
+            {filter && (
+              <div className="mb-input__inner-icon input-select__icon">
+                <Icon size={iconSize} name="search-small" />
+              </div>
+            )}
+            {invalid && <InvalidIcon size={size} />}
+            {pending && <Loader size={size} />}
             <div className="mb-input__inner-icon input-select__icon">
               <Indicator isOpen={isOpen} size={size} />
             </div>

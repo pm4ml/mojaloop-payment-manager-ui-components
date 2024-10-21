@@ -47,21 +47,18 @@ class DataList extends PureComponent {
     const tpmColumns = [];
     let translateIndex = 0;
 
-    // Adjust the translateIndex if previous columns had checkboxes
     if (prevColumns.some(col => col._onChange)) {
       translateIndex = 1;
     }
 
-    // Add a checkbox column if onCheck is provided
     if (typeof onCheck === 'function') {
       tpmColumns.push({
         _index: '_checkbox_column',
         _onChange: onCheck,
       });
-      translateIndex = 1; // Account for the new checkbox column
+      translateIndex = 1;
     }
 
-    // Populate tpmColumns with the new columns using forEach
     columns.forEach((column, i) => {
       tpmColumns.push(
         Object.assign(
@@ -114,8 +111,12 @@ class DataList extends PureComponent {
           _visible: true,
         };
 
-      prevRow._selected = selected ? selected.some(select => isEqual(select, item)) : get(prevItems, `[${_position}]._selected`);
-      prevRow._checked = checked ? checked.some(check => isEqual(check, item)) : get(prevItems, `[${_position}]._checked`);
+      prevRow._selected = selected
+        ? selected.some(select => isEqual(select, item))
+        : get(prevItems, `[${_position}]._selected`);
+      prevRow._checked = checked
+        ? checked.some(check => isEqual(check, item))
+        : get(prevItems, `[${_position}]._checked`);
       prevRow.data = columns.reduce(reduceColumns(prevRow, prevRow._index, _position), {});
 
       return prevRow;
@@ -125,7 +126,7 @@ class DataList extends PureComponent {
   static filterItems(items, columns, filters) {
     const filtersByKey = filters.filter(item => item.value !== '');
     return items.map(item => ({
-      // Use Object.assign to avoid spread operator
+      ...item,
       _visible: filtersByKey.every(filter => {
         const { _index, value } = filter;
         const cell = get(item.data[_index], 'value');
@@ -153,7 +154,10 @@ class DataList extends PureComponent {
     });
 
     if (label !== undefined) {
-      const columnByLabel = find(columns, column => column.label === label && column.sortable !== false);
+      const columnByLabel = find(
+        columns,
+        column => column.label === label && column.sortable !== false
+      );
       sortColumn = get(columnByLabel, '_index');
     }
     return sortColumn;
@@ -233,62 +237,81 @@ class DataList extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { list, columns, selected, checked, checkable, onCheck, filters } = this.props;
+    const { sortAsc, sortColumn } = this.state;
     const didColumnsChange = prevProps.columns !== columns;
     const didListChange = prevProps.list !== list;
 
     if (didColumnsChange || prevProps.onCheck !== onCheck) {
-      this._columns = DataList.convertColumns(columns, this._columns, onCheck ? this.onItemCheck : undefined);
+      this._columns = DataList.convertColumns(
+        columns,
+        this._columns,
+        onCheck ? this.onItemCheck : undefined
+      );
     }
 
-    if (didColumnsChange || didListChange || prevProps.checked !== checked || prevProps.selected !== selected || prevProps.filters !== filters) {
+    if (
+      didColumnsChange ||
+      didListChange ||
+      prevProps.checked !== checked ||
+      prevProps.selected !== selected ||
+      prevProps.filters !== filters
+    ) {
       const checkedItems = DataList.getCheckedItems(list, checked);
       const selectedItems = DataList.getSelectedItems(list, selected);
       const items = DataList.toItems(list, this._columns, selectedItems, checkedItems, checkable);
 
-      const filteredItems = DataList.filterItems(items, this._columns, filters || this.state.filters);
+      const filteredItems = DataList.filterItems(
+        items,
+        this._columns,
+        filters || this.state.filters
+      );
       this.setState({
-        items: DataList.sortItems(filteredItems, this.state.sortAsc, this.state.sortColumn),
+        items: DataList.sortItems(filteredItems, sortAsc, sortColumn),
         filters: filters || this.state.filters,
       });
     }
   }
 
   onSortClick(sortColumn) {
-    const sortAsc = this.state.sortColumn === sortColumn ? !this.state.sortAsc : true;
-    const items = DataList.sortItems(this.state.items, sortAsc, sortColumn);
+    const { sortAsc } = this.state;
+    const items = DataList.sortItems(this.state.items, !sortAsc, sortColumn);
 
-    this.setState({ sortAsc, sortColumn, items });
+    this.setState({ sortAsc: !sortAsc, sortColumn, items });
   }
 
   onFilterChange(_index, value) {
-    const filters = DataList.getFilters(this.state.filters, _index, value);
-    const items = DataList.filterItems(this.state.items, this._columns, filters);
+    const { filters, items } = this.state;
+    const updatedFilters = DataList.getFilters(filters, _index, value);
+    const updatedItems = DataList.filterItems(items, this._columns, updatedFilters);
 
     this.setState(
       {
-        items,
-        filters,
+        items: updatedItems,
+        filters: updatedFilters,
         selectedPage: 1,
       },
       () => {
-        if (this.props.onFilter) {
-          this.props.onFilter({
-            items: DataList.getVisibleItems(items).map(i => i._source),
-            filters,
+        const { onFilter } = this.props;
+        if (onFilter) {
+          onFilter({
+            items: DataList.getVisibleItems(updatedItems).map(i => i._source),
+            filters: updatedFilters,
           });
         }
-      },
+      }
     );
   }
 
   onFilterBlur(_index) {
-    const filters = DataList.getFilters(this.state.filters, _index);
-    this.setState({ filters });
+    const { filters } = this.state;
+    const updatedFilters = DataList.getFilters(filters, _index);
+    this.setState({ filters: updatedFilters });
   }
 
   onFilterClick(_index) {
-    const filters = DataList.getFilters(this.state.filters, _index);
-    this.setState({ filters });
+    const { filters } = this.state;
+    const updatedFilters = DataList.getFilters(filters, _index);
+    this.setState({ filters: updatedFilters });
   }
 
   onItemClick(id) {
@@ -302,41 +325,37 @@ class DataList extends PureComponent {
   }
 
   onItemCheck(id) {
-    const idx = this.state.items.findIndex(c => c._index === id);
-    const itemToUpdate = Object.assign({}, this.state.items[idx], {
-      _checked: !this.state.items[idx]._checked,
-    });
-    const updatedItems = this.state.items.slice(); // Create a shallow copy
-    updatedItems[idx] = itemToUpdate; // Update the specific item
+    const { items } = this.state;
+    const idx = items.findIndex(c => c._index === id);
+    const updatedItem = { ...items[idx], _checked: !items[idx]._checked };
+    const updatedItems = [...items];
+    updatedItems[idx] = updatedItem;
 
-    this.setState(
-      {
-        items: updatedItems,
-      },
-      this.onChange,
-    );
+    this.setState({ items: updatedItems }, this.onChange);
   }
 
   onHeaderCheckboxChange(value) {
+    const { items } = this.state;
+    const { checkable } = this.props;
     const setCheckIfCheckable = _checked => item => ({
       ...item,
-      _checked: DataList.isCheckable(this.props.checkable, item) ? _checked : false,
+      _checked: DataList.isCheckable(checkable, item) ? _checked : false,
     });
 
     this.setState(
       {
-        items: this.state.items.map(setCheckIfCheckable(value)),
+        items: items.map(setCheckIfCheckable(value)),
       },
-      this.onChange,
+      this.onChange
     );
   }
 
   onChange() {
-    const sourceCheckedItems = this.state.items
-      .filter(item => item._checked === true)
-      .map(item => item._source);
+    const { items } = this.state;
+    const { onCheck } = this.props;
+    const sourceCheckedItems = items.filter(item => item._checked).map(item => item._source);
 
-    this.props.onCheck(sourceCheckedItems);
+    onCheck(sourceCheckedItems);
   }
 
   onPageClick(selectedPage) {
@@ -346,6 +365,7 @@ class DataList extends PureComponent {
   render() {
     const { flex, isPending, noData, errorMsg, hasError, checkable, paginatorSize } = this.props;
     const { items, sortAsc, sortColumn, filters, selectedPage } = this.state;
+
     const className = utils.composeClassNames([
       'mb-element',
       'el-datalist',
@@ -403,12 +423,7 @@ class DataList extends PureComponent {
           onFilterBlur={this.onFilterBlur}
           onFilterClick={this.onFilterClick}
         />,
-        <Rows
-          key="datalist-rows"
-          items={data}
-          columns={this._columns}
-          onItemClick={this.onItemClick}
-        />,
+        <Rows key="datalist-rows" items={data} columns={this._columns} onItemClick={this.onItemClick} />,
         paginator,
       ];
     }

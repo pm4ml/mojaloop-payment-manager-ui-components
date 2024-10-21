@@ -13,41 +13,29 @@ import Icon, { iconSizes } from '../Icon';
 
 function asDate(day) {
   if (day) {
-    return moment(day)
-      .startOf('day')
-      .format('x');
+    return moment(day).startOf('day').format('x');
   }
   return 0;
 }
 
 class DatePicker extends PureComponent {
   static getDate(value) {
-    if (typeof value === 'string' || typeof value === 'number') {
-      return new Date(parseInt(value, 10));
-    }
-    return undefined;
+    return typeof value === 'string' || typeof value === 'number'
+      ? new Date(parseInt(value, 10))
+      : undefined;
   }
 
   static getTimeObject(value) {
-    let intValue = value;
-    if (typeof value === 'undefined') {
-      intValue = 0;
-    }
-    if (typeof value === 'string') {
-      intValue = parseInt(value, 10);
-    }
-
-    const hour = value ? moment(intValue).get('hour') : 0;
-    const minute = value ? moment(intValue).get('minute') : 0;
-    const second = value ? moment(intValue).get('second') : 0;
-    return { hour, minute, second };
+    const intValue = typeof value === 'undefined' ? 0 : parseInt(value, 10);
+    return {
+      hour: value ? moment(intValue).get('hour') : 0,
+      minute: value ? moment(intValue).get('minute') : 0,
+      second: value ? moment(intValue).get('second') : 0,
+    };
   }
 
   static getSelectedDayAndTimestamp(value) {
-    let myValue = value;
-    if (typeof value === 'string') {
-      myValue = parseInt(value, 10);
-    }
+    const myValue = typeof value === 'string' ? parseInt(value, 10) : value;
     return {
       selectedDay: myValue ? new Date(myValue) : null,
       timestamp: myValue,
@@ -62,29 +50,8 @@ class DatePicker extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
-    this.handleDayClick = this.handleDayClick.bind(this);
-    this.handleHourClick = this.handleHourClick.bind(this);
-    this.handleMinuteClick = this.handleMinuteClick.bind(this);
-    this.handlePageClick = this.handlePageClick.bind(this);
-    this.handleResize = this.handleResize.bind(this);
-    this.handleSecondClick = this.handleSecondClick.bind(this);
-
-    // Wrapper events
-    this.onClick = this.onClick.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-
-    // internal methods
-    this.closeDatePicker = this.closeDatePicker.bind(this);
-    this.leaveDatePicker = this.leaveDatePicker.bind(this);
-    this.testKey = this.testKey.bind(this);
-
-    // internal timeout
-    this.deferredTimeChangeTimeout = undefined;
-
-    const { selectedDay, timestamp } = DatePicker.getSelectedDayAndTimestamp(this.props.value);
-    const { hour, minute, second } = DatePicker.getTimeObject(this.props.value);
+    const { selectedDay, timestamp } = DatePicker.getSelectedDayAndTimestamp(props.value);
+    const { hour, minute, second } = DatePicker.getTimeObject(props.value);
 
     this.state = {
       selectedDay,
@@ -94,6 +61,20 @@ class DatePicker extends PureComponent {
       second,
       isOpen: false,
     };
+
+    this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
+    this.handleDayClick = this.handleDayClick.bind(this);
+    this.handleHourClick = this.handleHourClick.bind(this);
+    this.handleMinuteClick = this.handleMinuteClick.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.handleResize = this.handleResize.bind(this);
+    this.handleSecondClick = this.handleSecondClick.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.closeDatePicker = this.closeDatePicker.bind(this);
+    this.leaveDatePicker = this.leaveDatePicker.bind(this);
+    this.testKey = this.testKey.bind(this);
   }
 
   componentDidMount() {
@@ -103,27 +84,14 @@ class DatePicker extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { value, defaultHour, defaultMinute, defaultSecond } = this.props;
-    const defaultTime = {
-      hour: defaultHour,
-      minute: defaultMinute,
-      second: defaultSecond,
-    };
-
     if (prevProps.value !== value) {
-      let timeValue = value;
-      if (typeof value === 'string') {
-        timeValue = parseInt(value, 10);
-      }
+      const timeValue = parseInt(value, 10);
       const { selectedDay, timestamp } = DatePicker.getSelectedDayAndTimestamp(timeValue);
-      const { hour, minute, second } = value ? DatePicker.getTimeObject(timeValue) : defaultTime;
+      const { hour, minute, second } = value
+        ? DatePicker.getTimeObject(timeValue)
+        : { hour: defaultHour, minute: defaultMinute, second: defaultSecond };
 
-      this.setState({
-        selectedDay,
-        timestamp,
-        hour,
-        minute,
-        second,
-      });
+      this.setState({ selectedDay, timestamp, hour, minute, second });
     }
   }
 
@@ -133,29 +101,21 @@ class DatePicker extends PureComponent {
   }
 
   onClick(e) {
-    if (this.props.onClick) {
-      this.props.onClick(e);
-    }
+    const { onClick } = this.props;
+    if (onClick) onClick(e);
     this.input.focus();
   }
 
   onFocus(e) {
-    if (this.state.isOpen === false) {
-      this.setState({ isOpen: true }, () => {
-        this.input.focus();
-      });
-      this.handleResize();
-    }
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
-    }
+    const { onFocus } = this.props;
+    this.setState({ isOpen: true }, () => this.input.focus());
+    this.handleResize();
+    if (onFocus) onFocus(e);
   }
 
   onBlur(e) {
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
-    }
-    // this.close();
+    const { onBlur } = this.props;
+    if (onBlur) onBlur(e);
   }
 
   closeDatePicker(e) {
@@ -164,83 +124,57 @@ class DatePicker extends PureComponent {
   }
 
   handleDateTimeChange(selectedDay, hour, minute, second) {
-    const { format } = this.props;
-    // convert the value into the specified format if necessary
+    const { format, onSelect } = this.props;
     let exportDay = selectedDay === null || selectedDay === undefined ? undefined : selectedDay;
 
     if (exportDay !== undefined && format) {
-      const dayStamp = moment(exportDay)
-        .startOf('day')
-        .format('x');
-
-      exportDay =
-        parseInt(dayStamp, 10) + hour * 60 * 60 * 1000 + minute * 60 * 1000 + second * 1000;
-
-      if (format === 'x') {
-        exportDay = parseInt(exportDay, 10);
-      } else if (format === 'X') {
-        exportDay = parseInt(exportDay / 1000, 10);
-      } else {
+      exportDay = DatePicker.getTimestamp(exportDay, hour, minute, second);
+      if (format !== 'x' && format !== 'X') {
         exportDay = moment(exportDay).format(format);
       }
     }
 
-    // call the external function
-    if (this.props.onSelect) {
-      this.props.onSelect(exportDay);
+    if (onSelect) {
+      onSelect(exportDay);
     }
   }
 
   handleDayClick(day, { selected, disabled }) {
     if (disabled) return;
     const selectedDay = selected ? null : day;
-    const timestamp = DatePicker.getTimestamp(selected ? undefined : day, 0, 0, 0);
+    const timestamp = DatePicker.getTimestamp(selectedDay, 0, 0, 0);
     this.setState({ selectedDay, timestamp });
     this.handleDateTimeChange(selectedDay, this.state.hour, this.state.minute, this.state.second);
   }
 
   handleHourClick(hour) {
-    clearTimeout(this.deferredTimeChangeTimeout);
-    const timestamp = DatePicker.getTimestamp(
-      this.state.selectedDay,
-      hour,
-      this.state.minute,
-      this.state.second,
-    );
+    const { minute, second, selectedDay } = this.state;
     if (hour > 23) return;
-    this.setState({ hour, timestamp });
-    this.deferredTimeChangeTimeout = setTimeout(
-      () =>
-        this.handleDateTimeChange(
-          this.state.selectedDay,
-          hour,
-          this.state.minute,
-          this.state.second,
-        ),
-      500,
-    );
+    this.setState({ hour, timestamp: DatePicker.getTimestamp(selectedDay, hour, minute, second) });
+    clearTimeout(this.deferredTimeChangeTimeout);
+    this.deferredTimeChangeTimeout = setTimeout(() => {
+      this.handleDateTimeChange(selectedDay, hour, minute, second);
+    }, 500);
   }
 
   handleMinuteClick(minute) {
-    clearTimeout(this.deferredTimeChangeTimeout);
-    const timestamp = DatePicker.getTimestamp(
-      this.state.selectedDay,
-      this.state.hour,
-      minute,
-      this.state.second,
-    );
+    const { hour, second, selectedDay } = this.state;
     if (minute > 59) return;
-    this.setState({ minute, timestamp });
-    this.deferredTimeChangeTimeout = setTimeout(
-      () =>
-        this.handleDateTimeChange(
-          this.state.selectedDay,
-          this.state.hour,
-          minute,
-          this.state.second,
-        ),
-      500,
-    );
+    this.setState({ minute, timestamp: DatePicker.getTimestamp(selectedDay, hour, minute, second) });
+    clearTimeout(this.deferredTimeChangeTimeout);
+    this.deferredTimeChangeTimeout = setTimeout(() => {
+      this.handleDateTimeChange(selectedDay, hour, minute, second);
+    }, 500);
+  }
+
+  handleSecondClick(second) {
+    const { hour, minute, selectedDay } = this.state;
+    if (second > 59) return;
+    this.setState({ second, timestamp: DatePicker.getTimestamp(selectedDay, hour, minute, second) });
+    clearTimeout(this.deferredTimeChangeTimeout);
+    this.deferredTimeChangeTimeout = setTimeout(() => {
+      this.handleDateTimeChange(selectedDay, hour, minute, second);
+    }, 500);
   }
 
   handlePageClick(e) {
@@ -252,37 +186,10 @@ class DatePicker extends PureComponent {
   handleResize() {
     const wrapper = utils.getParentOverflow(this.calendarPosition);
     const calendarHeight = 300;
-    const { maxLowerHeight, maxUpperHeight } = utils.getSpaceAvailability(
-      calendarHeight,
-      this.calendarPosition,
-      wrapper,
-    );
+    const { maxLowerHeight, maxUpperHeight } = utils.getSpaceAvailability(calendarHeight, this.calendarPosition, wrapper);
     this.reverse = maxLowerHeight > calendarHeight ? false : maxLowerHeight < maxUpperHeight;
-
     clearTimeout(this._forceUpdateTimeout);
     this._forceUpdateTimeout = setTimeout(() => this.forceUpdate(), 50);
-  }
-
-  handleSecondClick(second) {
-    clearTimeout(this.deferredTimeChangeTimeout);
-    const timestamp = DatePicker.getTimestamp(
-      this.state.selectedDay,
-      this.state.hour,
-      this.state.minute,
-      second,
-    );
-    if (second > 59) return;
-    this.setState({ second, timestamp });
-    this.deferredTimeChangeTimeout = setTimeout(
-      () =>
-        this.handleDateTimeChange(
-          this.state.selectedDay,
-          this.state.hour,
-          this.state.minute,
-          second,
-        ),
-      500,
-    );
   }
 
   leaveDatePicker(e, next) {
@@ -313,6 +220,7 @@ class DatePicker extends PureComponent {
       dateFormat,
       hideIcon,
     } = this.props;
+
     const { isOpen, timestamp, selectedDay } = this.state;
     const initialMonth = selectedDay || DatePicker.getDate(this.props.initialMonth);
     const hasDate = timestamp !== 0 && timestamp !== undefined;
@@ -332,24 +240,16 @@ class DatePicker extends PureComponent {
       size === 's' && 'mb-input--small',
       size === 'm' && 'mb-input--medium',
       size === 'l' && 'mb-input--large',
-       
-      isOpen &&
-        'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
+      isOpen && 'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
-      pending &&
-        'mb-input--pending mb-input__borders--pending mb-input__background--pending mb-input__shadow--pending',
-      invalid &&
-        'mb-input--invalid mb-input__borders--invalid mb-input__background--invalid mb-input__shadow--invalid',
-      required &&
-        'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
-       
+      pending && 'mb-input--pending mb-input__borders--pending mb-input__background--pending mb-input__shadow--pending',
+      invalid && 'mb-input--invalid mb-input__borders--invalid mb-input__background--invalid mb-input__shadow--invalid',
+      required && 'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
     ]);
 
     let customPlaceholder = null;
     if (placeholder) {
-      customPlaceholder = (
-        <Placeholder size={size} label={placeholder} active={isPlaceholderActive} />
-      );
+      customPlaceholder = <Placeholder size={size} label={placeholder} active={isPlaceholderActive} />;
     }
 
     let loader = null;
@@ -382,8 +282,13 @@ class DatePicker extends PureComponent {
           <div
             className="mb-input__content input-datepicker__content"
             onClick={this.onClick}
-            onKeyDown={this.onFocus}
-            role="presentation"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                this.onClick(e);
+              }
+            }}
+            role="button"
+            tabIndex="0"
           >
             {customPlaceholder}
             <input
@@ -409,7 +314,7 @@ class DatePicker extends PureComponent {
             this.calendarPosition = calendarPosition;
           }}
         >
-          {this.state.isOpen && (
+          {isOpen && (
             <div className={calendarBoxClassName}>
               <DayPicker
                 initialMonth={initialMonth}
@@ -425,7 +330,7 @@ class DatePicker extends PureComponent {
                   onHourChange={this.handleHourClick}
                   onMinuteChange={this.handleMinuteClick}
                   onSecondChange={this.handleSecondClick}
-                  disabled={selectedDay === undefined || selectedDay == null}
+                  disabled={!selectedDay}
                 />
               )}
             </div>
@@ -460,6 +365,7 @@ DatePicker.propTypes = {
   disabledDays: PropTypes.func,
   hideIcon: PropTypes.bool,
 };
+
 DatePicker.defaultProps = {
   id: undefined,
   className: undefined,
@@ -494,30 +400,15 @@ function TimePicker({
   onSecondChange,
   disabled,
 }) {
-  return <div className="timepicker-position">
-    <TimeInput
-      name="Hours"
-      limit={23}
-      selected={hour}
-      onChange={onHourChange}
-      disabled={disabled}
-    />
-    <TimeInput
-      name="Minutes"
-      limit={59}
-      selected={minute}
-      onChange={onMinuteChange}
-      disabled={disabled}
-    />
-    <TimeInput
-      name="Seconds"
-      limit={59}
-      selected={second}
-      onChange={onSecondChange}
-      disabled={disabled}
-    />
-  </div>
+  return (
+    <div className="timepicker-position">
+      <TimeInput name="Hours" limit={23} selected={hour} onChange={onHourChange} disabled={disabled} />
+      <TimeInput name="Minutes" limit={59} selected={minute} onChange={onMinuteChange} disabled={disabled} />
+      <TimeInput name="Seconds" limit={59} selected={second} onChange={onSecondChange} disabled={disabled} />
+    </div>
+  );
 }
+
 TimePicker.propTypes = {
   hour: PropTypes.number,
   minute: PropTypes.number,
@@ -527,6 +418,7 @@ TimePicker.propTypes = {
   onSecondChange: PropTypes.func,
   disabled: PropTypes.bool,
 };
+
 TimePicker.defaultProps = {
   hour: 0,
   minute: 0,
@@ -539,24 +431,23 @@ TimePicker.defaultProps = {
 
 class TimeInput extends PureComponent {
   static getDoubleDigitTime(value) {
-    const intValue = parseInt(value, 10);
-    return intValue < 10 ? `0${intValue}` : intValue;
+    return parseInt(value, 10) < 10 ? `0${value}` : value;
   }
 
   constructor(props) {
     super(props);
 
-    this.onChangeValue = this.onChangeValue.bind(this);
     this.state = {
-      value: parseInt(this.props.selected, 10),
-      shown: TimeInput.getDoubleDigitTime(this.props.selected),
+      value: parseInt(props.selected, 10),
+      shown: TimeInput.getDoubleDigitTime(props.selected),
     };
+
+    this.onChangeValue = this.onChangeValue.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     const { selected } = this.props;
-    if (prevProps.selected !== this.props.selected) {
-      if (parseInt(selected, 10) === this.state.value) return;
+    if (prevProps.selected !== selected) {
       this.setState({
         value: parseInt(selected, 10),
         shown: TimeInput.getDoubleDigitTime(selected),
@@ -572,16 +463,18 @@ class TimeInput extends PureComponent {
 
   render() {
     const { name, limit, disabled } = this.props;
+    const { shown } = this.state;
+
     return (
       <div className="timepicker-item-box">
-        <div className="placeholder"> {name} </div>
+        <div className="placeholder">{name}</div>
         <input
           disabled={disabled}
           type="number"
           className="timepicker-select"
           onFocus={e => e.target.select()}
           onChange={this.onChangeValue}
-          value={this.state.shown}
+          value={shown}
           min={0}
           max={limit}
         />
@@ -589,6 +482,7 @@ class TimeInput extends PureComponent {
     );
   }
 }
+
 TimeInput.propTypes = {
   name: PropTypes.string,
   limit: PropTypes.number,
@@ -596,6 +490,7 @@ TimeInput.propTypes = {
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
 };
+
 TimeInput.defaultProps = {
   name: '',
   limit: 0,
@@ -603,4 +498,5 @@ TimeInput.defaultProps = {
   onChange: undefined,
   disabled: false,
 };
+
 export default DatePicker;

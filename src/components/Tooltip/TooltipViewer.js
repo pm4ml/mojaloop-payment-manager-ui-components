@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom';
 
 import * as utils from '../../utils/common';
 
- 
- 
-
 const POSITIONS = ['top', 'right', 'bottom', 'left'];
 const ALIGNMENTS = ['start', 'center', 'end'];
 const MARGIN = 10;
@@ -30,15 +27,12 @@ const TooltipHandle = ({ custom, direction, alignment, kind }) => {
 };
 
 const MultiLine = ({ string }) => {
-  return string
-    .map(line => <span>{line}</span>)
-    .reduce((lines, line, index, array) => {
-      const newLines = [...lines, line];
-      if (index < array.length - 1) {
-        newLines.push(<br />);
-      }
-      return newLines;
-    }, []);
+  return string.map((line, index) => (
+    <React.Fragment key={index}>
+      <span>{line}</span>
+      {index < string.length - 1 && <br />}
+    </React.Fragment>
+  ));
 };
 
 export default class TooltipViewer extends PureComponent {
@@ -57,24 +51,23 @@ export default class TooltipViewer extends PureComponent {
 
     const byPosition = {
       top: () => ({
-        top: parentRect.top - targetRect.height - 10,
+        top: parentRect.top - targetRect.height - MARGIN,
         left,
       }),
       bottom: () => ({
-        top: parentRect.top + parentRect.height + 10,
+        top: parentRect.top + parentRect.height + MARGIN,
         left,
       }),
       left: () => ({
         top,
-        left: parentRect.left - targetRect.width - 10,
+        left: parentRect.left - targetRect.width - MARGIN,
       }),
       right: () => ({
         top,
-        left: parentRect.left + parentRect.width + 10,
+        left: parentRect.left + parentRect.width + MARGIN,
       }),
     };
-    const byPositionGetter = byPosition[position];
-    return byPositionGetter(align);
+    return byPosition[position](align);
   }
 
   static getMaxSizes(rect, pos, align) {
@@ -131,14 +124,12 @@ export default class TooltipViewer extends PureComponent {
 
     const { innerWidth, innerHeight } = window;
     const exceedings = {
-      // test for every position if the tooltip size exceeds the limits
       top: ({ top }) => Math.abs(Math.min(0, top)),
       left: ({ left }) => Math.abs(Math.min(0, left)),
       right: ({ left }) => Math.abs(Math.max(0, -innerWidth + left + rect.width)),
       bottom: ({ top }) => Math.abs(Math.max(0, -innerHeight + top + rect.height)),
     };
 
-    // make sure it not exceeds any of the limits
     return [
       exceedings.top(coordinates),
       exceedings.left(coordinates),
@@ -149,15 +140,13 @@ export default class TooltipViewer extends PureComponent {
 
   static getCoordinates(parentId, target, position = 'top', align = 'center') {
     const parent = document.getElementById(parentId);
-    const [firstChild] = document.getElementById(parentId).children;
+    const [firstChild] = parent.children;
     const wrappedElement = firstChild || parent;
     const parentRect = wrappedElement.getBoundingClientRect();
-    let positionIteration = 0;
-    let alignIteration = 0;
     const finalPositions = [];
 
-    while (positionIteration < POSITIONS.length) {
-      while (alignIteration < ALIGNMENTS.length) {
+    for (let positionIteration = 0; positionIteration < POSITIONS.length; positionIteration++) {
+      for (let alignIteration = 0; alignIteration < ALIGNMENTS.length; alignIteration++) {
         const currentPosition = POSITIONS[positionIteration];
         const currentAlign = ALIGNMENTS[alignIteration];
 
@@ -191,49 +180,21 @@ export default class TooltipViewer extends PureComponent {
           maxWidth,
           maxHeight,
         });
-
-        alignIteration += 1;
       }
-      alignIteration = 0;
-      positionIteration += 1;
     }
 
-    function sortByExceeds(a, b) {
-      if (a.exceeds > b.exceeds) {
-        return 1;
-      } else if (a.exceeds < b.exceeds) {
-        return -1;
-      }
-      return 0;
-    }
+    finalPositions.sort((a, b) => a.exceeds - b.exceeds);
 
-    function removeExceeds(item) {
-      return item.exceeds === 0 /* && item.aspectRatio > 0.5 && item.aspectRatio < 10 */;
-    }
-
-    function withPositions(targetPosition, targetAlign) {
-      return function filter(item) {
-        if (targetPosition && targetAlign) {
-          return item.position === targetPosition && item.align === targetAlign;
-        } else if (targetPosition) {
-          return item.position === targetPosition;
-        }
-        return item.align === targetAlign;
-      };
-    }
-
-    finalPositions.sort(sortByExceeds);
-
-    const samePos = finalPositions.filter(withPositions(position));
-    const [samePosCenter] = samePos.filter(withPositions(null, 'center')).filter(removeExceeds);
-    const [bestSamePos] = samePos.sort(sortByExceeds);
+    const samePos = finalPositions.filter(item => item.position === position);
+    const [samePosCenter] = samePos.filter(item => item.align === 'center' && item.exceeds === 0);
+    const [bestSamePos] = samePos.sort((a, b) => a.exceeds - b.exceeds);
 
     const [samePosAndAlign] = finalPositions
-      .filter(withPositions(position, align))
-      .filter(removeExceeds);
+      .filter(item => item.position === position && item.align === align)
+      .filter(item => item.exceeds === 0);
     const [bestCenterPos] = finalPositions
-      .filter(withPositions(null, 'center'))
-      .sort(sortByExceeds);
+      .filter(item => item.align === 'center')
+      .sort((a, b) => a.exceeds - b.exceeds);
 
     if (samePosAndAlign) {
       return samePosAndAlign;
@@ -244,6 +205,7 @@ export default class TooltipViewer extends PureComponent {
     } else if (bestSamePos) {
       return bestSamePos;
     }
+
     return finalPositions[0];
   }
 
@@ -268,13 +230,14 @@ export default class TooltipViewer extends PureComponent {
     }
     return { direction: position, alignment: align };
   }
+
   constructor(props) {
     super(props);
     this._viewer = document.createElement('div');
     this._viewer.className = utils.composeClassNames([
       'el-tooltip__viewer',
-      this.props.custom !== true && 'el-tooltip__viewer--default',
-      this.props.custom !== true && `el-tooltip__viewer--${this.props.kind}`,
+      !this.props.custom && 'el-tooltip__viewer--default',
+      !this.props.custom && `el-tooltip__viewer--${this.props.kind}`,
     ]);
     this._location = document.body.appendChild(this._viewer);
     this.state = {
@@ -282,6 +245,7 @@ export default class TooltipViewer extends PureComponent {
       alignment: undefined,
     };
   }
+
   componentDidMount() {
     const { parentId, position, align } = this.props;
     const { direction, alignment } = TooltipViewer.setPosition(
@@ -291,9 +255,10 @@ export default class TooltipViewer extends PureComponent {
       this._location,
       this._viewer,
     );
-     
+
     this.setState({ direction, alignment });
   }
+
   componentDidUpdate() {
     const { parentId, position, align } = this.props;
     const { direction, alignment } = TooltipViewer.setPosition(
@@ -308,6 +273,7 @@ export default class TooltipViewer extends PureComponent {
       this.setState({ direction, alignment });
     }
   }
+
   componentWillUnmount() {
     document.body.removeChild(this._location);
   }
@@ -315,16 +281,13 @@ export default class TooltipViewer extends PureComponent {
   render() {
     const { direction, alignment } = this.state;
     const { content, label, position, children, kind, custom } = this.props;
+
     let tooltipInnerComponent = null;
 
     if (content) {
       tooltipInnerComponent = React.cloneElement(content, { ...content.props, position });
     } else if (label) {
-      if (Array.isArray(label)) {
-        tooltipInnerComponent = <MultiLine string={label} />;
-      } else {
-        tooltipInnerComponent = <span>{label}</span>;
-      }
+      tooltipInnerComponent = Array.isArray(label) ? <MultiLine string={label} /> : <span>{label}</span>;
     } else {
       tooltipInnerComponent = <span>{children}</span>;
     }

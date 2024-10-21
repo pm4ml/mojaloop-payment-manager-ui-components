@@ -91,91 +91,99 @@ class DataListWithSettings extends PureComponent {
       },
     };
   }
+
   onCheck(checked) {
-    this.setState({
-      checked,
-    });
+    this.setState({ checked });
   }
+
   onSelect(selected) {
-    this.setState({
-      selected,
-    });
+    this.setState({ selected });
   }
+
   toggleColumn(column) {
-    this.setState({
+    this.setState(prevState => ({
       columns: {
-        ...this.state.columns,
-        [column]: !this.state.columns[column],
+        ...prevState.columns,
+        [column]: !prevState.columns[column],
       },
-    });
+    }));
   }
+
   toggleModifier(modifier) {
-    this.setState({
+    this.setState(prevState => ({
       modifiers: {
-        ...this.state.modifiers,
-        [modifier]: !this.state.modifiers[modifier],
+        ...prevState.modifiers,
+        [modifier]: !prevState.modifiers[modifier],
       },
-    });
+    }));
   }
+
   toggleViewer(viewer) {
-    this.setState({
+    this.setState(prevState => ({
       viewers: {
-        ...this.state.viewers,
-        [viewer]: !this.state.viewers[viewer],
+        ...prevState.viewers,
+        [viewer]: !prevState.viewers[viewer],
       },
-    });
+    }));
   }
+
   changeMessage(message, value) {
-    this.setState({
+    this.setState(prevState => ({
       messages: {
-        ...this.state.messages,
+        ...prevState.messages,
         [message]: value,
       },
-    });
+    }));
   }
+
   changePagination(field, value) {
-    this.setState({
+    this.setState(prevState => ({
       pagination: {
-        ...this.state.pagination,
+        ...prevState.pagination,
         [field]: value,
       },
-    });
+    }));
   }
+
   updateItems(action) {
-    let newItems = [...this.state.items];
-    const newTransformers = { ...this.state.transformers };
-    switch (action) {
-      case ACTIONS.ITEM_ADD:
-        newItems.push(buildRow());
-        break;
-      case ACTIONS.ITEM_REMOVE:
-        newItems.splice(0, 1);
-        break;
-      case ACTIONS.ITEMS_RESET:
-        newItems = list;
-        break;
-      case ACTIONS.ITEMS_CLEAR:
-        newItems = [];
-        break;
-      case ACTIONS.COLUMN_BUMP:
-        newItems[0].col1 += 1;
-        break;
-      case ACTIONS.VAR_RND:
-        newTransformers.counter = Math.floor(Math.random() * 10);
-        break;
-      case ACTIONS.VAR_BUMP:
-        newTransformers.counter += 1;
-        break;
-      default:
-        break;
-    }
-    this.setState({ items: newItems, transformers: newTransformers });
-  }
-  increment() {
-    this.setState({
-      counter: this.state.counter + 1,
+    this.setState(prevState => {
+      let newItems = [...prevState.items];
+      const newTransformers = { ...prevState.transformers };
+      switch (action) {
+        case ACTIONS.ITEM_ADD:
+          newItems.push(buildRow());
+          break;
+        case ACTIONS.ITEM_REMOVE:
+          newItems.splice(0, 1);
+          break;
+        case ACTIONS.ITEMS_RESET:
+          newItems = list;
+          break;
+        case ACTIONS.ITEMS_CLEAR:
+          newItems = [];
+          break;
+        case ACTIONS.COLUMN_BUMP:
+          newItems[0].col1 += 1;
+          break;
+        case ACTIONS.VAR_RND:
+          newTransformers.counter = Math.floor(Math.random() * 10);
+          break;
+        case ACTIONS.VAR_BUMP:
+          newTransformers.counter += 1;
+          break;
+        default:
+          break;
+      }
+      return { items: newItems, transformers: newTransformers };
     });
   }
+
+  increment() {
+    this.setState(prevState => ({
+      counter: prevState.counter + 1,
+    }));
+  }
+
   render() {
     const {
       transformers,
@@ -259,19 +267,19 @@ class DataListWithSettings extends PureComponent {
           title="Checked"
           data={checked}
           onClose={onToggleViewer('checked')}
-          visible={this.state.viewers.checked}
+          visible={viewers.checked}
         />
         <Viewer
           title="Columns"
           data={columnsToRender.map(stringifyFns)}
           onClose={onToggleViewer('columns')}
-          visible={this.state.viewers.columns}
+          visible={viewers.columns}
         />
         <Viewer
           title="items"
           data={items}
           onClose={onToggleViewer('items')}
-          visible={this.state.viewers.items}
+          visible={viewers.items}
         />
       </div>
     );
@@ -329,4 +337,5 @@ const Viewer = ({ data, onClose, visible }) => {
     </Modal>
   );
 };
+
 export default DataListWithSettings;

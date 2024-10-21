@@ -8,8 +8,9 @@ import * as utils from '../../utils/common';
 class Checkbox extends PureComponent {
   constructor(props) {
     super(props);
+    const { checked } = props;
     this.state = {
-      checked: this.props.checked,
+      checked,
     };
     this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -19,43 +20,49 @@ class Checkbox extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.checked !== prevProps.checked) {
-      // eslint-disable-next-line
-      this.setState({ checked: this.props.checked });
+    const { checked } = this.props;
+    if (checked !== prevProps.checked) {
+      this.setState({ checked });
     }
   }
 
   onChange(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (this.props.disabled) {
+    const { disabled, onChange } = this.props;
+    const { checked } = this.state;
+
+    if (disabled) {
       return;
     }
 
-    const checked = !this.state.checked;
-    this.setState({ checked });
-    if (this.props.onChange) {
-      this.props.onChange(checked);
+    const newChecked = !checked;
+    this.setState({ checked: newChecked });
+    if (onChange) {
+      onChange(newChecked);
     }
   }
 
   onBlur(e) {
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur(e);
     }
   }
 
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (this.props.onClick) {
-      this.props.onClick(e);
+    const { onClick } = this.props;
+    if (onClick) {
+      onClick(e);
     }
   }
 
   onFocus(e) {
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
+    const { onFocus } = this.props;
+    if (onFocus) {
+      onFocus(e);
     }
   }
 
@@ -75,16 +82,26 @@ class Checkbox extends PureComponent {
 
   render() {
     const { checked } = this.state;
-    const { style, className, id, label, disabled, round, semi } = this.props;
+    const {
+      style,
+      className,
+      id,
+      label,
+      disabled,
+      round,
+      semi,
+    } = this.props;
+
     const checkboxClassName = utils.composeClassNames(['mb-input', 'input-checkbox', className]);
     const labelClassName = utils.composeClassNames([
       round && 'input-checkbox__label--round',
       !label && 'input-checkbox__label--no-margin',
     ]);
+
     return (
       <div className={checkboxClassName} style={style}>
         <input
-          ref={input => {
+          ref={(input) => {
             this.input = input;
           }}
           type="checkbox"
@@ -94,14 +111,13 @@ class Checkbox extends PureComponent {
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           onKeyDown={this.testKey}
-          onChange={e => {
+          onChange={(e) => {
             e.preventDefault();
             e.stopPropagation();
           }}
           checked={checked && semi !== true}
           disabled={disabled}
         />
-        { }
         <label
           htmlFor={id}
           className={labelClassName}
@@ -120,6 +136,7 @@ class Checkbox extends PureComponent {
     );
   }
 }
+
 Checkbox.propTypes = {
   style: PropTypes.shape(),
   className: PropTypes.string,
@@ -134,6 +151,7 @@ Checkbox.propTypes = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
 };
+
 Checkbox.defaultProps = {
   style: undefined,
   className: undefined,
@@ -148,4 +166,5 @@ Checkbox.defaultProps = {
   checked: false,
   disabled: false,
 };
+
 export default Checkbox;

@@ -32,7 +32,7 @@ class TextArea extends PureComponent {
     this.enterTextArea = this.enterTextArea.bind(this);
     this.testKey = this.testKey.bind(this);
 
-    const { value } = this.props;
+    const { value } = props;
     this.state = {
       isOpen: false,
       value,
@@ -44,8 +44,8 @@ class TextArea extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const changes = {};
     const { value, disabled } = this.props;
+    const changes = {};
 
     if (value !== prevProps.value) {
       changes.value = value;
@@ -69,14 +69,16 @@ class TextArea extends PureComponent {
 
   onButtonClick(e) {
     e.stopPropagation();
-    if (this.props.onButtonClick) {
-      this.props.onButtonClick(e);
+    const { onButtonClick } = this.props;
+    if (onButtonClick) {
+      onButtonClick(e);
     }
   }
 
   onClick(e) {
-    if (this.props.onClick) {
-      this.props.onClick(e);
+    const { onClick } = this.props;
+    if (onClick) {
+      onClick(e);
     }
     if (this.state.isOpen === true) {
       return;
@@ -87,31 +89,35 @@ class TextArea extends PureComponent {
 
   onChange(e) {
     const { value } = e.target;
+    const { onChange } = this.props;
     if (this.state.value !== value) {
       this.setState({ value });
 
-      if (this.props.onChange) {
-        this.props.onChange(value);
+      if (onChange) {
+        onChange(value);
       }
     }
   }
 
   onKeyPress(e) {
-    if (this.props.onKeyPress) {
-      this.props.onKeyPress(e);
+    const { onKeyPress } = this.props;
+    if (onKeyPress) {
+      onKeyPress(e);
     }
   }
 
   onBlur(e) {
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur(e);
     }
     this.closeTextArea();
   }
 
   onFocus(e) {
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
+    const { onFocus } = this.props;
+    if (onFocus) {
+      onFocus(e);
     }
     this.enterTextArea(e);
   }
@@ -137,7 +143,8 @@ class TextArea extends PureComponent {
   }
 
   enterTextArea() {
-    if (this.props.disabled) {
+    const { disabled } = this.props;
+    if (disabled) {
       this.leaveTextArea();
       return;
     }
@@ -171,6 +178,7 @@ class TextArea extends PureComponent {
       invalid,
       invalidMessages,
     } = this.props;
+
     const { isOpen, value } = this.state;
     const hasButton = typeof onButtonClick === 'function';
     const iconSize = iconSizes[size];

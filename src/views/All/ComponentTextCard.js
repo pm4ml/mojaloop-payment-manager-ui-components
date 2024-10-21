@@ -1,5 +1,5 @@
 /* eslint no-console: "off" */
-import React from 'react';
+import React, { useState } from 'react';
 
 import FormInput from '../../components/FormInputs/FormInput';
 import Modal from '../../components/Modal';
@@ -23,172 +23,137 @@ const pathOptions = options.filter(option => option.type === 'path');
 const addressOptions = options.filter(option => option.type === 'address');
 
 function getCardComponent(type, onInnerClick) {
-  return class CardComponent extends React.Component {
-    constructor(props) {
-      super(props);
-      this.assignRef = this.assignRef.bind(this);
-      this.onClick = this.onClick.bind(this);
-    }
-
-    componentDidMount() {}
-
-    onClick() {
-      onInnerClick();
-      this.props.onClick();
-    }
-
-    assignRef(element) {
+  return function CardComponent({ value, onChange, assignRef, parent, onClick }) {
+    const assignElementRef = element => {
       if (element) {
-        this.props.assignRef(element);
-        this.element = element;
-        this.element.style.width = this.props.parent.offsetWidth;
+        assignRef(element);
+        element.style.width = parent.offsetWidth;
       }
-    }
+    };
 
-    render() {
-      const availableOptions = options.filter(option => option.type === type);
-      const { value, onChange } = this.props;
+    const availableOptions = options.filter(option => option.type === type);
 
-      return (
-        <div
-          ref={this.assignRef}
-          style={{
-            background: '#fff',
-            border: '2px solid #eee',
-          }}
-        >
-          <div style={{ padding: '5px', borderBottom: '2px solid #eee' }}>
-            <TextField onClick={this.onClick} />
-          </div>
-          Current value: <span>{value}</span>
-          {availableOptions.map(option => (
-            <div
-              key={option.label}
-              role="presentation"
-              style={{ display: 'flex', flexDirection: 'row', padding: '10', cursor: 'pointer' }}
-              onClick={() => onChange(option.label)}
-            >
-              <div style={{ padding: '5px', flex: '1' }}>{option.label}</div>
-              <div style={{ padding: '5px', width: '200px', flex: '0 0 200px', color: '#999' }}>
-                {option.value}
-              </div>
-            </div>
-          ))}
+    const handleClick = () => {
+      onInnerClick();
+      onClick();
+    };
+
+    return (
+      <div
+        ref={assignElementRef}
+        style={{ background: '#fff', border: '2px solid #eee' }}
+      >
+        <div style={{ padding: '5px', borderBottom: '2px solid #eee' }}>
+          <TextField onClick={handleClick} />
         </div>
-      );
-    }
+        Current value: <span>{value}</span>
+        {availableOptions.map(option => (
+          <div
+            key={option.label}
+            role="presentation"
+            style={{ display: 'flex', flexDirection: 'row', padding: '10', cursor: 'pointer' }}
+            onClick={() => onChange(option.label)}
+          >
+            <div style={{ padding: '5px', flex: '1' }}>{option.label}</div>
+            <div style={{ padding: '5px', width: '200px', flex: '0 0 200px', color: '#999' }}>
+              {option.value}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 }
 
-class TextFieldWithValidation extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      value: undefined,
-      isModalVisible: false,
-    };
-    this.portValidators = createValidation(
-      [vd.isEmail, vd.isNum, vd.maxLength(30)],
-      [portOptions],
-      '[]',
-    );
+function TextFieldWithValidation() {
+  const [value, setValue] = useState(undefined);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-    this.pathValidators = createValidation(
-      [vd.isEmail, vd.isNum, vd.maxLength(30)],
-      [pathOptions],
-      '[]',
-    );
+  const portValidators = createValidation([vd.isEmail, vd.isNum, vd.maxLength(30)], [portOptions], '[]');
+  const pathValidators = createValidation([vd.isEmail, vd.isNum, vd.maxLength(30)], [pathOptions], '[]');
+  const addressValidators = createValidation([vd.isEmail, vd.isNum, vd.maxLength(30)], [addressOptions], '[]');
 
-    this.addressValidators = createValidation(
-      [vd.isEmail, vd.isNum, vd.maxLength(30)],
-      [addressOptions],
-      '[]',
-    );
+  const onChange = (value) => {
+    setValue(value !== '' ? value : undefined);
+  };
 
-    this.onChange = this.onChange.bind(this);
-    this.onModalClick = this.onModalClick.bind(this);
-  }
+  const onModalClick = () => {
+    setIsModalVisible(true);
+  };
 
-  onChange(value) {
-    this.setState({ value: value !== '' ? value : undefined });
-  }
+  const portCardValidationResult = validate(value, portValidators);
+  const pathCardValidationResult = validate(value, pathValidators);
+  const addressCardValidationResult = validate(value, addressValidators);
 
-  onModalClick() {
-    this.setState({ isModalVisible: true });
-  }
+  return (
+    <div>
+      <FormInput
+        className="m5"
+        type="text"
+        placeholder="Validation"
+        value={value}
+        onChange={onChange}
+        required
+        tokens={pathCardValidationResult.tokens}
+        cardComponent={getCardComponent('port', onModalClick)}
+        tokenDelimiters="[]"
+      />
 
-  render() {
-    const portCardValidationResult = validate(this.state.value, this.portValidators);
-    const pathCardValidationResult = validate(this.state.value, this.pathValidators);
-    const addressCardValidationResult = validate(this.state.value, this.addressValidators);
+      <TextField
+        className="m5"
+        type="text"
+        placeholder="Validation"
+        value={value}
+        onChange={onChange}
+        required
+        invalid={!portCardValidationResult.isValid}
+        invalidMessages={portCardValidationResult.messages}
+        tokens={portCardValidationResult.tokens}
+        tokenDelimiters="[]"
+        cardComponent={getCardComponent('port', onModalClick)}
+      />
 
-    return (
-      <div>
-        <FormInput
-          className="m5"
-          type="text"
-          placeholder="Validation"
-          value={this.state.value}
-          onChange={this.onChange}
-          required
-          tokens={pathCardValidationResult.tokens}
-          cardComponent={getCardComponent('port', this.onModalClick)}
-          tokenDelimiters="[]"
-        />
+      <TextField
+        className="m5"
+        type="text"
+        placeholder="Validation"
+        value={value}
+        onChange={onChange}
+        required
+        invalid={!pathCardValidationResult.isValid}
+        invalidMessages={pathCardValidationResult.messages}
+        tokens={pathCardValidationResult.tokens}
+        tokenDelimiters="[]"
+        cardComponent={getCardComponent('path', onModalClick)}
+      />
 
-        <TextField
-          className="m5"
-          type="text"
-          placeholder="Validation"
-          value={this.state.value}
-          onChange={this.onChange}
-          required
-          invalid={!portCardValidationResult.isValid}
-          invalidMessages={portCardValidationResult.messages}
-          tokens={portCardValidationResult.tokens}
-          tokenDelimiters="[]"
-          cardComponent={getCardComponent('port', this.onModalClick)}
-        />
+      <TextField
+        className="m5"
+        type="text"
+        placeholder="Validation"
+        value={value}
+        onChange={onChange}
+        required
+        invalid={!addressCardValidationResult.isValid}
+        invalidMessages={addressCardValidationResult.messages}
+        tokens={addressCardValidationResult.tokens}
+        tokenDelimiters="[]"
+        cardComponent={getCardComponent('address', onModalClick)}
+      />
 
-        <TextField
-          className="m5"
-          type="text"
-          placeholder="Validation"
-          value={this.state.value}
-          onChange={this.onChange}
-          required
-          invalid={!pathCardValidationResult.isValid}
-          invalidMessages={pathCardValidationResult.messages}
-          tokens={pathCardValidationResult.tokens}
-          tokenDelimiters="[]"
-          cardComponent={getCardComponent('path', this.onModalClick)}
-        />
-
-        <TextField
-          className="m5"
-          type="text"
-          placeholder="Validation"
-          value={this.state.value}
-          onChange={this.onChange}
-          required
-          invalid={!addressCardValidationResult.isValid}
-          invalidMessages={addressCardValidationResult.messages}
-          tokens={addressCardValidationResult.tokens}
-          tokenDelimiters="[]"
-          cardComponent={getCardComponent('address', this.onModalClick)}
-        />
-        {this.state.isModalVisible && <Modal title="test" />}
-      </div>
-    );
-  }
+      {isModalVisible && <Modal title="test" />}
+    </div>
+  );
 }
 
 function TestTextCard() {
-  return <div>
-    <div className="p10 b1-ccc w500">
-      <TextFieldWithValidation />
+  return (
+    <div>
+      <div className="p10 b1-ccc w500">
+        <TextFieldWithValidation />
+      </div>
     </div>
-  </div>
+  );
 }
 
 export default TestTextCard;

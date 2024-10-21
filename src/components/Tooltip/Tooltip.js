@@ -8,8 +8,6 @@ import * as utils from '../../utils/common';
 import uuid from '../../utils/uuid';
 import TooltipViewer from './TooltipViewer';
 
- 
-
 class Tooltip extends PureComponent {
   static getInnerOverflow(element) {
     return element.scrollWidth > element.offsetWidth || element.scrollHeight > element.offsetHeight;
@@ -27,7 +25,10 @@ class Tooltip extends PureComponent {
 
       const visiblePercentageX = (visiblePixelX / rect.width) * 100;
       const visiblePercentageY = (visiblePixelY / rect.height) * 100;
-      return visiblePercentageX + tolerance > percentX && visiblePercentageY + tolerance > percentY;
+      return (
+        visiblePercentageX + tolerance > percentX &&
+        visiblePercentageY + tolerance > percentY
+      );
     });
   }
 
@@ -35,6 +36,8 @@ class Tooltip extends PureComponent {
     super(props);
     this._scrollNodes = [];
     this._id = uuid();
+    this.state = { show: false };
+
     this.mountTooltip = this.mountTooltip.bind(this);
     this.unmountTooltip = this.unmountTooltip.bind(this);
     this.showTooltip = this.showTooltip.bind(this);
@@ -43,36 +46,29 @@ class Tooltip extends PureComponent {
     this.delayHideTooltip = this.delayHideTooltip.bind(this);
     this.hideTooltipBeforeScroll = this.hideTooltipBeforeScroll.bind(this);
     this.showForcedTooltipAfterScroll = this.showForcedTooltipAfterScroll.bind(this);
-    this.state = { show: false };
   }
 
   componentDidMount() {
     this._mounted = true;
-    if (this.props.forceVisibility !== undefined) {
-      if (this.props.forceVisibility === true) {
-        this.delayShowTooltip();
-      } else {
-        this.delayHideTooltip();
-      }
+    const { forceVisibility } = this.props;
+    if (forceVisibility !== undefined) {
+      forceVisibility ? this.delayShowTooltip() : this.delayHideTooltip();
     } else {
       this.detectTooltipRequired();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this._scrolling) {
+    const { forceVisibility } = this.props;
+    const { show } = this.state;
+
+    if (this._scrolling) return;
+
+    if (forceVisibility !== undefined) {
+      forceVisibility ? this.delayShowTooltip() : this.hideTooltip();
+    } else if (prevState.show === false && show === true) {
       return;
-    }
-    if (this.props.forceVisibility !== undefined) {
-      if (this.props.forceVisibility === true) {
-        this.delayShowTooltip();
-      } else {
-        this.hideTooltip();
-      }
     } else {
-      if (prevState.show === false && this.state.show === true) {
-        return;
-      }
       this.detectTooltipRequired();
     }
   }
@@ -83,15 +79,14 @@ class Tooltip extends PureComponent {
   }
 
   delayShowTooltip() {
-    this._isHoveringTooltip = this.props.forceVisibility !== true;
-    delay(() => this.showTooltip(), this.props.delay);
+    const { forceVisibility, delay: delayTime } = this.props;
+    this._isHoveringTooltip = forceVisibility !== true;
+    delay(() => this.showTooltip(), delayTime);
   }
 
   delayHideTooltip(delayTime = this.props.delay) {
     this._isHoveringTooltip = false;
-    if (this.props.forceVisibility === true) {
-      return;
-    }
+    if (this.props.forceVisibility === true) return;
     delay(this.hideTooltip, delayTime);
   }
 
@@ -125,44 +120,41 @@ class Tooltip extends PureComponent {
   }
 
   showTooltip() {
-    if (!this._mounted || !this._id || !this.container) {
-      // stop if not mounted, not existing, no container available
-      return;
-    }
-    if (this._isHoveringTooltip === false && this.props.forceVisibility !== true) {
-      // do show tooltip afterDealy if not still hovered and not forced
-      return;
-    }
+    if (!this._mounted || !this._id || !this.container) return;
+
+    const { forceVisibility } = this.props;
+    if (!this._isHoveringTooltip && forceVisibility !== true) return;
+
     if (!this._scrollNodes.length) {
-      // listen for scroll in containers
       this._scrollNodes = utils.getScrollParents(this.container);
-      this._scrollNodes.forEach(node => {
-        node.addEventListener('scroll', this.hideTooltipBeforeScroll);
-      });
+      this._scrollNodes.forEach(node =>
+        node.addEventListener('scroll', this.hideTooltipBeforeScroll),
+      );
     }
 
-    if (!Tooltip.visibleAfterScroll(this.container, this._scrollNodes)) {
-      return;
-    }
+    if (!Tooltip.visibleAfterScroll(this.container, this._scrollNodes)) return;
+
     this.setState({ show: true });
   }
 
   hideTooltip() {
-    if (this._mounted === false) {
+    const { show } = this.state;
+
+    if (
+      !this._mounted ||
+      (this._isHoveringTooltip && this.props.forceVisibility === false) ||
+      !show
+    ) {
       return;
     }
-    if (this._isHoveringTooltip === true && this.props.forceVisibility === false) {
-      return;
-    }
-    if (!this.state.show) {
-      return;
-    }
+
     if (this._scrollNodes.length) {
-      this._scrollNodes.forEach(node => {
-        node.removeEventListener('scroll', this.hideTooltipBeforeScroll);
-      });
+      this._scrollNodes.forEach(node =>
+        node.removeEventListener('scroll', this.hideTooltipBeforeScroll),
+      );
       this._scrollNodes = [];
     }
+
     this.setState({ show: false });
   }
 
@@ -190,28 +182,13 @@ class Tooltip extends PureComponent {
       kind,
       custom,
     } = this.props;
+
+    const { show } = this.state;
     const tooltipClassName = utils.composeClassNames([
       'el-tooltip',
       custom && 'el-tooltip--custom',
       className,
     ]);
-
-    let viewer = null;
-    if (this.state.show) {
-      viewer = (
-        <TooltipViewer
-          parentId={this._id}
-          content={content}
-          label={label}
-          position={position}
-          align={align}
-          kind={kind}
-          custom={custom}
-        >
-          {children}
-        </TooltipViewer>
-      );
-    }
 
     return (
       <div
@@ -223,7 +200,19 @@ class Tooltip extends PureComponent {
         id={this._id}
       >
         {children}
-        {viewer}
+        {show && (
+          <TooltipViewer
+            parentId={this._id}
+            content={content}
+            label={label}
+            position={position}
+            align={align}
+            kind={kind}
+            custom={custom}
+          >
+            {children}
+          </TooltipViewer>
+        )}
       </div>
     );
   }
@@ -247,6 +236,7 @@ Tooltip.propTypes = {
   kind: PropTypes.oneOf(['regular', 'error', 'info', 'warning', 'neutral']),
   custom: PropTypes.bool,
 };
+
 Tooltip.defaultProps = {
   delay: 200,
   forceVisibility: undefined,

@@ -8,8 +8,9 @@ import * as utils from '../../utils/common';
 class Toggle extends PureComponent {
   constructor(props) {
     super(props);
+    const { checked } = props;
     this.state = {
-      checked: this.props.checked,
+      checked,
     };
     this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -19,54 +20,61 @@ class Toggle extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.checked !== prevProps.checked) {
-      // eslint-disable-next-line
-      this.setState({ checked: this.props.checked });
+    const { checked } = this.props;
+    if (checked !== prevProps.checked) {
+      this.setState({ checked });
     }
   }
 
   onChange(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (this.props.disabled) {
+    const { disabled, onChange } = this.props;
+    const { checked } = this.state;
+
+    if (disabled) {
       return;
     }
 
-    const checked = !this.state.checked;
-    this.setState({ checked });
-    if (this.props.onChange) {
-      this.props.onChange(checked);
+    const newChecked = !checked;
+    this.setState({ checked: newChecked });
+    if (onChange) {
+      onChange(newChecked);
     }
   }
 
   onBlur(e) {
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur(e);
     }
   }
 
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (this.props.onClick) {
-      this.props.onClick(e);
+    const { onClick } = this.props;
+    if (onClick) {
+      onClick(e);
     }
   }
 
   onFocus(e) {
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
+    const { onFocus } = this.props;
+    if (onFocus) {
+      onFocus(e);
     }
   }
 
   testKey(e) {
-    if (e.keyCode === 9) {
+    const { keyCode, shiftKey } = e;
+    if (keyCode === 9) {
       e.stopPropagation();
       e.preventDefault();
-      utils.focusNextFocusableElement(this.input, !e.shiftKey);
+      utils.focusNextFocusableElement(this.input, !shiftKey);
       return;
     }
-    if (e.keyCode === 13) {
+    if (keyCode === 13) {
       e.stopPropagation();
       e.preventDefault();
       this.onChange(e);
@@ -78,6 +86,7 @@ class Toggle extends PureComponent {
     const { style, className, id, label, disabled } = this.props;
     const toggleClassName = utils.composeClassNames(['mb-input', 'input-toggle', className]);
     const labelClassName = utils.composeClassNames([!label && 'input-toggle__label--no-margin']);
+
     return (
       <div className={toggleClassName} style={style}>
         <input
@@ -98,7 +107,6 @@ class Toggle extends PureComponent {
           checked={checked}
           disabled={disabled}
         />
-        { }
         <label
           htmlFor={id}
           className={labelClassName}
@@ -117,6 +125,7 @@ class Toggle extends PureComponent {
     );
   }
 }
+
 Toggle.propTypes = {
   style: PropTypes.shape(),
   className: PropTypes.string,
@@ -129,6 +138,7 @@ Toggle.propTypes = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
 };
+
 Toggle.defaultProps = {
   style: undefined,
   className: undefined,
@@ -141,4 +151,5 @@ Toggle.defaultProps = {
   checked: false,
   disabled: false,
 };
+
 export default Toggle;
