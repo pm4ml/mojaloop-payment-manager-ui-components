@@ -25,7 +25,7 @@
   "homepage": "https://github.com/pm4ml/mojaloop-payment-manager-ui-components#readme",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "eslint": "eslint --color --fix webpack*.js src",
+    "lint": "eslint --color --fix webpack*.js src",
     "start": "NODE_ENV=development webpack serve --port 9090 --host 0.0.0.0 webpack.dev.config.js",
     "storybook": "start-storybook",
     "storybook-build": "build-storybook -c .storybook -o .storybook-dist",
