@@ -21,12 +21,15 @@ class TestModal extends React.Component {
       this.setState({ counter: this.state.counter + 1 });
     }, 1000);
   }
+
   onOpen(n) {
     this.setState({ opened: this.state.opened.concat(n) });
   }
+
   onClose(n) {
     this.setState({ opened: this.state.opened.filter(prevN => prevN !== n) });
   }
+
   render() {
     const { opened } = this.state;
     return (

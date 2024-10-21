@@ -84,6 +84,7 @@ export default class Toast extends Component {
     ]);
     return componentClassName;
   }
+
   render() {
     const { kind, children, title } = this.props;
     const className = this.getClassNames();

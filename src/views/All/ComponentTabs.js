@@ -4,8 +4,8 @@ import React from 'react';
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '../../components/Tabs';
 
-const TestTabs = () => (
-  <div>
+function TestTabs() {
+  return <div>
     <div style={{ padding: 10 }}>
       <Tabs onSelect={console.log} id="tab-row-1">
         <TabList style={{ width: '500px' }}>
@@ -76,6 +76,6 @@ const TestTabs = () => (
       </Tabs>
     </div>
   </div>
-);
+}
 
 export default TestTabs;

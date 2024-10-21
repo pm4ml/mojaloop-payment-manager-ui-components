@@ -36,8 +36,8 @@ function optionMaker(item, index) {
 const otherOptions = new Array(50).fill({}).map(optionMaker);
 options = [...options, ...otherOptions];
 
-const TestSelect = () => (
-  <div>
+function TestSelect() {
+  return <div>
     <div className="p10 b1-ccc">
       <Select className="m5" placeholder="Default" options={options} selected="value13" />
       <Select className="m5" placeholder="Pending" options={options} pending />
@@ -121,6 +121,6 @@ const TestSelect = () => (
       <Select className="m5" placeholder="large" size="l" options={options} pending />
     </Row>
   </div>
-);
+}
 
 export default TestSelect;

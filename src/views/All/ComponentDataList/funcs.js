@@ -85,13 +85,13 @@ export const getColumns = ({
     link && {
       label: 'Link',
       key: 'col1',
-      // eslint-disable-next-line
+       
       func: value => <Link>{value}</Link>,
     },
     text && {
       label: 'Regular',
       key: 'col1',
-      // eslint-disable-next-line
+       
       func: x => <Link>{x}</Link>,
     },
     transform && {
@@ -114,7 +114,7 @@ export const getColumns = ({
       label: 'As a Link',
       key: 'col1',
       func: x => new Array(15).fill(x).join(''),
-      // eslint-disable-next-line
+       
       link: console.log,
     },
     icon && {

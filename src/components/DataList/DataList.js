@@ -1,12 +1,10 @@
 import './DataList.scss';
-
 import find from 'lodash/find';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import orderBy from 'lodash/orderBy';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
 import * as utils from '../../utils/common';
 import uuid from '../../utils/uuid';
 import Checkbox from '../Checkbox';
@@ -25,15 +23,15 @@ class DataList extends PureComponent {
     }
     return undefined;
   }
+
   static isItemChecked(item) {
     return item._checked === true;
   }
+
   static isCheckable(checkable, item) {
-    if (typeof checkable !== 'function') {
-      return true;
-    }
-    return checkable(item._source);
+    return typeof checkable !== 'function' || checkable(item._source);
   }
+
   static getSelectedItems(list, selected) {
     if (typeof selected === 'function') {
       return list.filter(selected);
@@ -44,39 +42,41 @@ class DataList extends PureComponent {
     }
     return undefined;
   }
+
   static convertColumns(columns, prevColumns = [], onCheck) {
     const tpmColumns = [];
     let translateIndex = 0;
 
+    // Adjust the translateIndex if previous columns had checkboxes
     if (prevColumns.some(col => col._onChange)) {
-      // detect if any of the previous columns was the checkbox
-      // and set and a translation index to properly get the right column
       translateIndex = 1;
     }
+
+    // Add a checkbox column if onCheck is provided
     if (typeof onCheck === 'function') {
-      translateIndex = 1;
       tpmColumns.push({
         _index: '_checkbox_column',
         _onChange: onCheck,
       });
+      translateIndex = 1; // Account for the new checkbox column
     }
 
-    const mapIndexToColumns = prev => (column, i) => {
-      tpmColumns.push({
-        // get the _index key from the already existing columns if available
-        // so that it does not change and worn't break sorting or filtering
-        // because they use the column _index key to identify the column
-        _index: get(prev, `[${i + translateIndex}]._index`) || uuid(),
-        ...column,
-      });
-    };
+    // Populate tpmColumns with the new columns using forEach
+    columns.forEach((column, i) => {
+      tpmColumns.push(
+        Object.assign(
+          {
+            _index: get(prevColumns, `[${i + translateIndex}]._index`) || uuid(),
+          },
+          column
+        )
+      );
+    });
 
-    columns.forEach(mapIndexToColumns(prevColumns));
     return tpmColumns;
   }
+
   static toItems(list, columns, selected, checked, checkable, prevItems, prevList = []) {
-    // applies the column configuration to the list
-    // so that child components will not need any transformation logic
     const reduceColumns = (row, _rowIndex, _position) => (prev, column) => {
       const { func, key, link, _index, _onChange } = column;
       const originalValue = get(row._source, key);
@@ -86,129 +86,94 @@ class DataList extends PureComponent {
       if (typeof func === 'function') {
         value = func(value, row._source, _position);
       }
+
       if (typeof link === 'function') {
-        // eslint-disable-next-line
         component = <Link onClick={() => link(row._source[key], row._source)}>{value}</Link>;
-      } else if (_onChange) {
-        if (DataList.isCheckable(checkable, row)) {
-          component = <Checkbox onChange={() => _onChange(_rowIndex)} round />;
-        }
+      } else if (_onChange && DataList.isCheckable(checkable, row)) {
+        component = <Checkbox onChange={() => _onChange(_rowIndex)} round />;
       }
 
       const isTextContent = typeof value === 'string' || typeof value === 'number';
 
-      if (React.isValidElement(value)) {
-        component = value;
-      }
-
-      return {
-        ...prev,
+      return Object.assign({}, prev, {
         [_index]: {
           originalValue,
           value: isTextContent ? value : null,
           component,
         },
-      };
+      });
     };
 
-    const mapListRowToItem = (oldItems, oldList) => (item, _position) => {
-      let row;
-      if (isEqual(item, oldList[_position])) {
-        // use last item if available so that the internal index does
-        // not change, keeping eveything working faster
-        row = find(oldItems, { _position });
-      } else {
-        row = {
+    return list.map((item, _position) => {
+      const prevRow = isEqual(item, prevList[_position])
+        ? find(prevItems, { _position })
+        : {
           _position,
           _index: uuid(),
           _source: item,
           _visible: true,
         };
-      }
 
-      row._selected = selected
-        ? selected.some(select => isEqual(select, item))
-        : get(oldItems, `[${_position}]._selected`);
+      prevRow._selected = selected ? selected.some(select => isEqual(select, item)) : get(prevItems, `[${_position}]._selected`);
+      prevRow._checked = checked ? checked.some(check => isEqual(check, item)) : get(prevItems, `[${_position}]._checked`);
+      prevRow.data = columns.reduce(reduceColumns(prevRow, prevRow._index, _position), {});
 
-      row._checked = checked
-        ? checked.some(check => isEqual(check, item))
-        : get(oldItems, `[${_position}]._checked`);
-
-      row.data = columns.reduce(reduceColumns(row, row._index, _position), {});
-      return row;
-    };
-
-    return list.map(mapListRowToItem(prevItems, prevList));
+      return prevRow;
+    });
   }
+
   static filterItems(items, columns, filters) {
     const filtersByKey = filters.filter(item => item.value !== '');
-
-    const matchingRows = item => ({
-      ...item,
+    return items.map(item => ({
+      // Use Object.assign to avoid spread operator
       _visible: filtersByKey.every(filter => {
         const { _index, value } = filter;
-        let cell = get(item.data[_index], 'value');
-        if (typeof cell === 'number') {
-          cell = cell.toString();
-        }
-        if (typeof cell === 'string') {
-          return cell.toLowerCase().includes(value.toLowerCase());
-        }
-
-        return false;
+        const cell = get(item.data[_index], 'value');
+        return typeof cell === 'string' ? cell.toLowerCase().includes(value.toLowerCase()) : false;
       }),
-    });
-
-    return items.map(matchingRows);
+    }));
   }
+
   static sortItems(items, asc, _index) {
-    // sorts the items by the column key and the direction
     const getContentAtIndex = key => item => {
       const value = get(item.data[key], 'value');
-      if (value === null) {
-        // get the original value before transformation
-        return get(item.data[key], 'originalValue');
-      }
-      return value;
+      return value === null ? get(item.data[key], 'originalValue') : value;
     };
     return orderBy(items, getContentAtIndex(_index), asc ? 'asc' : 'desc');
   }
+
   static getSortColumn(label, columns) {
     let sortColumn;
     columns.some(column => {
-      if (!column._onChange && !(column.sortable === false)) {
+      if (!column._onChange && column.sortable !== false) {
         sortColumn = column._index;
         return true;
       }
       return false;
     });
-    // gets the key of the sorting column
+
     if (label !== undefined) {
-      const columnByLabel = find(columns, column => {
-        return column.label === label && column.sortable !== false;
-      });
+      const columnByLabel = find(columns, column => column.label === label && column.sortable !== false);
       sortColumn = get(columnByLabel, '_index');
     }
     return sortColumn;
   }
+
   static getFilters(filters, _index, value) {
     const filter = find(filters, { _index });
-
     if (!filter) {
-      // add the filter if does not exist
       return [...filters, { _index, value: value || '' }];
     }
+
     if (value !== undefined) {
-      // change the value for an existing filter
       const index = filters.indexOf(filter);
       return [...filters.slice(0, index), { _index, value }, ...filters.slice(index + 1)];
     }
+
     if (filter.value === '') {
-      // if the filter has 0 len string, remove it
       const index = filters.indexOf(filter);
       return [...filters.slice(0, index), ...filters.slice(index + 1)];
     }
-    // there was no value but the filter exists, do not change anything
     return filters;
   }
 
@@ -223,6 +188,38 @@ class DataList extends PureComponent {
   constructor(props) {
     super(props);
 
+    const {
+      columns,
+      checked,
+      list,
+      selected,
+      sortAsc = true,
+      sortColumn,
+      onCheck,
+      pageSize,
+      checkable,
+    } = props;
+
+    this._pageSize = pageSize;
+    this._columns = DataList.convertColumns(columns, [], onCheck ? this.onItemCheck : undefined);
+
+    const checkedItems = checked && DataList.getCheckedItems(list, checked);
+    const selectedItems = selected && DataList.getSelectedItems(list, selected);
+
+    const items = DataList.toItems(list, this._columns, selectedItems, checkedItems, checkable);
+
+    this.state = {
+      items: DataList.sortItems(items, sortAsc, DataList.getSortColumn(sortColumn, this._columns)),
+      sortAsc,
+      sortColumn: DataList.getSortColumn(sortColumn, this._columns),
+      filters: [],
+      selectedPage: 1,
+    };
+
+    this.bindMethods();
+  }
+
+  bindMethods() {
     this.onSortClick = this.onSortClick.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.onFilterBlur = this.onFilterBlur.bind(this);
@@ -232,102 +229,37 @@ class DataList extends PureComponent {
     this.onChange = this.onChange.bind(this);
     this.onItemCheck = this.onItemCheck.bind(this);
     this.onPageClick = this.onPageClick.bind(this);
-
-    this._pageSize = props.pageSize;
-
-    this._columns = DataList.convertColumns(
-      this.props.columns,
-      undefined,
-      this.props.onCheck ? this.onItemCheck : undefined,
-    );
-
-    let checkedItems;
-    if (this.props.checked) {
-      checkedItems = DataList.getCheckedItems(this.props.list, this.props.checked);
-    }
-
-    let selectedItems;
-    if (this.props.selected) {
-      selectedItems = DataList.getSelectedItems(this.props.list, this.props.selected);
-    }
-
-    const sortAsc = this.props.sortAsc === true;
-    const sortColumn = DataList.getSortColumn(this.props.sortColumn, this._columns);
-    const items = DataList.toItems(
-      this.props.list,
-      this._columns,
-      selectedItems,
-      checkedItems,
-      this.props.checkable,
-      undefined,
-      undefined,
-    );
-
-    const sortedItems = DataList.sortItems(items, sortAsc, sortColumn);
-
-    this.state = {
-      items: sortedItems,
-      sortAsc,
-      sortColumn,
-      filters: [],
-      selectedPage: 1,
-    };
   }
+
   componentDidUpdate(prevProps) {
     const { list, columns, selected, checked, checkable, onCheck, filters } = this.props;
     const didColumnsChange = prevProps.columns !== columns;
     const didListChange = prevProps.list !== list;
-    const didFiltersChange = prevProps.filters !== filters && !isEqual(filters, this.state.filters);
-    const didOnCheckChange = onCheck !== prevProps.onCheck && !prevProps.onCheck;
 
-    if (didColumnsChange || didOnCheckChange) {
-      this._columns = DataList.convertColumns(
-        columns,
-        this._columns,
-        onCheck ? this.onItemCheck : undefined,
-      );
+    if (didColumnsChange || prevProps.onCheck !== onCheck) {
+      this._columns = DataList.convertColumns(columns, this._columns, onCheck ? this.onItemCheck : undefined);
     }
-    if (didColumnsChange || didListChange || didOnCheckChange || didFiltersChange) {
-      const { sortAsc, sortColumn, items } = this.state;
+
+    if (didColumnsChange || didListChange || prevProps.checked !== checked || prevProps.selected !== selected || prevProps.filters !== filters) {
       const checkedItems = DataList.getCheckedItems(list, checked);
       const selectedItems = DataList.getSelectedItems(list, selected);
+      const items = DataList.toItems(list, this._columns, selectedItems, checkedItems, checkable);
 
-      const listItems = DataList.toItems(
-        list,
-        this._columns,
-        selectedItems,
-        checkedItems,
-        checkable,
-        items,
-        prevProps.list,
-      );
-
-      const currentFilters = filters || this.state.filters;
-      const filteredItems = DataList.filterItems(listItems, this._columns, currentFilters);
-      const sortedItems = DataList.sortItems(filteredItems, sortAsc, sortColumn);
-
-      const pages = DataList.getAmountOfPages(
-        this._pageSize,
-        DataList.getVisibleItems(sortedItems),
-      );
-
+      const filteredItems = DataList.filterItems(items, this._columns, filters || this.state.filters);
       this.setState({
-        items: sortedItems,
-        filters: currentFilters,
-        selectedPage: Math.min(this.state.selectedPage, pages)
+        items: DataList.sortItems(filteredItems, this.state.sortAsc, this.state.sortColumn),
+        filters: filters || this.state.filters,
       });
     }
   }
+
   onSortClick(sortColumn) {
     const sortAsc = this.state.sortColumn === sortColumn ? !this.state.sortAsc : true;
     const items = DataList.sortItems(this.state.items, sortAsc, sortColumn);
 
-    this.setState({
-      sortAsc,
-      sortColumn,
-      items,
-    });
+    this.setState({ sortAsc, sortColumn, items });
   }
+
   onFilterChange(_index, value) {
     const filters = DataList.getFilters(this.state.filters, _index, value);
     const items = DataList.filterItems(this.state.items, this._columns, filters);
@@ -348,10 +280,12 @@ class DataList extends PureComponent {
       },
     );
   }
+
   onFilterBlur(_index) {
     const filters = DataList.getFilters(this.state.filters, _index);
     this.setState({ filters });
   }
+
   onFilterClick(_index) {
     const filters = DataList.getFilters(this.state.filters, _index);
     this.setState({ filters });
@@ -369,16 +303,15 @@ class DataList extends PureComponent {
 
   onItemCheck(id) {
     const idx = this.state.items.findIndex(c => c._index === id);
+    const itemToUpdate = Object.assign({}, this.state.items[idx], {
+      _checked: !this.state.items[idx]._checked,
+    });
+    const updatedItems = this.state.items.slice(); // Create a shallow copy
+    updatedItems[idx] = itemToUpdate; // Update the specific item
+
     this.setState(
       {
-        items: [
-          ...this.state.items.slice(0, idx),
-          {
-            ...this.state.items[idx],
-            _checked: !this.state.items[idx]._checked,
-          },
-          ...this.state.items.slice(idx + 1),
-        ],
+        items: updatedItems,
       },
       this.onChange,
     );
@@ -423,7 +356,7 @@ class DataList extends PureComponent {
     const isAllChecked = checkableItems.length > 0 && checkableItems.every(DataList.isItemChecked);
     const isSomeChecked = checkableItems.length > 0 && checkableItems.some(DataList.isItemChecked);
 
-    let content = null;
+    let content;
     if (isPending) {
       content = <Pending />;
     } else if (hasError) {
@@ -431,7 +364,7 @@ class DataList extends PureComponent {
     } else if (items.length === 0 && filters.length === 0) {
       content = <NoData message={noData} />;
     } else {
-      let paginator = null;
+      let paginator;
       let data = items;
 
       if (this._pageSize > 0) {
@@ -519,7 +452,7 @@ DataList.propTypes = {
       link: PropTypes.func,
       sortable: PropTypes.bool,
       searchable: PropTypes.bool,
-    }),
+    })
   ),
   list: PropTypes.arrayOf(PropTypes.shape()),
   sortAsc: PropTypes.bool,

@@ -163,7 +163,7 @@ FormInputs.defaultProps = {
   subgroup: undefined,
 };
 
-/* eslint-disable */
+ 
 FormInputs.propTypes = {
   data: PropTypes.shape(),
   onChange: PropTypes.func,
@@ -176,6 +176,6 @@ FormInputs.propTypes = {
   title: PropTypes.string,
   subgroup: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 };
-/* eslint-enable */
+ 
 
 export default FormInputs;

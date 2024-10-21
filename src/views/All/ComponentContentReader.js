@@ -3,7 +3,7 @@ import React from 'react';
 
 import ContentReader from '../../components/ContentReader';
 
-/* eslint-disable max-len */
+ 
 const json = `{
   "Interchange": {
     "DataElementSeparator": "*",
@@ -21,11 +21,11 @@ const json = `{
     }
   }
 }`;
-/* eslint-enable max-len */
+ 
 
-const TestContentReader = () => (
-  <div style={{ height: '400px', padding: '20px', display: 'flex' }}>
+function TestContentReader() {
+  return <div style={{ height: '400px', padding: '20px', display: 'flex' }}>
     <ContentReader data={json} />
   </div>
-);
+}
 export default TestContentReader;

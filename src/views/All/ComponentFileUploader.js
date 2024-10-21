@@ -15,12 +15,13 @@ class FileUploaderWithDelay extends React.Component {
 
     setTimeout(() => this.setState({ file: 'test' }), 500);
   }
+
   render() {
     return <FileUploader {...this.props} file={this.state.file} />;
   }
 }
-const TestFileUploader = () => (
-  <div>
+function TestFileUploader() {
+  return <div>
     <div className="p10 b1-ccc">
       <FileUploaderWithDelay
         className="m5"
@@ -66,6 +67,6 @@ const TestFileUploader = () => (
       <FileUploader className="m5" placeholder="large" size="l" pending />
     </Row>
   </div>
-);
+}
 
 export default TestFileUploader;

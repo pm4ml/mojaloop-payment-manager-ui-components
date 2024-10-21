@@ -8,17 +8,17 @@ import Button from '../Button';
 import Icon from '../Icon';
 import Tooltip from '../Tooltip';
 
-export const FieldInfoOverlay = ({ assignRef, title, description, url, required }) => (
-  <div className="forminput__field-info" ref={assignRef}>
+export function FieldInfoOverlay({ assignRef, title, description, url, required }) {
+  return <div className="forminput__field-info" ref={assignRef}>
     <div className="forminput__field-info__title-container">
       <div className="forminput__field-info__title">{title}</div>
       {required && (
-        <React.Fragment>
+        <>
           <div className="forminput__field-info__required-icon">
             <Icon size={20} name="info-small" className="forminput__label-icon" fill="#333" />
           </div>
           <div className="forminput__field-info__required-label"> required </div>
-        </React.Fragment>
+        </>
       )}
     </div>
     <div className="forminput__field-info__content">
@@ -30,7 +30,7 @@ export const FieldInfoOverlay = ({ assignRef, title, description, url, required 
       </div>
     )}
   </div>
-);
+}
 
 export class FieldInfo extends PureComponent {
   constructor() {
@@ -43,9 +43,11 @@ export class FieldInfo extends PureComponent {
       open: false,
     };
   }
+
   componentWillUnmount() {
     this.close();
   }
+
   onClick() {
     if (this.state.open) {
       this.close();
@@ -53,6 +55,7 @@ export class FieldInfo extends PureComponent {
       this.open();
     }
   }
+
   open() {
     this.area = React.createRef();
     this.setState(
@@ -64,6 +67,7 @@ export class FieldInfo extends PureComponent {
       },
     );
   }
+
   close() {
     this.setState(
       {
@@ -75,6 +79,7 @@ export class FieldInfo extends PureComponent {
       },
     );
   }
+
   closeIfClickingOutside(evt) {
     if (!this.area.current) {
       return;
@@ -83,6 +88,7 @@ export class FieldInfo extends PureComponent {
       this.close();
     }
   }
+
   render() {
     const { iconSize, title, required, description, url } = this.props;
     let content = null;
@@ -122,7 +128,7 @@ export class FieldInfo extends PureComponent {
   }
 }
 
-export const Label = ({ size, label, required, complete, description, url }) => {
+export function Label({ size, label, required, complete, description, url }) {
   if (!label) {
     return null;
   }
@@ -162,9 +168,9 @@ export const Label = ({ size, label, required, complete, description, url }) => 
       )}
     </div>
   );
-};
+}
 
-export const InlineButton = ({ visible, isLocked, isDisabled, onClick, label }) => {
+export function InlineButton({ visible, isLocked, isDisabled, onClick, label }) {
   if (!visible || isLocked || isDisabled) {
     return null;
   }
@@ -180,9 +186,9 @@ export const InlineButton = ({ visible, isLocked, isDisabled, onClick, label }) 
       label={label}
     />
   );
-};
+}
 
-export const LockedIcon = ({ locked }) => {
+export function LockedIcon({ locked }) {
   if (!locked) {
     return null;
   }
@@ -197,8 +203,8 @@ export const LockedIcon = ({ locked }) => {
       />
     </div>
   );
-};
+}
 
-export const InfoMessage = ({ message }) => (
-  <div className="forminput__input-message">{message && <Tooltip>{message}</Tooltip>}</div>
-);
+export function InfoMessage({ message }) {
+  return <div className="forminput__input-message">{message && <Tooltip>{message}</Tooltip>}</div>
+}

@@ -37,14 +37,14 @@ function showCustomToast() {
           width="200"
           height="160"
           alt="Toast!"
-          // eslint-disable-next-line max-len
+           
           src="https://www.ahealthiermichigan.org/wp-content/uploads/2014/09/Transform-toast-into-breakfast.jpg"
         />
       </div>
     ),
   });
 }
-const TestToast = () => {
+function TestToast() {
   const buttonStyle = { margin: '5px' };
   return (
     <Row align="left">
@@ -65,6 +65,6 @@ const TestToast = () => {
       <Button style={buttonStyle} label="Custom Toast" kind="warning" onClick={showCustomToast} />
     </Row>
   );
-};
+}
 
 export default TestToast;

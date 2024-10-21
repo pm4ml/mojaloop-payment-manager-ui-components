@@ -754,7 +754,7 @@ class NestedOrganization extends PureComponent {
     if (organization.subOrganizations) {
       subOrganizations = organization.subOrganizations.map((subOrganization, index) => (
         <NestedOrganization
-          /* eslint-disable-next-line */
+           
           key={`${subOrganization.id}-${index}`}
           activeEnvironmentId={activeEnvironmentId}
           organization={subOrganization}

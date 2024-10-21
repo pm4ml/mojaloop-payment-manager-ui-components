@@ -9,20 +9,16 @@ import Spinner from '../Spinner';
 import Tooltip from '../Tooltip';
 
 class Button extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.onClick = this.onClick.bind(this);
-    this.testKey = this.testKey.bind(this);
-  }
-
-  onClick(e) {
+  // Class field syntax for event handlers
+  onClick = (e) => {
     e.preventDefault();
     if (this.props.disabled) return;
     if (this.props.onClick) {
       this.props.onClick(e);
     }
-  }
-  testKey(e) {
+  };
+
+  testKey = (e) => {
     if (e.nativeEvent.keyCode === 9) {
       e.preventDefault();
       utils.focusNextFocusableElement(this.input, !e.nativeEvent.shiftKey);
@@ -33,7 +29,8 @@ class Button extends PureComponent {
       e.preventDefault();
       this.onClick(e);
     }
-  }
+  };
+
   render() {
     const {
       id,
@@ -95,7 +92,7 @@ class Button extends PureComponent {
 
     const button = (
       <button
-        ref={input => {
+        ref={(input) => {
           this.input = input;
         }}
         id={id}
@@ -125,6 +122,7 @@ class Button extends PureComponent {
     return button;
   }
 }
+
 Button.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
@@ -149,6 +147,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   tooltip: PropTypes.string,
 };
+
 Button.defaultProps = {
   className: undefined,
   id: undefined,

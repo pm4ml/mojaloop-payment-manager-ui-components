@@ -1,5 +1,5 @@
 import FormInput from './FormInput';
-// eslint-disable-next-line
+ 
 import FormInputs from './FormInputs';
 import FormInputsGroup from './FormInputsGroup';
 import Inline from './Inline';

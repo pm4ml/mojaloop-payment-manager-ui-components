@@ -17,6 +17,7 @@ class Checkbox extends PureComponent {
     this.onBlur = this.onBlur.bind(this);
     this.testKey = this.testKey.bind(this);
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.checked !== prevProps.checked) {
       // eslint-disable-next-line
@@ -37,11 +38,13 @@ class Checkbox extends PureComponent {
       this.props.onChange(checked);
     }
   }
+
   onBlur(e) {
     if (this.props.onBlur) {
       this.props.onBlur(e);
     }
   }
+
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -49,11 +52,13 @@ class Checkbox extends PureComponent {
       this.props.onClick(e);
     }
   }
+
   onFocus(e) {
     if (this.props.onFocus) {
       this.props.onFocus(e);
     }
   }
+
   testKey(e) {
     if (e.keyCode === 9) {
       e.stopPropagation();
@@ -67,6 +72,7 @@ class Checkbox extends PureComponent {
       this.onChange(e);
     }
   }
+
   render() {
     const { checked } = this.state;
     const { style, className, id, label, disabled, round, semi } = this.props;
@@ -95,8 +101,19 @@ class Checkbox extends PureComponent {
           checked={checked && semi !== true}
           disabled={disabled}
         />
-        {/* eslint-disable-next-line */}
-        <label htmlFor={id} className={labelClassName} onClick={this.onChange} role="button">
+        { }
+        <label
+          htmlFor={id}
+          className={labelClassName}
+          onClick={this.onChange}
+          role="button"
+          tabIndex={0} // Makes the label focusable by keyboard
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              this.onChange();
+            }
+          }}
+        >
           {label}
         </label>
       </div>

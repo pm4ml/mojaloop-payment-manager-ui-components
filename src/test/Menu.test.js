@@ -113,7 +113,7 @@ it('renders the parent child if asRoot prop is not set and route matches parent'
   expect(menuItems.at(1).text()).toBe('bar');
 });
 
-it('renders the nested child if matching if asRoot prop is not set ', () => {
+it('renders the nested child if matching if asRoot prop is not set', () => {
   const wrapper = mount(
     <Menu path="/" pathname="/1st/2nd/3rd/4th" onChange={onChangeMockEvent}>
       <MenuItem path="/1st" label="1st Level">

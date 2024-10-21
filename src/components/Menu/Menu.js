@@ -146,10 +146,10 @@ MenuItem.propTypes = {
   fill: PropTypes.string,
   size: PropTypes.number,
   // prop asRoot is not used directly by the MenuItem but it is used by the Menu component
-  // eslint-disable-next-line react/no-unused-prop-types
+   
   asRoot: PropTypes.bool,
   // prop partial is not used directly by the MenuItem but it is used by the Menu component
-  // eslint-disable-next-line react/no-unused-prop-types
+   
   partial: PropTypes.bool,
 };
 
@@ -331,7 +331,7 @@ Menu.defaultProps = {
 };
 Menu.propTypes = {
   // prop path is not used directly but it is used in getActiveNode
-  // eslint-disable-next-line react/no-unused-prop-types
+   
   path: PropTypes.string,
   pathname: PropTypes.string,
   onChange: PropTypes.func.isRequired,

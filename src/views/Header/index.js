@@ -35,41 +35,45 @@ const columns = [
   },
 ];
 
-const PropValue = ({ type, children }) => (
-  <span
-    className={utils.composeClassNames([
-      'proptype__prop__value',
-      type === PROPTYPES.STRING && 'proptype__prop__value--string',
-      type === PROPTYPES.NUMBER && 'proptype__prop__value--number',
-      type === PROPTYPES.BOOL && 'proptype__prop__value--bool',
-      type === PROPTYPES.OOT && 'proptype__prop__value--oot',
-      type === PROPTYPES.OBJECT && 'proptype__prop__value--object',
-      type === PROPTYPES.FUNC && 'proptype__prop__value--func',
-      children === undefined && 'proptype__prop__value--undefined',
-    ])}
-  >
-    {`${children}`}
-  </span>
-);
+function PropValue({ type, children }) {
+  return (
+    <span
+      className={utils.composeClassNames([
+        'proptype__prop__value',
+        type === PROPTYPES.STRING && 'proptype__prop__value--string',
+        type === PROPTYPES.NUMBER && 'proptype__prop__value--number',
+        type === PROPTYPES.BOOL && 'proptype__prop__value--bool',
+        type === PROPTYPES.OOT && 'proptype__prop__value--oot',
+        type === PROPTYPES.OBJECT && 'proptype__prop__value--object',
+        type === PROPTYPES.FUNC && 'proptype__prop__value--func',
+        children === undefined && 'proptype__prop__value--undefined',
+      ])}
+    >
+      {`${children}`}
+    </span>
+  );
+}
 
-const Block = ({ title, children }) => (
-  <div className="header__block__container">
-    <div className="header__block__title">{title}</div>
-    <div className="header__block__props">{children}</div>
-  </div>
-);
+function Block({ title, children }) {
+  return (
+    <div className="header__block__container">
+      <div className="header__block__title">{title}</div>
+      <div className="header__block__props">{children}</div>
+    </div>
+  );
+}
 
 class Header extends React.Component {
   static getValueType(propType, value) {
     if (propType === PropTypes.string) {
       return PROPTYPES.STRING;
-    } else if (propType === PropTypes.number) {
+    } if (propType === PropTypes.number) {
       return PROPTYPES.NUMBER;
-    } else if (propType === PropTypes.bool) {
+    } if (propType === PropTypes.bool) {
       return PROPTYPES.BOOL;
-    } else if (propType === PropTypes.func) {
+    } if (propType === PropTypes.func) {
       return PROPTYPES.FUNC;
-    } else if (propType.name === PropTypes.shape().name) {
+    } if (propType.name === PropTypes.shape().name) {
       return PROPTYPES.OBJECT;
     }
 
@@ -78,6 +82,7 @@ class Header extends React.Component {
       .split(' ')[1]
       .slice(0, -1);
   }
+
   constructor(props) {
     super(props);
     this.getComponentProps = this.getComponentProps.bind(this);
@@ -85,13 +90,14 @@ class Header extends React.Component {
       open: false,
     };
   }
+
   getComponentProps() {
-    const name = this.props.component;
+    const { component } = this.props; // Destructure props
     let allExportedOnes = {};
 
     try {
-      // eslint-disable-next-line
-      const LibComponents = require(`../../components/${name}/index.js`);
+       
+      const LibComponents = require(`../../components/${component}/index.js`);
 
       if (LibComponents.default) {
         allExportedOnes = [LibComponents.default];
@@ -99,18 +105,18 @@ class Header extends React.Component {
         allExportedOnes = Object.values(LibComponents);
       }
 
-      return allExportedOnes.reduce((prev, component) => {
-        const props = Object.entries(component.propTypes).map(([prop, value]) => {
-          const defaultValue = component.defaultProps[prop];
+      return allExportedOnes.reduce((prev, currComponent) => {
+        const props = Object.entries(currComponent.propTypes).map(([prop, value]) => {
+          const defaultValue = currComponent.defaultProps[prop];
           return {
             prop,
-            type: Header.getValueType(component.propTypes[prop], value),
+            type: Header.getValueType(currComponent.propTypes[prop], value),
             value: JSON.stringify(defaultValue) || undefined,
           };
         });
         return [
           ...prev,
-          <Block key={component.name} title={component.name}>
+          <Block key={currComponent.name} title={currComponent.name}>
             <DataList columns={columns} list={props} />
           </Block>,
         ];
@@ -123,19 +129,23 @@ class Header extends React.Component {
       );
     }
   }
+
   render() {
+    const { component } = this.props; // Destructure props
+    const { open } = this.state; // Destructure state
+
     return (
       <div id="playground__header">
         <div id="playground__header__title-row">
           <ControlIcon
-            kind={this.state.open ? 'default' : 'secondary'}
-            icon={this.state.open ? 'close-small' : 'toggle-visible'}
+            kind={open ? 'default' : 'secondary'}
+            icon={open ? 'close-small' : 'toggle-visible'}
             size={30}
-            onClick={() => this.setState({ open: !this.state.open })}
+            onClick={() => this.setState({ open: !open })} // Use destructured state
           />
-          <div id="playground__header__title">{this.props.component}</div>
+          <div id="playground__header__title">{component}</div>
         </div>
-        {this.state.open && (
+        {open && (
           <ScrollBox>
             <div id="playground__header__props">{this.getComponentProps()}</div>
           </ScrollBox>

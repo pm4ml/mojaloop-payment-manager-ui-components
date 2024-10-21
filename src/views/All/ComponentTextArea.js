@@ -10,9 +10,11 @@ class TextAreaWithDelay extends React.Component {
     super();
     this.state = { t: '' };
   }
+
   componentDidMount() {
     setInterval(() => this.setState({ t: Math.random().toString() }), 1000);
   }
+
   render() {
     return <TextArea className="m5" type="text" placeholder="Default" value={this.state.t} />;
   }
@@ -24,9 +26,11 @@ class TextAreaWithValidation extends React.Component {
     this.validators = createOptionalValidation([vd.isEmail, vd.maxLength(10), vd.isNum, vd.isText]);
     this.onChange = this.onChange.bind(this);
   }
+
   onChange(value) {
     this.setState({ value: value !== '' ? value : undefined });
   }
+
   render() {
     const validationResult = validate(this.state.value, this.validators);
     return (
@@ -44,8 +48,8 @@ class TextAreaWithValidation extends React.Component {
   }
 }
 
-const TestTextArea = () => (
-  <div>
+function TestTextArea() {
+  return <div>
     <div className="p10 b1-ccc w500">
       <TextAreaWithDelay />
       <TextAreaWithValidation />
@@ -103,6 +107,6 @@ const TestTextArea = () => (
       <TextArea className="m5" placeholder="large" size="l" pending />
     </Row>
   </div>
-);
+}
 
 export default TestTextArea;

@@ -6,10 +6,10 @@ import ReactDOM from 'react-dom';
 
 import Views from './views';
 
-const Root = () => (
-  <div id="root">
+function Root() {
+  return <div id="root">
     <Views />
   </div>
-);
+}
 
 ReactDOM.render(<Root />, document.getElementById('root'));

@@ -20,18 +20,22 @@ class ScrollBox extends PureComponent {
     this.contentRef = React.createRef(document.createElement('div'));
     this.scrollbarRef = React.createRef(document.createElement('div'));
   }
+
   componentDidMount() {
     this.updateContentSize();
     this.updateScrollbar();
     this.contentBoxRef.current.addEventListener('scroll', this.updateScrollbar);
   }
+
   componentDidUpdate() {
     this.updateContentSize();
     this.updateScrollbar();
   }
+
   componentWillUnmount() {
     this.contentBoxRef.current.removeEventListener('scroll', this.updateScrollbar);
   }
+
   onDrag(ratio) {
     const { height } = this.contentRef.current.getBoundingClientRect();
     const boxHeight = this.contentBoxRef.current.getBoundingClientRect().height;
@@ -39,10 +43,12 @@ class ScrollBox extends PureComponent {
     const scrollTop = ratio * (height - boxHeight);
     this.contentBoxRef.current.scrollTop = scrollTop;
   }
+
   handleResize() {
     this.updateContentSize();
     this.updateScrollbar();
   }
+
   updateScrollbar() {
     const { scrollTop } = this.contentBoxRef.current;
     const { height } = this.contentBoxRef.current.getBoundingClientRect();
@@ -57,6 +63,7 @@ class ScrollBox extends PureComponent {
       });
     }
   }
+
   updateContentSize() {
     const { width } = this.wrapperRef.current.getBoundingClientRect();
     const computedStyle = window.getComputedStyle(this.wrapperRef.current, null);
@@ -68,6 +75,7 @@ class ScrollBox extends PureComponent {
     this.contentRef.current.style.maxWidth = exactWidth;
     this.contentRef.current.style.width = exactWidth;
   }
+
   render() {
     const { showTrack, handleStyle, trackStyle, style, children, flex, className } = this.props;
     const wrapperClassName = utils.composeClassNames([

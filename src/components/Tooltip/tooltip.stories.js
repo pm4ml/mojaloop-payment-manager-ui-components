@@ -37,8 +37,8 @@ const wrapStyle = {
   background: 'rgba(0,0,0,0.1)',
 };
 
-export const DefaultUsage = () => (
-  <div style={{ height: '100%', width: '100%' }}>
+export function DefaultUsage() {
+  return <div style={{ height: '100%', width: '100%' }}>
     <Tooltip
       align="start"
       label="I am a default tooltip label that spawns as soon as you hover the content below"
@@ -46,10 +46,10 @@ export const DefaultUsage = () => (
       <span>Default usage - using the label prop</span>
     </Tooltip>
   </div>
-);
+}
 
-export const WithKinds = () => (
-  <Row>
+export function WithKinds() {
+  return <Row>
     <Tooltip label="regular kind" kind="regular">
       <span>regular kind</span>
     </Tooltip>
@@ -66,89 +66,89 @@ export const WithKinds = () => (
       <span>neutral kind</span>
     </Tooltip>
   </Row>
-);
+}
 
-export const WithFadeInDelay = () => (
-  <Tooltip delay={1000} label="You can see me after 1s">
+export function WithFadeInDelay() {
+  return <Tooltip delay={1000} label="You can see me after 1s">
     <span>Will trigger the tooltip after 1s</span>
   </Tooltip>
-);
+}
 
-export const WithPositionLeft = () => (
-  <Tooltip label="I am force here" position="left">
+export function WithPositionLeft() {
+  return <Tooltip label="I am force here" position="left">
     <span>Left Position</span>
   </Tooltip>
-);
+}
 
-export const WithPositionTop = () => (
-  <Tooltip label="I am force here" position="top">
+export function WithPositionTop() {
+  return <Tooltip label="I am force here" position="top">
     <span>Top Position</span>
   </Tooltip>
-);
+}
 
-export const WithPositionRight = () => (
-  <Tooltip label="I am force here" position="right">
+export function WithPositionRight() {
+  return <Tooltip label="I am force here" position="right">
     <span>right Position</span>
   </Tooltip>
-);
+}
 
-export const WithPositionLBottom = () => (
-  <Tooltip label="I am force here" position="bottom">
+export function WithPositionLBottom() {
+  return <Tooltip label="I am force here" position="bottom">
     <span>bottom Position</span>
   </Tooltip>
-);
+}
 
-export const WithCustomContent = () => (
-  <Tooltip
+export function WithCustomContent() {
+  return <Tooltip
     custom
     content={<div style={{ background: '#9c3', padding: '30px' }}>This is a custom content</div>}
   >
     <span>custom tooltip</span>
   </Tooltip>
-);
-export const WithMultipleLabes = () => (
-  <Tooltip label={testLabels}>
+}
+export function WithMultipleLabes() {
+  return <Tooltip label={testLabels}>
     <span>multi-line label prop</span>
   </Tooltip>
-);
+}
 
-export const WithChangingChildren = () => <Ticker odd="LongLongLongLongLong" even="short" />;
+export function WithChangingChildren() {
+  return <Ticker odd="LongLongLongLongLong" even="short" />
+}
 
-export const WithStyle = () => (
-  <Tooltip style={style}> custom tooltip style (100px width) </Tooltip>
-);
+export function WithStyle() {
+  return <Tooltip style={style}> custom tooltip style (100px width) </Tooltip>
+}
 
-export const WithPositionAndAlign = () => (
-  <Column>
-    {[undefined, 'top', 'left', 'right', 'bottom'].map(position => {
-      return [undefined, 'start', 'center', 'end'].map(align => {
-        const props = { position, align, content: longText };
-        const text = `[ ${`${position}`.toUpperCase()} ] [ ${`${align}`.toUpperCase()} ]`;
-        const tooltip = (
-          <Tooltip {...props}>
-            <span>{text}</span>
-          </Tooltip>
-        );
-        return (
-          <Row key={`${position}-${align}`}>
-            <Column style={columnStyle} align="center space-between">
-              {tooltip}
-            </Column>
-            <Column style={columnStyle} align="center space-between">
-              {tooltip}
-            </Column>
-            <Column style={columnStyle} align="center space-between">
-              {tooltip}
-            </Column>
-            <Column style={columnStyle} align="center space-between">
-              {tooltip}
-            </Column>
-          </Row>
-        );
-      });
-    })}
+export function WithPositionAndAlign() {
+  return <Column>
+    {[undefined, 'top', 'left', 'right', 'bottom'].map(position => [undefined, 'start', 'center', 'end'].map(align => {
+      const props = { position, align, content: longText };
+      const text = `[ ${`${position}`.toUpperCase()} ] [ ${`${align}`.toUpperCase()} ]`;
+      const tooltip = (
+        <Tooltip {...props}>
+          <span>{text}</span>
+        </Tooltip>
+      );
+      return (
+        <Row key={`${position}-${align}`}>
+          <Column style={columnStyle} align="center space-between">
+            {tooltip}
+          </Column>
+          <Column style={columnStyle} align="center space-between">
+            {tooltip}
+          </Column>
+          <Column style={columnStyle} align="center space-between">
+            {tooltip}
+          </Column>
+          <Column style={columnStyle} align="center space-between">
+            {tooltip}
+          </Column>
+        </Row>
+      );
+    }))}
   </Column>
-);
+}
 
 class Ticker extends Component {
   constructor() {
@@ -159,20 +159,25 @@ class Ticker extends Component {
       tickers: 0,
     };
   }
+
   componentDidMount() {
     this.startTicker();
   }
+
   componetWillUnmount() {
     this.stopTicker();
   }
+
   startTicker() {
     this._interval = setInterval(() => {
       this.setState({ tickers: (this.state.tickers + 1) % 2 });
     }, 3000);
   }
+
   stopTicker() {
     clearInterval(this._interval);
   }
+
   render() {
     const { tickers } = this.state;
     const { odd, even } = this.props;

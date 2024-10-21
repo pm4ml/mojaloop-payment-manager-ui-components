@@ -1,4 +1,4 @@
-/* eslint-disable no-bitwise, no-mixed-operators */
+ 
 
 const uuid = () => {
   let _uuid = '';

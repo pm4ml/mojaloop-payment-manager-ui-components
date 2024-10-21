@@ -12,11 +12,11 @@ import Row from '../Row';
 import Spinner from '../Spinner';
 import Tooltip from '../Tooltip';
 
-const Loader = ({ size }) => (
-  <div className="mb-input__inner-icon mb-loader">
+function Loader({ size }) {
+  return <div className="mb-input__inner-icon mb-loader">
     <Spinner size={iconSizes[size]} />
   </div>
-);
+}
 
 Loader.propTypes = {
   size: PropTypes.oneOf(['s', 'm', 'l']),
@@ -25,7 +25,7 @@ Loader.defaultProps = {
   size: 'l',
 };
 
-const Placeholder = ({ label, size, active }) => {
+function Placeholder({ label, size, active }) {
   // The Placeholder that renders inside an input
 
   const placeholderClassName = utils.composeClassNames([
@@ -39,7 +39,7 @@ const Placeholder = ({ label, size, active }) => {
   ]);
 
   return <label className={placeholderClassName}>{label}</label>;
-};
+}
 
 Placeholder.propTypes = {
   label: PropTypes.string,
@@ -53,7 +53,7 @@ Placeholder.defaultProps = {
   size: 'l',
 };
 
-const InnerButton = ({ className, size, kind, onClick, label, disabled, noFill, icon }) => {
+function InnerButton({ className, size, kind, onClick, label, disabled, noFill, icon }) {
   // Internal button used by inputs
 
   let innerButtonSize;
@@ -85,7 +85,7 @@ const InnerButton = ({ className, size, kind, onClick, label, disabled, noFill, 
       disabled={disabled}
     />
   );
-};
+}
 
 InnerButton.propTypes = {
   className: PropTypes.string,
@@ -107,25 +107,27 @@ InnerButton.defaultProps = {
   disabled: false,
 };
 
-const ActiveValidationIcon = () => (
-  <Icon className="validation__message__icon--active" name="close-small" size={12} />
-);
-const InactiveValidationIcon = () => (
-  <Icon className="validation__message__icon--inactive" name="check-small" size={14} />
-);
-const UnsetValidationIcon = () => <div className="validation__message__icon--unset" />;
+function ActiveValidationIcon() {
+  return <Icon className="validation__message__icon--active" name="close-small" size={12} />
+}
+function InactiveValidationIcon() {
+  return <Icon className="validation__message__icon--inactive" name="check-small" size={14} />
+}
+function UnsetValidationIcon() {
+  return <div className="validation__message__icon--unset" />
+}
 
-const ValidationIcon = ({ active }) => {
+function ValidationIcon({ active }) {
   if (active === true) {
     return <ActiveValidationIcon />;
-  } else if (active === false) {
+  } if (active === false) {
     return <InactiveValidationIcon />;
   }
   return <UnsetValidationIcon />;
-};
+}
 
-const ValidationMessage = ({ message, active }) => (
-  <Row>
+function ValidationMessage({ message, active }) {
+  return <Row>
     <li
       className={`validation__message ${active === false ? 'validation__message--inactive' : ''}`}
     >
@@ -135,7 +137,7 @@ const ValidationMessage = ({ message, active }) => (
       <span className="validation__message__text">{message}</span>
     </li>
   </Row>
-);
+}
 
 ValidationMessage.propTypes = {
   message: PropTypes.string,
@@ -146,7 +148,7 @@ ValidationMessage.defaultProps = {
   active: undefined,
 };
 
-const ValidationMessages = ({ messages }) => {
+function ValidationMessages({ messages }) {
   let validationMessageList = null;
   if (messages.length) {
     validationMessageList = messages.map(({ message, active }, i) => (
@@ -154,7 +156,7 @@ const ValidationMessages = ({ messages }) => {
     ));
   }
   return <ul className="validation__messages">{validationMessageList}</ul>;
-};
+}
 
 ValidationMessages.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.shape(ValidationMessage.propTypes)),
@@ -164,8 +166,8 @@ ValidationMessages.defaultProps = {
   messages: [],
 };
 
-const InvalidIcon = ({ size }) => (
-  <Icon
+function InvalidIcon({ size }) {
+  return <Icon
     size={iconSizes[size]}
     name="warning-sign"
     className="mb-input__inner-icon validation__icon validation__icon--invalid "
@@ -173,10 +175,10 @@ const InvalidIcon = ({ size }) => (
     tooltipDelay={500}
     tooltipKind="error"
   />
-);
+}
 
-const ValidationWrapper = ({ messages, active, children }) => (
-  <Tooltip
+function ValidationWrapper({ messages, active, children }) {
+  return <Tooltip
     position="right"
     kind="neutral"
     custom
@@ -187,9 +189,11 @@ const ValidationWrapper = ({ messages, active, children }) => (
   >
     {children}
   </Tooltip>
-);
+}
 
-const NamedIcon = ({ namedIconTitle }) => <div className="named__icon">{namedIconTitle[0]}</div>;
+function NamedIcon({ namedIconTitle }) {
+  return <div className="named__icon">{namedIconTitle[0]}</div>
+}
 
 NamedIcon.propTypes = {
   namedIconTitle: PropTypes.string,

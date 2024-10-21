@@ -3,14 +3,14 @@ import React from 'react';
 import Pill from '../../components/Pill';
 import Row from '../../components/Row';
 
-const Wrapped = props => (
-  <div className="m5">
+function Wrapped(props) {
+  return <div className="m5">
     <Pill {...props} />
   </div>
-);
+}
 
-const TestMessageBox = () => (
-  <div style={{ padding: 10 }}>
+function TestMessageBox() {
+  return <div style={{ padding: 10 }}>
     All kinds regular
     <Row align="left">
       <Wrapped label="Default" kind="default" />
@@ -182,6 +182,6 @@ const TestMessageBox = () => (
       ))}
     </Row>
   </div>
-);
+}
 
 export default TestMessageBox;

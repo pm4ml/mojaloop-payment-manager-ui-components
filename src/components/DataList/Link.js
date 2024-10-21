@@ -5,7 +5,7 @@ import React from 'react';
 
 import Icon from '../Icon';
 
-const Link = ({ value, children, onClick }) => {
+function Link({ value, children, onClick }) {
   const content = value !== undefined ? value.toString() : children;
   return (
     <div className="el-datalist__link" onClick={onClick} role="presentation">
@@ -17,7 +17,7 @@ const Link = ({ value, children, onClick }) => {
       </div>
     </div>
   );
-};
+}
 
 Link.defaultProps = {
   onClick: undefined,

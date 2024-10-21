@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 
 import * as utils from '../../utils/common';
 
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-nested-ternary */
+ 
+ 
 
 const POSITIONS = ['top', 'right', 'bottom', 'left'];
 const ALIGNMENTS = ['start', 'center', 'end'];
@@ -291,7 +291,7 @@ export default class TooltipViewer extends PureComponent {
       this._location,
       this._viewer,
     );
-    // eslint-disable-next-line
+     
     this.setState({ direction, alignment });
   }
   componentDidUpdate() {

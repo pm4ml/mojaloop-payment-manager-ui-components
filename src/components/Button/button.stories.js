@@ -10,8 +10,8 @@ export default {
 
 export const defaultButton = () => <Button label="Primary" kind="primary" onClick={console.log} />;
 
-export const AllKinds = () => (
-  <Row align="space-between center">
+export function AllKinds() {
+  return <Row align="space-between center">
     <Button label="Primary" kind="primary" />
     <Button label="Secondary" kind="secondary" />
     <Button label="Tertiary" kind="tertiary" />
@@ -21,10 +21,10 @@ export const AllKinds = () => (
     <Button label="Dark" kind="dark" />
     <Button label="Light" kind="light" />
   </Row>
-);
+}
 
-export const AllKindsWithNoFill = () => (
-  <Row align="space-between center" className="p10 bg-dark">
+export function AllKindsWithNoFill() {
+  return <Row align="space-between center" className="p10 bg-dark">
     <Button noFill label="Primary" kind="primary" />
     <Button noFill label="Secondary" kind="secondary" />
     <Button noFill label="Tertiary" kind="tertiary" />
@@ -34,10 +34,10 @@ export const AllKindsWithNoFill = () => (
     <Button noFill label="Dark" kind="dark" />
     <Button noFill label="Light" kind="light" />
   </Row>
-);
+}
 
-export const AllKindsWithIcon = () => (
-  <Row align="space-between center">
+export function AllKindsWithIcon() {
+  return <Row align="space-between center">
     <Button icon="deploy-small" label="Primary" kind="primary" />
     <Button icon="deploy-small" label="Secondary" kind="secondary" />
     <Button icon="deploy-small" label="Tertiary" kind="tertiary" />
@@ -47,10 +47,10 @@ export const AllKindsWithIcon = () => (
     <Button icon="deploy-small" label="Dark" kind="dark" />
     <Button icon="deploy-small" label="Light" kind="light" />
   </Row>
-);
+}
 
-export const AllKindsWithNoFillWithIcon = () => (
-  <Row align="space-between center" className="p10 bg-dark">
+export function AllKindsWithNoFillWithIcon() {
+  return <Row align="space-between center" className="p10 bg-dark">
     <Button noFill icon="deploy-small" label="Primary" kind="primary" />
     <Button noFill icon="deploy-small" label="Secondary" kind="secondary" />
     <Button noFill icon="deploy-small" label="Tertiary" kind="tertiary" />
@@ -60,10 +60,10 @@ export const AllKindsWithNoFillWithIcon = () => (
     <Button noFill icon="deploy-small" label="Dark" kind="dark" />
     <Button noFill icon="deploy-small" label="Light" kind="light" />
   </Row>
-);
+}
 
-export const AllPending = () => (
-  <Row align="space-between center">
+export function AllPending() {
+  return <Row align="space-between center">
     <Button label="Primary" kind="primary" pending />
     <Button label="Secondary" kind="secondary" pending />
     <Button label="Tertiary" kind="tertiary" pending />
@@ -75,10 +75,10 @@ export const AllPending = () => (
     <Button label="Disabled" disabled pending />
     <Button label="Icon" icon="deploy-small" pending />
   </Row>
-);
+}
 
-export const AllPendingWithNoFill = () => (
-  <Row align="space-between center">
+export function AllPendingWithNoFill() {
+  return <Row align="space-between center">
     <Button noFill label="Primary" kind="primary" pending />
     <Button noFill label="Secondary" kind="secondary" pending />
     <Button noFill label="Tertiary" kind="tertiary" pending />
@@ -90,10 +90,10 @@ export const AllPendingWithNoFill = () => (
     <Button noFill label="Disabled" disabled pending />
     <Button noFill label="Icon" icon="deploy-small" pending />
   </Row>
-);
+}
 
-export const AllDisabled = () => (
-  <Row align="space-between center">
+export function AllDisabled() {
+  return <Row align="space-between center">
     <Button label="Primary" kind="primary" disabled />
     <Button label="Secondary" kind="secondary" disabled />
     <Button label="Tertiary" kind="tertiary" disabled />
@@ -108,10 +108,10 @@ export const AllDisabled = () => (
     <Button label="No Fill" icon="deploy-small" noFill kind="tertiary" disabled />
     <Button label="No Fill" icon="deploy-small" noFill kind="danger" disabled />
   </Row>
-);
+}
 
-export const AllSizes = () => (
-  <div>
+export function AllSizes() {
+  return <div>
     <Row align="space-between center">
       <Button label="Large size " size="l" />
       <Button label="Medium size " size="m" />
@@ -126,10 +126,10 @@ export const AllSizes = () => (
       <Button label="Small size pending " pending size="s" />
     </Row>
   </div>
-);
+}
 
-export const WithTooltip = () => (
-  <Row align="space-between center">
+export function WithTooltip() {
+  return <Row align="space-between center">
     <Button label="Test Button Tooltip" tooltip="Test!" />
   </Row>
-);
+}

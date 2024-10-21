@@ -214,7 +214,7 @@ describe('Builds the responses correctly', () => {
     statusCodes.forEach(async statusCode => {
       fetchMock.reset();
       fetchMock.get('*', { status: statusCode });
-      // eslint-disable-next-line
+       
       const response = await store.dispatch(action);
       expect(response.status).toBe(statusCode);
     });

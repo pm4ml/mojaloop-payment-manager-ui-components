@@ -1,6 +1,6 @@
 import React from 'react';
 
-// eslint-disable-next-line
+ 
 import FormInputs from './FormInputs';
 
 const FormInputsGroup = ({ disabled = undefined, style, className, children }) => {

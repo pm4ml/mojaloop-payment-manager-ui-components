@@ -1,6 +1,6 @@
 import { createValidator } from './creators';
 
-/* eslint-disable-next-line max-len */
+ 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 // single validators, use the create validator function to create them
@@ -12,7 +12,7 @@ const vd = {
     value => /^(ftp|http|https):\/\/[^ "]+$/.test(value),
   ),
   isHost: createValidator('Must be a valid host (IP or hostname)', value => {
-    // eslint-disable-next-line
+     
     const ValidIpAddressRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
     const urlChunkHostnameRegex = /^(?![0-9.]{2})([a-zA-Z0-9-]*)([a-zA-Z0-9]{1})$/;
     return (
@@ -22,7 +22,7 @@ const vd = {
   }),
   isPort: createValidator(
     'Must be a valid port',
-    // eslint-disable-next-line
+     
     value => !Number.isNaN(value) || value === '${http.port}' || value === '${https.port}',
   ),
   isPassword: createValidator('Must be a valid password', value =>
@@ -59,7 +59,7 @@ const vd = {
     'Must not be an empty string',
     value => value !== undefined && value.replace(/ /g, '').length > 0,
   ),
-  // eslint-disable-next-line
+   
   isCharacter: createValidator(
     'Cannot be an alphanumeric character',
     value => !/^[a-zA-Z0-9 ]*$/.test(value),
@@ -70,7 +70,7 @@ const vd = {
   isPositive: createValidator('Must be positive', value => {
     if (value === undefined) {
       return true;
-    } else if (!Number.isNaN(value)) {
+    } if (!Number.isNaN(value)) {
       return value >= 0;
     }
     return false;

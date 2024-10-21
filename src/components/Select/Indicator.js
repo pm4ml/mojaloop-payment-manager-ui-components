@@ -11,8 +11,8 @@ const indicatorSizes = {
   l: 10,
 };
 
-const Indicator = ({ isOpen, size }) => (
-  <Icon
+function Indicator({ isOpen, size }) {
+  return <Icon
     className="input-select__indicator"
     name="arrow"
     style={{
@@ -22,7 +22,7 @@ const Indicator = ({ isOpen, size }) => (
     size={indicatorSizes[size]}
     fill="rgba(0,0,0,0.5)"
   />
-);
+}
 
 Indicator.propTypes = {
   isOpen: PropTypes.bool,

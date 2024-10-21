@@ -8,8 +8,8 @@ export default {
   component: Heading,
 };
 
-export const Sizes = () => (
-  <div>
+export function Sizes() {
+  return <div>
     <Column>
       <Heading size="1"> Size 1 </Heading>
       <Heading size="2"> Size 2 </Heading>
@@ -19,4 +19,4 @@ export const Sizes = () => (
       <Heading size="6"> Size 6 </Heading>
     </Column>
   </div>
-);
+}

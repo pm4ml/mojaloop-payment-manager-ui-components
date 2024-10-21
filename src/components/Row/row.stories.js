@@ -29,8 +29,12 @@ const bigBlockStyle = {
   width: '80px',
 };
 
-const Block = () => <div style={smallBlockStyle} />;
-const BlockBig = () => <div style={bigBlockStyle} />;
+function Block() {
+  return <div style={smallBlockStyle} />
+}
+function BlockBig() {
+  return <div style={bigBlockStyle} />
+}
 
 const Blocks = () => [
   <Block key="block-block-1" />,
@@ -39,8 +43,8 @@ const Blocks = () => [
   <BlockBig key="block-blockbig-2" />,
 ];
 
-export const AlignLeft = () => (
-  <Column align="center space-between">
+export function AlignLeft() {
+  return <Column align="center space-between">
     <Row align="left top" style={rowStyle}>
       <Blocks />
     </Row>
@@ -51,10 +55,10 @@ export const AlignLeft = () => (
       <Blocks />
     </Row>
   </Column>
-);
+}
 
-export const AlignCenter = () => (
-  <Column align="center space-between">
+export function AlignCenter() {
+  return <Column align="center space-between">
     <Row align="center top" style={rowStyle}>
       <Blocks />
     </Row>
@@ -65,10 +69,10 @@ export const AlignCenter = () => (
       <Blocks />
     </Row>
   </Column>
-);
+}
 
-export const AlignRight = () => (
-  <Column align="center space-between">
+export function AlignRight() {
+  return <Column align="center space-between">
     <Row align="right top" style={rowStyle}>
       <Blocks />
     </Row>
@@ -79,14 +83,14 @@ export const AlignRight = () => (
       <Blocks />
     </Row>
   </Column>
-);
+}
 
-export const Wrap = () => (
-  <Column align="center">
+export function Wrap() {
+  return <Column align="center">
     <Row style={rowStyle} wrap>
       {[...Array(30)].map((_, i) => (
         <BlockBig key={i.toString()} />
       ))}
     </Row>
   </Column>
-);
+}

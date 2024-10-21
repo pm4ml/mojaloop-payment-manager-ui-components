@@ -9,8 +9,8 @@ export default {
   component: Tabs,
 };
 
-export const Default = () => (
-  <div>
+export function Default() {
+  return <div>
     <Tabs>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -24,10 +24,10 @@ export const Default = () => (
       </TabPanels>
     </Tabs>
   </div>
-);
+}
 
-export const WithTabDisabled = () => (
-  <div>
+export function WithTabDisabled() {
+  return <div>
     <Tabs>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -43,10 +43,10 @@ export const WithTabDisabled = () => (
       </TabPanels>
     </Tabs>
   </div>
-);
+}
 
-export const WithTabStyle = () => (
-  <div>
+export function WithTabStyle() {
+  return <div>
     <Tabs>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -62,7 +62,7 @@ export const WithTabStyle = () => (
       </TabPanels>
     </Tabs>
   </div>
-);
+}
 
 const flexTabPanelStyle = {
   background: '#def',
@@ -70,8 +70,8 @@ const flexTabPanelStyle = {
   justifyContent: 'center',
 };
 
-export const Flexible = () => (
-  <Column style={{ height: '200px', background: '#f8f8f8' }}>
+export function Flexible() {
+  return <Column style={{ height: '200px', background: '#f8f8f8' }}>
     <Tabs flex>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -85,10 +85,10 @@ export const Flexible = () => (
       </TabPanels>
     </Tabs>
   </Column>
-);
+}
 
-export const SingleTabFlexible = () => (
-  <Column style={{ height: '200px', background: '#f8f8f8' }}>
+export function SingleTabFlexible() {
+  return <Column style={{ height: '200px', background: '#f8f8f8' }}>
     <Tabs>
       <TabList>
         <Tab>Tab 1</Tab>
@@ -105,4 +105,4 @@ export const SingleTabFlexible = () => (
       </TabPanels>
     </Tabs>
   </Column>
-);
+}

@@ -3,8 +3,8 @@ import React from 'react';
 import Row from '../../components/Row';
 import Spinner from '../../components/Spinner';
 
-const Svg = () => (
-  <div>
+function Svg() {
+  return <div>
     <Row align="left">
       <Spinner color="#c33" />
       <Spinner color="#3c3" />
@@ -30,6 +30,6 @@ const Svg = () => (
       <Spinner size={50} center />
     </div>
   </div>
-);
+}
 
 export default Svg;

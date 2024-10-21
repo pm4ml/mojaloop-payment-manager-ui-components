@@ -4,14 +4,14 @@ import Button from '../../components/Button';
 import MessageBox from '../../components/MessageBox';
 import Row from '../../components/Row';
 
-const Wrapped = props => (
-  <div className="m5">
+function Wrapped(props) {
+  return <div className="m5">
     <MessageBox {...props} />
   </div>
-);
+}
 
-const TestMessageBox = () => (
-  <div style={{ padding: 10 }}>
+function TestMessageBox() {
+  return <div style={{ padding: 10 }}>
     Simple
     <Wrapped
       message="A Default MessageBox, when not wrapped in flexbox, will take 100% width"
@@ -99,6 +99,6 @@ const TestMessageBox = () => (
       <Wrapped center message="Font Size 20" size={30} fontSize={30} icon="deploy-small" />
     </Wrapped>
   </div>
-);
+}
 
 export default TestMessageBox;

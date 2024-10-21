@@ -1,11 +1,11 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+ 
 import loremIpsum from 'lorem-ipsum';
 import React from 'react';
 
 import ScrollBox from '../../components/ScrollBox';
 
-const Content = ({ color }) => (
-  <div
+function Content({ color }) {
+  return <div
     style={{
       background: '#fc9',
       height: '400px',
@@ -21,10 +21,10 @@ const Content = ({ color }) => (
       paragraphUpperBound: 20,
     })}
   </div>
-);
+}
 
-const TestScrollBox = () => (
-  <div style={{ padding: '10px' }}>
+function TestScrollBox() {
+  return <div style={{ padding: '10px' }}>
     <ScrollBox style={{ height: '100px', marginBottom: '10px' }}>
       <Content color="white" />
     </ScrollBox>
@@ -37,6 +37,6 @@ const TestScrollBox = () => (
       <Content color="white" />
     </ScrollBox>
   </div>
-);
+}
 
 export default TestScrollBox;

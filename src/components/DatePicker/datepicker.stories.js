@@ -9,31 +9,31 @@ export default {
   component: DatePicker,
 };
 
-export const Default = () => (
-  <div className="m5">
+export function Default() {
+  return <div className="m5">
     <DatePicker placeholder="Default" value={Date.now()} />
   </div>
-);
+}
 
-export const DefaultWithTime = () => (
-  <div className="m5">
+export function DefaultWithTime() {
+  return <div className="m5">
     <DatePicker placeholder="Default" withTimevalue={Date.now()} />
   </div>
-);
+}
 
-export const WithPending = () => (
-  <div className="m5">
+export function WithPending() {
+  return <div className="m5">
     <DatePicker pending placeholder="Pending" value={Date.now()} />
   </div>
-);
+}
 
-export const WithInvalid = () => (
-  <div className="m5">
+export function WithInvalid() {
+  return <div className="m5">
     <DatePicker invalid placeholder="Invalid" value={Date.now()} />
   </div>
-);
+}
 
-export const WithValidation = () => {
+export function WithValidation() {
   const [value, setValue] = useState(undefined);
   const isAprilOrSunday = createValidator('It is April or it is a Sunday', date => {
     if (!date) {
@@ -56,28 +56,28 @@ export const WithValidation = () => {
       />
     </div>
   );
-};
+}
 
-export const WithRequired = () => (
-  <div className="m5">
+export function WithRequired() {
+  return <div className="m5">
     <DatePicker format="x" required placeholder="Required" value={Date.now()} />
   </div>
-);
+}
 
-export const WithDisabled = () => (
-  <div className="m5">
+export function WithDisabled() {
+  return <div className="m5">
     <DatePicker format="x" disabled placeholder="Disabled" value={Date.now()} />
   </div>
-);
+}
 
-export const WithDisable = () => (
-  <div className="m5">
+export function WithDisable() {
+  return <div className="m5">
     <DatePicker format="x" placeholder="Required Disabled" required disabled value={Date.now()} />
   </div>
-);
+}
 
-export const WithRequiredDisabledInvalid = () => (
-  <div className="m5">
+export function WithRequiredDisabledInvalid() {
+  return <div className="m5">
     <DatePicker
       format="x"
       required
@@ -87,27 +87,27 @@ export const WithRequiredDisabledInvalid = () => (
       value={Date.now()}
     />
   </div>
-);
-export const WithExportFormatUTC_ms = () => (
-  <div className="m5">
+}
+export function WithExportFormatUTC_ms() {
+  return <div className="m5">
     <DatePicker placeholder="Select a date" format="x" onSelect={console.log} value={Date.now()} />
   </div>
-);
+}
 
-export const WithExportFormatUTC_s = () => (
-  <div className="m5">
+export function WithExportFormatUTC_s() {
+  return <div className="m5">
     <DatePicker placeholder="Select a date" format="X" onSelect={console.log} value={Date.now()} />
   </div>
-);
+}
 
-export const WithExportFormatDefault = () => (
-  <div className="m5">
+export function WithExportFormatDefault() {
+  return <div className="m5">
     <DatePicker placeholder="Select a date" onSelect={console.log} value={Date.now()} />
   </div>
-);
+}
 
-export const WithExportFormatCustom = () => (
-  <div className="m5">
+export function WithExportFormatCustom() {
+  return <div className="m5">
     <DatePicker
       placeholder="Select a date"
       format="[Day] DD [of Month] MMMM [of Year] YYYY [at time] HH:mm [and] ss [seconds]"
@@ -115,10 +115,10 @@ export const WithExportFormatCustom = () => (
       value={Date.now()}
     />
   </div>
-);
+}
 
-export const WithDateFormatUTC_ms = () => (
-  <div className="m5">
+export function WithDateFormatUTC_ms() {
+  return <div className="m5">
     <DatePicker
       placeholder="Select a date"
       dateFormat="x"
@@ -126,10 +126,10 @@ export const WithDateFormatUTC_ms = () => (
       value={Date.now()}
     />
   </div>
-);
+}
 
-export const WithDateFormatUTC_s = () => (
-  <div className="m5">
+export function WithDateFormatUTC_s() {
+  return <div className="m5">
     <DatePicker
       placeholder="Select a date"
       dateFormat="X"
@@ -137,16 +137,16 @@ export const WithDateFormatUTC_s = () => (
       value={Date.now()}
     />
   </div>
-);
+}
 
-export const WithDateFormatDefault = () => (
-  <div className="m5">
+export function WithDateFormatDefault() {
+  return <div className="m5">
     <DatePicker placeholder="Select a date" onSelect={console.log} value={Date.now()} />
   </div>
-);
+}
 
-export const WithDateFormatCustom = () => (
-  <div className="m5">
+export function WithDateFormatCustom() {
+  return <div className="m5">
     <DatePicker
       placeholder="Select a date"
       dateFormat="[Day] DD [of Month] MMMM [of Year] YYYY [at time] HH:mm [and] ss [seconds]"
@@ -155,46 +155,46 @@ export const WithDateFormatCustom = () => (
       value={Date.now()}
     />
   </div>
-);
+}
 
-export const Small = () => (
-  <div className="m5">
+export function Small() {
+  return <div className="m5">
     <DatePicker format="x" size="s" placeholder="Small" />
   </div>
-);
+}
 
-export const Medium = () => (
-  <div className="m5">
+export function Medium() {
+  return <div className="m5">
     <DatePicker format="x" size="m" placeholder="Medium" />
   </div>
-);
+}
 
-export const Large = () => (
-  <div className="m5">
+export function Large() {
+  return <div className="m5">
     <DatePicker format="x" size="l" placeholder="Large" />
   </div>
-);
+}
 
-export const SmallPending = () => (
-  <div className="m5">
+export function SmallPending() {
+  return <div className="m5">
     <DatePicker format="x" size="s" pending placeholder="Small" />
   </div>
-);
+}
 
-export const MediumPending = () => (
-  <div className="m5">
+export function MediumPending() {
+  return <div className="m5">
     <DatePicker format="x" size="m" pending placeholder="Medium" />
   </div>
-);
+}
 
-export const LargePending = () => (
-  <div className="m5">
+export function LargePending() {
+  return <div className="m5">
     <DatePicker format="x" size="l" pending placeholder="Large" />
   </div>
-);
+}
 
-export const WithEvents = () => (
-  <div className="m5">
+export function WithEvents() {
+  return <div className="m5">
     <DatePicker
       format="x"
       placeholder="Events (console)"
@@ -206,4 +206,4 @@ export const WithEvents = () => (
       onFocus={() => console.log('onFocus')}
     />
   </div>
-);
+}

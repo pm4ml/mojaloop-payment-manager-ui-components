@@ -20,12 +20,14 @@ class RadioGroup extends PureComponent {
 
     this.selectSiblingRadio = this.selectSiblingRadio.bind(this);
   }
+
   componentDidUpdate(prevProps) {
     const { value } = this.props;
     if (value !== prevProps.value) {
       this.setState({ value });
     }
   }
+
   onChange(value, disabled) {
     if (this.props.disabled || disabled) return;
 
@@ -36,6 +38,7 @@ class RadioGroup extends PureComponent {
       this.props.onChange(value);
     }
   }
+
   onFocus(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -43,9 +46,11 @@ class RadioGroup extends PureComponent {
       this.setState(state => ({ focused: state.value }));
     }
   }
+
   onBlur() {
     this.setState({ focused: undefined });
   }
+
   testKey(e) {
     const { keyCode, shiftKey } = e;
     if (keyCode === keyCodes.KEY_TAB) {
@@ -64,6 +69,7 @@ class RadioGroup extends PureComponent {
       this.selectSiblingRadio(true);
     }
   }
+
   selectSiblingRadio(next) {
     const { value } = this.state;
     const { options } = this.props;
@@ -85,6 +91,7 @@ class RadioGroup extends PureComponent {
       }
     }
   }
+
   render() {
     const { value, focused } = this.state;
     const { id, label, disabled, options } = this.props;
@@ -138,7 +145,7 @@ RadioGroup.defaultProps = {
   onChange: undefined,
 };
 
-const Radio = ({ id, onClick, checked, label, focused, value, disabled }) => {
+function Radio({ id, onClick, checked, label, focused, value, disabled }) {
   const optionClassName = utils.composeClassNames(['input-radio__option', checked && 'checked']);
   const inputClassName = utils.composeClassNames([
     'input-radio__input',
@@ -154,7 +161,7 @@ const Radio = ({ id, onClick, checked, label, focused, value, disabled }) => {
       </label>
     </div>
   );
-};
+}
 
 Radio.propTypes = {
   id: PropTypes.string,

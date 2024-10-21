@@ -8,27 +8,29 @@ export default {
   component: Spinner,
 };
 
-export const Default = () => <Spinner />;
-export const Colors = () => (
-  <Row align="left">
+export function Default() {
+  return <Spinner />
+}
+export function Colors() {
+  return <Row align="left">
     <Spinner color="#c33" />
     <Spinner color="#3c3" />
     <Spinner color="#33c" />
     <Spinner color="#cc3" />
     <Spinner color="#3cc" />
   </Row>
-);
+}
 
-export const PresetSizes = () => (
-  <Row align="left">
+export function PresetSizes() {
+  return <Row align="left">
     <Spinner size="s" />
     <Spinner size="m" />
     <Spinner size="l" />
   </Row>
-);
+}
 
-export const NumericSizes = () => (
-  <Row align="left">
+export function NumericSizes() {
+  return <Row align="left">
     <Spinner size={10} />
     <Spinner size={20} />
     <Spinner size={30} />
@@ -37,10 +39,10 @@ export const NumericSizes = () => (
     <Spinner size={60} />
     <Spinner size={100} />
   </Row>
-);
+}
 
-export const CenteredRelativeToParent = () => (
-  <div
+export function CenteredRelativeToParent() {
+  return <div
     style={{
       height: '400px',
       width: '400px',
@@ -50,4 +52,4 @@ export const CenteredRelativeToParent = () => (
   >
     <Spinner size={100} center />
   </div>
-);
+}

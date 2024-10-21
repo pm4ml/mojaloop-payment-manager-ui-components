@@ -11,7 +11,7 @@ import Icon from '../Icon';
 import Row from '../Row';
 import Tooltip from '../Tooltip';
 
-const Header = ({
+function Header({
   columns,
   sortColumn,
   sortAsc,
@@ -24,7 +24,7 @@ const Header = ({
   onFilterChange,
   onFilterBlur,
   onFilterClick,
-}) => {
+}) {
   const headerCells = columns.map(column => {
     const filter = find(filters, { _index: column._index });
     return (
@@ -57,7 +57,7 @@ const Header = ({
       <Row>{headerCells}</Row>
     </div>
   );
-};
+}
 
 // Cell in the Header
 class HeaderCell extends PureComponent {
@@ -66,21 +66,25 @@ class HeaderCell extends PureComponent {
     this.onClick = this.onClick.bind(this);
     this.onFilterClick = this.onFilterClick.bind(this);
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.isFiltering && !prevProps.isFiltering) {
       this._filter.focus();
     }
   }
+
   onClick() {
     if (this.props.isSortable) {
       this.props.onClick();
     }
   }
+
   onFilterClick(e) {
     this.props.onFilterClick();
     e.stopPropagation();
     e.preventDefault();
   }
+
   render() {
     const {
       className,
@@ -160,7 +164,7 @@ class HeaderCell extends PureComponent {
   }
 }
 
-const HeaderLabel = ({ label, isCentered }) => {
+function HeaderLabel({ label, isCentered }) {
   const labelClassName = utils.composeClassNames([
     'el-datalist__header-cell__label',
     isCentered && 'el-datalist__header-cell__label--centered',
@@ -170,10 +174,10 @@ const HeaderLabel = ({ label, isCentered }) => {
       <Tooltip style={{ flex: '0 0 auto' }}>{label}</Tooltip>
     </div>
   );
-};
+}
 
-const HeaderFilter = ({ filter, onFilterClick, onFilterChange, onFilterBlur, assignRef }) => (
-  <input
+function HeaderFilter({ filter, onFilterClick, onFilterChange, onFilterBlur, assignRef }) {
+  return <input
     type="text"
     className="el-datalist__header-cell__filter"
     value={filter.value || ''}
@@ -182,9 +186,9 @@ const HeaderFilter = ({ filter, onFilterClick, onFilterChange, onFilterBlur, ass
     onBlur={onFilterBlur}
     ref={assignRef}
   />
-);
+}
 
-const FilterIcon = ({ isFiltering, onClick }) => {
+function FilterIcon({ isFiltering, onClick }) {
   const searchIconClassName = utils.composeClassNames([
     'el-datalist__header-cell__search-icon',
     isFiltering && 'el-datalist__header-cell__search-icon--active',
@@ -201,9 +205,9 @@ const FilterIcon = ({ isFiltering, onClick }) => {
       />
     </div>
   );
-};
+}
 
-const SortIcon = ({ isSorting, isSortingAsc }) => {
+function SortIcon({ isSorting, isSortingAsc }) {
   if (!isSorting) {
     return null;
   }
@@ -214,6 +218,6 @@ const SortIcon = ({ isSorting, isSortingAsc }) => {
   ]);
 
   return <Icon className={iconClassName} name="arrow" size={10} />;
-};
+}
 
 export default Header;

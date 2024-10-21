@@ -3,8 +3,8 @@ import React from 'react';
 import Column from '../../components/Column';
 import Row from '../../components/Row';
 
-const Block = () => (
-  <div
+function Block() {
+  return <div
     style={{
       background: '#ddd',
       margin: '5px',
@@ -12,9 +12,9 @@ const Block = () => (
       width: '20px',
     }}
   />
-);
-const BlockBig = () => (
-  <div
+}
+function BlockBig() {
+  return <div
     style={{
       background: '#eee',
       margin: '5px',
@@ -22,7 +22,7 @@ const BlockBig = () => (
       width: '40px',
     }}
   />
-);
+}
 
 const rowStyle = { border: '1px solid #ccc' };
 
@@ -60,13 +60,13 @@ const SimpleItems = [
   </div>,
 ];
 
-const TestRow = () => (
-  <Row style={{ padding: 10, border: '1px solid #ccc' }}>
+function TestRow() {
+  return <Row style={{ padding: 10, border: '1px solid #ccc' }}>
     <Column align="center space-between">
       {SimpleItems}
       {ComposedItems}
     </Column>
   </Row>
-);
+}
 
 export default TestRow;

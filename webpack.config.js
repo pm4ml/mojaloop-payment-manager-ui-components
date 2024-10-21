@@ -9,7 +9,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const colorsSass = path.resolve(__dirname, 'src', 'assets', 'styles', 'vars', 'colors.scss');
 
 module.exports = {
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV || 'production',
   entry: {
     index: './src/components/index.js',
     'redux-fetch': './src/reduxFetch/index.js',
@@ -58,14 +58,12 @@ module.exports = {
         },
       },
       {
-        test: /\.(css|scss)?$/,
+        test: /\.(css|scss)$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
+          MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader',
           'postcss-loader',
+          'sass-loader',
         ],
       },
       {

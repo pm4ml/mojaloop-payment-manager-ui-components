@@ -11,15 +11,17 @@ class CheckboxWithDelay extends React.Component {
     super();
     this.state = { checked: false };
   }
+
   componentDidMount() {
     setInterval(() => this.setState({ checked: !this.state.checked }), 1000);
   }
+
   render() {
     return <Checkbox checked={this.state.checked} />;
   }
 }
-const TestCheckbox = () => (
-  <div>
+function TestCheckbox() {
+  return <div>
     <Row style={{ padding: 10, margin: '5px 0px', border: '1px solid #ccc' }} align="left center">
       <Checkbox id="x" label="my Checkbox" checked={false} />
       <Checkbox id="x1" label="my checkbox semi-checked" checked semi />
@@ -60,6 +62,6 @@ const TestCheckbox = () => (
       <CheckboxWithDelay />
     </Column>
   </div>
-);
+}
 
 export default TestCheckbox;

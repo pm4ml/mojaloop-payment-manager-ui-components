@@ -71,7 +71,7 @@ describe('Sets the pending state correctly', () => {
     expect(isCollectionReadPending).toHaveLength(1);
   });
 
-  it('Should retrieve the correct pending collection for the given action payload ', () => {
+  it('Should retrieve the correct pending collection for the given action payload', () => {
     const action = actions.books.read({ bookId: '23' });
     store.dispatch(action);
 
@@ -115,7 +115,7 @@ describe('Sets the success state correctly', () => {
     expect(readDataCollection).toHaveLength(0);
   });
 
-  it('Should retrieve the correct success collection for the given action payload ', () => {
+  it('Should retrieve the correct success collection for the given action payload', () => {
     store.dispatch(setFetchRequestSent('books', 'create', { bookId: '23' }, {}, '1', true));
     store.dispatch(setFetchRequestSucceeded('books', 'create', '1', { data: 'test', status: 200 }));
 
@@ -164,7 +164,7 @@ describe('Sets the failed state correctly', () => {
     expect(readErrorCollection).toHaveLength(0);
   });
 
-  it('Should retrieve the correct failed collection for the given action payload ', () => {
+  it('Should retrieve the correct failed collection for the given action payload', () => {
     store.dispatch(setFetchRequestFailed('books', 'create', '1', { data: 'test', status: 500 }));
 
     const createErrorCollection = getBooksCollectionCreateError(store.getState());

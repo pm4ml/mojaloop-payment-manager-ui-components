@@ -3,7 +3,7 @@ import React from 'react';
 
 import Navbar from '../../components/Navbar';
 
-/* eslint-disable */
+ 
 const userJson = `{
   "name": "Ivan",
   "username": "Ivan",
@@ -160,15 +160,17 @@ const getOrganizations = async companyId =>
     );
     setTimeout(() => resolve(availableOrganizations), 2500);
   });
-/* eslint-enable */
+ 
 
 class NavbarWrapper extends React.Component {
   static changeOrganization(organization) {
     localStorage.setItem('organizationId', organization.id);
   }
+
   static changeEnvironment(environment) {
     localStorage.setItem('environmentId', environment.id);
   }
+
   constructor(props) {
     super(props);
     this.changeCompany = this.changeCompany.bind(this);
@@ -189,9 +191,11 @@ class NavbarWrapper extends React.Component {
       activeEnvironmentId,
     };
   }
+
   componentDidMount() {
     this.loadCompanies();
   }
+
   setCompany(company) {
     localStorage.setItem('companyId', company.id);
     this.setState({
@@ -200,6 +204,7 @@ class NavbarWrapper extends React.Component {
 
     this.loadOrganizations(company);
   }
+
   async loadCompanies() {
     const availableCompanies = await getCompanies();
     this.setState({ companies: availableCompanies });
@@ -208,6 +213,7 @@ class NavbarWrapper extends React.Component {
       this.setCompany(activeCompany);
     }
   }
+
   async loadOrganizations(company) {
     this.setState({
       isOrganizationPending: true,
@@ -220,10 +226,12 @@ class NavbarWrapper extends React.Component {
       isOrganizationPending: false,
     });
   }
+
   changeCompany(company) {
     this.setCompany(company);
     localStorage.removeItem('environmentId');
   }
+
   signout() {
     localStorage.removeItem('environmentId');
     localStorage.removeItem('companyId');

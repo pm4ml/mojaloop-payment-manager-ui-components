@@ -33,22 +33,22 @@ const colors = {
   plain: ['white', 'yellow', 'viridian', 'teal', 'navy', 'indigo', 'violet', 'red'],
 };
 
-const ColorBlock = ({ color }) => (
-  <div className={`color-box bg--${color}`}>
+function ColorBlock({ color }) {
+  return <div className={`color-box bg--${color}`}>
     <div className="color-box__title">{color}</div>
   </div>
-);
+}
 
-const ColorRow = ({ type, rowColors }) => (
-  <Column align="center left">
+function ColorRow({ type, rowColors }) {
+  return <Column align="center left">
     <span>{type}</span>
     {rowColors.map(color => (
       <ColorBlock key={color} color={color} />
     ))}
   </Column>
-);
+}
 
-const TestColor = () => {
+function TestColor() {
   const colorRows = Object.keys(colors).map(type => (
     <ColorRow key={type} type={type} rowColors={colors[type]} />
   ));
@@ -60,6 +60,6 @@ const TestColor = () => {
       </Row>
     </Column>
   );
-};
+}
 
 export default TestColor;

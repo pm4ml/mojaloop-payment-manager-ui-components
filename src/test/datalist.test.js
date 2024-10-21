@@ -28,7 +28,7 @@ const testColumns1 = [
 let iterator = 0;
 const buildRow = columns => () =>
   columns.reduce(
-    /* eslint-disable no-return-assign */
+     
     (prev, column) => ({
       ...prev,
       [column.key]: (iterator += 1),

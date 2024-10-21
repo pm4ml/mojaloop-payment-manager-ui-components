@@ -73,14 +73,14 @@ const xml = `<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 </xs:schema>
 `;
 
-export const ParsingJSONContent = () => (
-  <Row style={{ maxHeight: '100%' }}>
+export function ParsingJSONContent() {
+  return <Row style={{ maxHeight: '100%' }}>
     <ContentReader data={json} />
   </Row>
-);
+}
 
-export const ParsingXMLContent = () => (
-  <Row style={{ maxHeight: '100%' }}>
+export function ParsingXMLContent() {
+  return <Row style={{ maxHeight: '100%' }}>
     <ContentReader data={xml} />
   </Row>
-);
+}

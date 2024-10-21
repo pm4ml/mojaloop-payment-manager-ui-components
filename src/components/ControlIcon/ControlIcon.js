@@ -10,9 +10,9 @@ import Tooltip from '../Tooltip';
 const tooltipKind = kind => {
   if (kind === 'danger') {
     return 'error';
-  } else if (kind === 'warning') {
+  } if (kind === 'warning') {
     return 'warning';
-  } else if (kind === 'primary') {
+  } if (kind === 'primary') {
     return 'info';
   }
   return undefined;

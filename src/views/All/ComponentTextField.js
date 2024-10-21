@@ -12,9 +12,11 @@ class TextFieldWithDelay extends React.Component {
     super();
     this.state = { t: '' };
   }
+
   componentDidMount() {
     setInterval(() => this.setState({ t: Math.random().toString() }), 1000);
   }
+
   render() {
     return <TextField className="m5" type="text" placeholder="Default" value={this.state.t} />;
   }
@@ -26,9 +28,11 @@ class TextFieldWithValidation extends React.Component {
     this.validators = createOptionalValidation([vd.isEmail, vd.maxLength(10), vd.isNum, vd.isText]);
     this.onChange = this.onChange.bind(this);
   }
+
   onChange(value) {
     this.setState({ value: value !== '' ? value : undefined });
   }
+
   render() {
     const validationResult = validate(this.state.value, this.validators);
     return (
@@ -52,9 +56,11 @@ class TextFieldWithFix extends React.Component {
     this.state = { modal: false };
     this.onClick = this.onClick.bind(this);
   }
+
   onClick() {
     this.setState({ modal: true });
   }
+
   render() {
     let modal = null;
     if (this.state.modal) {
@@ -80,8 +86,8 @@ class TextFieldWithFix extends React.Component {
   }
 }
 
-const TestTextField = () => (
-  <div>
+function TestTextField() {
+  return <div>
     <div className="p10 b1-ccc w500">
       <TextFieldWithDelay />
       <TextFieldWithValidation />
@@ -153,7 +159,7 @@ const TestTextField = () => (
       <TextField className="m5" placeholder="large" size="l" pending />
     </Row>
   </div>
-);
+}
 
 class InvalidToggle extends React.Component {
   constructor(props) {
@@ -163,11 +169,13 @@ class InvalidToggle extends React.Component {
       isToggled: false,
     };
   }
+
   toggle() {
     this.setState({
       isToggled: !this.state.isToggled,
     });
   }
+
   render() {
     return (
       <div style={{ display: 'flex' }}>

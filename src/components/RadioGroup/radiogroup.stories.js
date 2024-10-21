@@ -27,22 +27,22 @@ const options = [
 
 const { value } = options[2];
 
-export const Default = () => (
-  <div className="m5">
+export function Default() {
+  return <div className="m5">
     <RadioGroup options={options} type="text" placeholder="Default" value={value} />
   </div>
-);
+}
 
-export const WithDisabled = () => {
+export function WithDisabled() {
   return (
     <div className="m5">
       <RadioGroup disabled options={options} placeholder="All disabled" />
     </div>
   );
-};
+}
 
-export const WithEvents = () => (
-  <div className="m5">
+export function WithEvents() {
+  return <div className="m5">
     <RadioGroup
       options={options}
       placeholder="Events (console)"
@@ -54,4 +54,4 @@ export const WithEvents = () => (
       onFocus={() => console.log('onFocus')}
     />
   </div>
-);
+}

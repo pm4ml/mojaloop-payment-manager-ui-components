@@ -9,15 +9,15 @@ export default {
   component: Dropdown,
 };
 
-const Content = () => (
-  <Column style={{ width: '200px' }}>
+function Content() {
+  return <Column style={{ width: '200px' }}>
     <Row>This is the header</Row>
     <Row>This is the content</Row>
   </Column>
-);
+}
 
-export const AllKinds = () => (
-  <Row align="space-between center">
+export function AllKinds() {
+  return <Row align="space-between center">
     <Dropdown label="Primary" kind="primary">
       <Content />
     </Dropdown>
@@ -43,10 +43,10 @@ export const AllKinds = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllKindsWithNoFill = () => (
-  <Row align="space-between center" className="p10 bg-dark">
+export function AllKindsWithNoFill() {
+  return <Row align="space-between center" className="p10 bg-dark">
     <Dropdown noFill label="Primary" kind="primary">
       <Content />
     </Dropdown>
@@ -72,10 +72,10 @@ export const AllKindsWithNoFill = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllKindsWithIcon = () => (
-  <Row align="space-between center">
+export function AllKindsWithIcon() {
+  return <Row align="space-between center">
     <Dropdown icon="deploy-small" label="Primary" kind="primary">
       <Content />
     </Dropdown>
@@ -101,10 +101,10 @@ export const AllKindsWithIcon = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllKindsWithNoFillWithIcon = () => (
-  <Row align="space-between center" className="p10 bg-dark">
+export function AllKindsWithNoFillWithIcon() {
+  return <Row align="space-between center" className="p10 bg-dark">
     <Dropdown noFill icon="deploy-small" label="Primary" kind="primary">
       <Content />
     </Dropdown>
@@ -130,10 +130,10 @@ export const AllKindsWithNoFillWithIcon = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllPending = () => (
-  <Row align="space-between center">
+export function AllPending() {
+  return <Row align="space-between center">
     <Dropdown label="Primary" kind="primary" pending>
       <Content />
     </Dropdown>
@@ -165,10 +165,10 @@ export const AllPending = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllPendingWithNoFill = () => (
-  <Row align="space-between center">
+export function AllPendingWithNoFill() {
+  return <Row align="space-between center">
     <Dropdown noFill label="Primary" kind="primary" pending>
       <Content />
     </Dropdown>
@@ -200,10 +200,10 @@ export const AllPendingWithNoFill = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllDisabled = () => (
-  <Row align="space-between center">
+export function AllDisabled() {
+  return <Row align="space-between center">
     <Dropdown label="Primary" kind="primary" disabled>
       <Content />
     </Dropdown>
@@ -244,10 +244,10 @@ export const AllDisabled = () => (
       <Content />
     </Dropdown>
   </Row>
-);
+}
 
-export const AllSizes = () => (
-  <div>
+export function AllSizes() {
+  return <div>
     <Row align="space-between center">
       <Dropdown label="Large size " size="l">
         <Content />
@@ -280,12 +280,12 @@ export const AllSizes = () => (
       </Dropdown>
     </Row>
   </div>
-);
+}
 
-export const WithTooltip = () => (
-  <Row align="space-between center">
+export function WithTooltip() {
+  return <Row align="space-between center">
     <Dropdown label="Test Dropdown Tooltip" tooltip="Test!">
       <Content />
     </Dropdown>
   </Row>
-);
+}

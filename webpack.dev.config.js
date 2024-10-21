@@ -1,16 +1,33 @@
 const path = require('path');
 const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
-  mode: process.env.NODE_ENV,
+  mode: process.env.NODE_ENV || 'development',
   entry: {
     bundle: ['./src/Root'],
   },
   output: {
     filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
   },
   devtool: 'cheap-module-source-map',
-  plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
+  devServer: {
+    static: path.join(__dirname, 'dist'),
+    hot: true,
+    port: 9090,
+    open: true,
+    historyApiFallback: true,
+  },
+  plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new ESLintPlugin({
+      extensions: ['js', 'jsx'],
+      fix: true,
+      emitWarning: true,
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
   module: {
     rules: [
       {
@@ -21,33 +38,31 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
-            },
-          },
-          {
-            loader: 'eslint-loader',
-            options: {
-              fix: true,
-              emitWarning: true,
+              presets: ['@babel/preset-env', '@babel/preset-react'],
             },
           },
         ],
       },
       {
         test: /\.(css|scss)?$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
+        ],
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif)$/i,
         loader: 'url-loader',
-        query: { limit: 8192, mimetype: 'image/png' },
+        options: { limit: 8192, mimetype: 'image/png' },
       },
       {
         test: /\.svg$/,
         loader: 'svg-sprite-loader',
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
+        test: /\.(eot|ttf|woff|woff2)$/i,
         loader: 'file-loader',
       },
     ],

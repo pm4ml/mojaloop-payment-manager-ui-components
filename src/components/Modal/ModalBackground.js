@@ -5,7 +5,7 @@ import Button from '../Button';
 import ControlIcon from '../ControlIcon/ControlIcon';
 import ScrollBox from '../ScrollBox';
 
-const ModalContent = ({ tabbed, flex, children }) => {
+function ModalContent({ tabbed, flex, children }) {
   if (tabbed) {
     return children;
   }
@@ -18,10 +18,10 @@ const ModalContent = ({ tabbed, flex, children }) => {
     return wrappedContent;
   }
   return <ScrollBox flex>{wrappedContent}</ScrollBox>;
-};
+}
 
-const ModalHeader = ({ kind, title, allowClose, onClose, isCloseDisabled }) => (
-  <div className="el-modal__header">
+function ModalHeader({ kind, title, allowClose, onClose, isCloseDisabled }) {
+  return <div className="el-modal__header">
     <div className="el-modal__header-title">{title}</div>
     {allowClose && (
       <div className="el-modal__header-close">
@@ -38,9 +38,9 @@ const ModalHeader = ({ kind, title, allowClose, onClose, isCloseDisabled }) => (
       </div>
     )}
   </div>
-);
+}
 
-const ModalFooter = ({
+function ModalFooter({
   allowCancel,
   onCancel,
   isCancelDisabled,
@@ -60,8 +60,8 @@ const ModalFooter = ({
   allowClose,
   onClose,
   isCloseDisabled,
-}) => (
-  <div className="el-modal__footer">
+}) {
+  return <div className="el-modal__footer">
     <div className="el-modal__footer-left" />
     <div className="el-modal__footer-right">
       {allowCancel && (
@@ -106,7 +106,7 @@ const ModalFooter = ({
       )}
     </div>
   </div>
-);
+}
 
 export default class ModalBackground extends PureComponent {
   constructor(props) {
@@ -118,32 +118,39 @@ export default class ModalBackground extends PureComponent {
     this.onCancel = this.onCancel.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
   componentDidMount() {
     this._isMounted = true;
   }
+
   componentWillUnmount() {
     this._isMounted = false;
   }
+
   onClose() {
     if (this.props.onClose) {
       this.props.onClose();
     }
   }
+
   onUndo() {
     if (this.props.onUndo) {
       this.props.onUndo();
     }
   }
+
   onCancel() {
     if (this.props.onCancel) {
       this.props.onCancel();
     }
   }
+
   onSubmit() {
     if (this.props.onSubmit) {
       this.props.onSubmit();
     }
   }
+
   onClickOverlay() {
     if (this.props.allowClose && this.props.isCloseEnabled && !this.props.isSubmitPending) {
       this.onClose();

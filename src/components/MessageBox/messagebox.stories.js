@@ -10,8 +10,8 @@ export default {
   component: MessageBox,
 };
 
-export const Default = () => (
-  <div>
+export function Default() {
+  return <div>
     <div className="m5">
       <MessageBox
         message="A Default MessageBox, when not wrapped in flexbox, will take 100% width"
@@ -19,10 +19,10 @@ export const Default = () => (
       />
     </div>
   </div>
-);
+}
 
-export const AllKindsRegular = () => (
-  <div>
+export function AllKindsRegular() {
+  return <div>
     <div className="m5">
       <MessageBox message="Default" kind="default" />
     </div>
@@ -51,10 +51,10 @@ export const AllKindsRegular = () => (
       <MessageBox message="Light" kind="light" />
     </div>
   </div>
-);
+}
 
-export const AllKindsWithIcon = () => (
-  <div>
+export function AllKindsWithIcon() {
+  return <div>
     <div className="m5">
       <MessageBox icon="deploy-small" message="Default" kind="default" />
     </div>
@@ -83,10 +83,10 @@ export const AllKindsWithIcon = () => (
       <MessageBox icon="deploy-small" message="Light" kind="light" />
     </div>
   </div>
-);
+}
 
-export const AllKindsActiveIcon = () => (
-  <div>
+export function AllKindsActiveIcon() {
+  return <div>
     <div className="m5">
       <MessageBox active icon="deploy-small" message="Default" kind="default" />
     </div>
@@ -115,18 +115,18 @@ export const AllKindsActiveIcon = () => (
       <MessageBox active icon="deploy-small" message="Light" kind="light" />
     </div>
   </div>
-);
+}
 
-export const Centered = () => (
-  <div>
+export function Centered() {
+  return <div>
     <div className="m5">
       <MessageBox center message="Font Size 20" size={20} fontSize={20} icon="deploy-small" />
     </div>
   </div>
-);
+}
 
-export const MultipleMessages = () => (
-  <div>
+export function MultipleMessages() {
+  return <div>
     <div className="m5">
       <MessageBox
         message={['first line', 'second line', 'third line']}
@@ -136,28 +136,28 @@ export const MultipleMessages = () => (
       />
     </div>
   </div>
-);
+}
 
-export const Children = () => (
-  <div>
+export function Children() {
+  return <div>
     <div className="m5">
       <MessageBox>
         <Button label="I am a child" style={{ marginLeft: 10 }} />
       </MessageBox>
     </div>
   </div>
-);
+}
 
-export const FillIcon = () => (
-  <div>
+export function FillIcon() {
+  return <div>
     <div className="m5">
       <MessageBox message="Filling the icon" icon="deploy-small" fill="#f00" />
     </div>
   </div>
-);
+}
 
-export const Sizes = () => (
-  <div>
+export function Sizes() {
+  return <div>
     <div className="m5">
       <MessageBox message="Font Size 10" size={20} fontSize={10} icon="deploy-small" />
     </div>
@@ -186,10 +186,10 @@ export const Sizes = () => (
       <MessageBox message="Font and Icon Size 30" size={30} fontSize={30} icon="deploy-small" />
     </div>
   </div>
-);
+}
 
-export const ActiveSizes = () => (
-  <div>
+export function ActiveSizes() {
+  return <div>
     <div className="m5">
       <MessageBox active message="Font Size 10" size={20} fontSize={10} icon="deploy-small" />
     </div>
@@ -236,10 +236,10 @@ export const ActiveSizes = () => (
       />
     </div>
   </div>
-);
+}
 
-export const WrappedIntoEachOther = () => (
-  <div>
+export function WrappedIntoEachOther() {
+  return <div>
     <div className="m5">
       <MessageBox icon="deploy-small" size={50}>
         <div className="m5">
@@ -254,4 +254,4 @@ export const WrappedIntoEachOther = () => (
       </MessageBox>
     </div>
   </div>
-);
+}

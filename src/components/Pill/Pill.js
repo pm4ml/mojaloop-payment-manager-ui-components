@@ -7,7 +7,7 @@ import { composeClassNames } from '../../utils/common';
 import Icon from '../Icon';
 import Tooltip from '../Tooltip';
 
-const Pill = ({ id, className, kind = 'default', icon, fill, label, active, tooltip }) => {
+function Pill({ id, className, kind = 'default', icon, fill, label, active, tooltip }) {
   const pillClassName = composeClassNames([
     'el',
     'el-pill',
@@ -31,7 +31,7 @@ const Pill = ({ id, className, kind = 'default', icon, fill, label, active, tool
     pill = <Tooltip label={tooltip}>{pill}</Tooltip>;
   }
   return pill;
-};
+}
 
 export default Pill;
 

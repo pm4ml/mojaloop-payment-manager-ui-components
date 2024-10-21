@@ -9,9 +9,11 @@ class DatePickerWithDelay extends React.Component {
     super();
     this.state = { value: '' };
   }
+
   componentDidMount() {
     setInterval(() => this.setState({ value: 1524000000000 + Math.random() * 102400000 }), 1000);
   }
+
   render() {
     return (
       <DatePicker
@@ -31,8 +33,8 @@ class DatePickerWithDelay extends React.Component {
   }
 }
 
-const TestDatePicker = () => (
-  <div>
+function TestDatePicker() {
+  return <div>
     <div className="p10 b1-ccc">
       <DatePickerWithDelay />
       <DatePicker className="m5" placeholder="Default" format="x" onSelect={console.log} />
@@ -100,6 +102,6 @@ const TestDatePicker = () => (
       <DatePicker className="m5" placeholder="large" size="l" pending />
     </Row>
   </div>
-);
+}
 
 export default TestDatePicker;

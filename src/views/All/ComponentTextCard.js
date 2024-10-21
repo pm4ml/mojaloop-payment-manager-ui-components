@@ -29,11 +29,14 @@ function getCardComponent(type, onInnerClick) {
       this.assignRef = this.assignRef.bind(this);
       this.onClick = this.onClick.bind(this);
     }
+
     componentDidMount() {}
+
     onClick() {
       onInnerClick();
       this.props.onClick();
     }
+
     assignRef(element) {
       if (element) {
         this.props.assignRef(element);
@@ -41,6 +44,7 @@ function getCardComponent(type, onInnerClick) {
         this.element.style.width = this.props.parent.offsetWidth;
       }
     }
+
     render() {
       const availableOptions = options.filter(option => option.type === type);
       const { value, onChange } = this.props;
@@ -104,12 +108,15 @@ class TextFieldWithValidation extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onModalClick = this.onModalClick.bind(this);
   }
+
   onChange(value) {
     this.setState({ value: value !== '' ? value : undefined });
   }
+
   onModalClick() {
     this.setState({ isModalVisible: true });
   }
+
   render() {
     const portCardValidationResult = validate(this.state.value, this.portValidators);
     const pathCardValidationResult = validate(this.state.value, this.pathValidators);
@@ -176,12 +183,12 @@ class TextFieldWithValidation extends React.Component {
   }
 }
 
-const TestTextCard = () => (
-  <div>
+function TestTextCard() {
+  return <div>
     <div className="p10 b1-ccc w500">
       <TextFieldWithValidation />
     </div>
   </div>
-);
+}
 
 export default TestTextCard;

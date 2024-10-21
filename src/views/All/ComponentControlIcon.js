@@ -6,16 +6,16 @@ import ControlIcon from '../../components/ControlIcon';
 import Row from '../../components/Row';
 
 const rowStyle = { padding: '10px', border: '1px solid #ccc' };
-const C = props => (
-  <div style={{ display: 'flex', flexDirection: 'column' }}>
+function C(props) {
+  return <div style={{ display: 'flex', flexDirection: 'column' }}>
     <ControlIcon {...props} />
     {props.label}
   </div>
-);
+}
 const { log } = console;
 
-const TestControlIcon = () => (
-  <Column style={{ padding: '10px' }}>
+function TestControlIcon() {
+  return <Column style={{ padding: '10px' }}>
     Sizes
     <Row style={rowStyle} align="space-between center">
       <C onClick={log} size={10} label="size 10" tooltip="size 10" icon="plus-small" />
@@ -145,6 +145,6 @@ const TestControlIcon = () => (
       <C kind="light" tooltip="light" label="Light" icon="plus-small" />
     </Row>
   </Column>
-);
+}
 
 export default TestControlIcon;

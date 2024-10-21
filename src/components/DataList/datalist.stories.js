@@ -17,7 +17,7 @@ function buildRow(row, index) {
   };
 }
 
-export const Default = () => {
+export function Default() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -39,9 +39,9 @@ export const Default = () => {
   ];
 
   return <DataList columns={columns} list={items} />;
-};
+}
 
-export const SortingRows = () => {
+export function SortingRows() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -63,9 +63,9 @@ export const SortingRows = () => {
   ];
 
   return <DataList columns={columns} list={items} sortColumn={columns[2].label} />;
-};
+}
 
-export const SortingRowsDescending = () => {
+export function SortingRowsDescending() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -87,9 +87,9 @@ export const SortingRowsDescending = () => {
   ];
 
   return <DataList columns={columns} list={items} sortColumn={columns[2].label} sortAsc={false} />;
-};
+}
 
-export const RenderWithFlexbox = () => {
+export function RenderWithFlexbox() {
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(buildRow);
   const columns = [
     {
@@ -115,9 +115,9 @@ export const RenderWithFlexbox = () => {
       <DataList columns={columns} list={items} flex />
     </div>
   );
-};
+}
 
-export const RenderingComponents = () => {
+export function RenderingComponents() {
   const items = [1, 2, 3].map(buildRow);
   const columns = [
     {
@@ -143,9 +143,9 @@ export const RenderingComponents = () => {
   ];
 
   return <DataList columns={columns} list={items} />;
-};
+}
 
-export const SelectedRows = () => {
+export function SelectedRows() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -183,9 +183,9 @@ export const SelectedRows = () => {
       onUnselect={onUnselect}
     />
   );
-};
+}
 
-export const SelectedRowsWithFunction = () => {
+export function SelectedRowsWithFunction() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -207,9 +207,9 @@ export const SelectedRowsWithFunction = () => {
   ];
 
   return <DataList columns={columns} list={items} selected={item => item.col1 > 7} />;
-};
+}
 
-export const CheckedRows = () => {
+export function CheckedRows() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -231,9 +231,9 @@ export const CheckedRows = () => {
   ];
 
   return <DataList columns={columns} list={items} checked={[items[2]]} onCheck={console.log} />;
-};
+}
 
-export const CheckedRowsWithFunction = () => {
+export function CheckedRowsWithFunction() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -262,9 +262,9 @@ export const CheckedRowsWithFunction = () => {
       onCheck={console.log}
     />
   );
-};
+}
 
-export const CheckableRows = () => {
+export function CheckableRows() {
   const items = [1, 2, 3, 4, 5].map(buildRow);
   const columns = [
     {
@@ -294,4 +294,4 @@ export const CheckableRows = () => {
       onCheck={console.log}
     />
   );
-};
+}

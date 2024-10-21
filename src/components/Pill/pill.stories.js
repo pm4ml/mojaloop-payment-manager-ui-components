@@ -8,16 +8,16 @@ export default {
   component: Pill,
 };
 
-export const Default = () => (
-  <Row align="left">
+export function Default() {
+  return <Row align="left">
     <div className="m5">
       <Pill label="this is the default pill" kind="default" />
     </div>
   </Row>
-);
+}
 
-export const AllKindsRegular = () => (
-  <Row align="left">
+export function AllKindsRegular() {
+  return <Row align="left">
     <div className="m5">
       <Pill label="Default" kind="default" />
     </div>
@@ -46,10 +46,10 @@ export const AllKindsRegular = () => (
       <Pill label="Light" kind="light" />
     </div>
   </Row>
-);
+}
 
-export const AllKindsWithIcon = () => (
-  <Row align="left">
+export function AllKindsWithIcon() {
+  return <Row align="left">
     <div className="m5">
       <Pill icon="deploy-small" label="Default" kind="default" />
     </div>
@@ -78,10 +78,10 @@ export const AllKindsWithIcon = () => (
       <Pill icon="deploy-small" label="Light" kind="light" />
     </div>
   </Row>
-);
+}
 
-export const AllKindsActiveIcon = () => (
-  <Row align="left">
+export function AllKindsActiveIcon() {
+  return <Row align="left">
     <div className="m5">
       <Pill active icon="deploy-small" label="Default" kind="default" />
     </div>
@@ -110,12 +110,12 @@ export const AllKindsActiveIcon = () => (
       <Pill active icon="deploy-small" label="Light" kind="light" />
     </div>
   </Row>
-);
+}
 
-export const FillIcon = () => (
-  <Row align="left">
+export function FillIcon() {
+  return <Row align="left">
     <div className="m5">
       <Pill label="Filling the icon" icon="deploy-small" fill="#f00" />
     </div>
   </Row>
-);
+}

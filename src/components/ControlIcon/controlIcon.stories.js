@@ -10,8 +10,8 @@ export default {
 
 const { log } = console;
 
-export const AllKinds = () => (
-  <Row align="left center">
+export function AllKinds() {
+  return <Row align="left center">
     <div className="m5">
       <ControlIcon icon="deploy-small" kind="default" onClick={log} />
     </div>
@@ -40,10 +40,10 @@ export const AllKinds = () => (
       <ControlIcon icon="deploy-small" kind="light" onClick={log} />
     </div>
   </Row>
-);
+}
 
-export const AllKindsDisabled = () => (
-  <Row align="left center">
+export function AllKindsDisabled() {
+  return <Row align="left center">
     <div className="m5">
       <ControlIcon icon="deploy-small" kind="default" disabled onClick={log} />
     </div>
@@ -69,10 +69,10 @@ export const AllKindsDisabled = () => (
       <ControlIcon icon="deploy-small" kind="dark" disabled onClick={log} />
     </div>
   </Row>
-);
+}
 
-export const MultipleSizes = () => (
-  <Row align="left center" wrap>
+export function MultipleSizes() {
+  return <Row align="left center" wrap>
     {[...Array(30).keys()]
       .map(v => 10 + v * 2)
       .map(size => (
@@ -81,10 +81,10 @@ export const MultipleSizes = () => (
         </div>
       ))}
   </Row>
-);
+}
 
-export const WithTooltip = () => (
-  <Row align="left center">
+export function WithTooltip() {
+  return <Row align="left center">
     <div className="m5">
       <ControlIcon icon="deploy-small" tooltip="default" kind="default" onClick={log} />
     </div>
@@ -113,4 +113,4 @@ export const WithTooltip = () => (
       <ControlIcon icon="deploy-small" tooltip="light" kind="light" onClick={log} />
     </div>
   </Row>
-);
+}

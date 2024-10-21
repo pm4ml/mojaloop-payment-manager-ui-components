@@ -507,7 +507,7 @@ FormInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   transformValue: PropTypes.func,
   transformUpdate: PropTypes.func,
-  // eslint-disable-next-line
+   
   allowEmpty: PropTypes.bool,
 
   // overwrite a nested object in the store
@@ -517,11 +517,11 @@ FormInput.propTypes = {
   required: PropTypes.bool,
   invalid: PropTypes.bool,
   pending: PropTypes.bool,
-  // eslint-disable-next-line
+   
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   messageVisibility: PropTypes.oneOfType([PropTypes.bool, PropTypes.arrayOf(PropTypes.bool)]),
   errorVisibility: PropTypes.bool,
-  // eslint-disable-next-line
+   
   options: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])),
   onClick: PropTypes.func,
   onInlineButtonClick: PropTypes.func,

@@ -50,9 +50,11 @@ class ContentReader extends PureComponent {
 
     return { content, lineNumbers, error };
   }
+
   componentDidMount() {
     hljs.highlightBlock(this.code);
   }
+
   componentDidUpdate() {
     // remove className preventing re-highlighting
     this.code.className = '';

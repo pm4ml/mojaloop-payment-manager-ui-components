@@ -17,15 +17,18 @@ class ModalPortal extends PureComponent {
     this._div.className = 'el-modal__box';
     this._modalIndex = document.querySelectorAll('.el-modal__box').length;
   }
+
   componentDidMount() {
     document.body.appendChild(this._div);
     if (!this._div.contains(document.activeElement)) {
       document.activeElement.blur();
     }
   }
+
   componentWillUnmount() {
     document.body.removeChild(this._div);
   }
+
   render() {
     const childrenWithIndex = React.cloneElement(this.props.children, {
       modalIndex: this._modalIndex,

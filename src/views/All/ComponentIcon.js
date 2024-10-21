@@ -228,8 +228,8 @@ const mulesoftIcons = [
   'xchange-greyscale',
 ];
 
-const Block = ({ icon }) => (
-  <div
+function Block({ icon }) {
+  return <div
     style={{
       height: '140px',
       width: '140px',
@@ -253,10 +253,10 @@ const Block = ({ icon }) => (
       {icon}{' '}
     </div>
   </div>
-);
+}
 
-const IconBox = ({ icons }) => (
-  <div
+function IconBox({ icons }) {
+  return <div
     style={{
       margin: '5px 0px',
       border: '1px solid #ccc',
@@ -268,15 +268,15 @@ const IconBox = ({ icons }) => (
       <Block key={icon} icon={icon} />
     ))}
   </div>
-);
+}
 
-const TestIcon = () => (
-  <div style={{ padding: '10px' }}>
+function TestIcon() {
+  return <div style={{ padding: '10px' }}>
     <h3> PM4ML </h3>
     <IconBox icons={pm4mlIcons} />
 
     <h3> Mulesoft </h3>
     <IconBox icons={mulesoftIcons} />
   </div>
-);
+}
 export default TestIcon;

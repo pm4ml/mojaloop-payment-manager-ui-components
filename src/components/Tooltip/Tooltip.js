@@ -8,12 +8,13 @@ import * as utils from '../../utils/common';
 import uuid from '../../utils/uuid';
 import TooltipViewer from './TooltipViewer';
 
-/* eslint-disable no-mixed-operators */
+ 
 
 class Tooltip extends PureComponent {
   static getInnerOverflow(element) {
     return element.scrollWidth > element.offsetWidth || element.scrollHeight > element.offsetHeight;
   }
+
   static visibleAfterScroll(element, parents) {
     const percentX = 100;
     const percentY = 100;
@@ -29,6 +30,7 @@ class Tooltip extends PureComponent {
       return visiblePercentageX + tolerance > percentX && visiblePercentageY + tolerance > percentY;
     });
   }
+
   constructor(props) {
     super(props);
     this._scrollNodes = [];
@@ -43,6 +45,7 @@ class Tooltip extends PureComponent {
     this.showForcedTooltipAfterScroll = this.showForcedTooltipAfterScroll.bind(this);
     this.state = { show: false };
   }
+
   componentDidMount() {
     this._mounted = true;
     if (this.props.forceVisibility !== undefined) {
@@ -55,6 +58,7 @@ class Tooltip extends PureComponent {
       this.detectTooltipRequired();
     }
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (this._scrolling) {
       return;
@@ -72,14 +76,17 @@ class Tooltip extends PureComponent {
       this.detectTooltipRequired();
     }
   }
+
   componentWillUnmount() {
     this._mounted = false;
     this.unmountTooltip();
   }
+
   delayShowTooltip() {
     this._isHoveringTooltip = this.props.forceVisibility !== true;
     delay(() => this.showTooltip(), this.props.delay);
   }
+
   delayHideTooltip(delayTime = this.props.delay) {
     this._isHoveringTooltip = false;
     if (this.props.forceVisibility === true) {
@@ -87,6 +94,7 @@ class Tooltip extends PureComponent {
     }
     delay(this.hideTooltip, delayTime);
   }
+
   detectTooltipRequired() {
     const { content, label } = this.props;
     const hasOverflow = Tooltip.getInnerOverflow(this.container);
@@ -97,6 +105,7 @@ class Tooltip extends PureComponent {
       this.unmountTooltip();
     }
   }
+
   mountTooltip() {
     if (this.props.showOnHover !== false) {
       this.container.addEventListener('mouseenter', this.delayShowTooltip);
@@ -104,6 +113,7 @@ class Tooltip extends PureComponent {
     }
     this.container.classList.remove('el-tooltip--inactive');
   }
+
   unmountTooltip() {
     clearTimeout(this.tooltipTimeout);
     this.hideTooltip();
@@ -113,6 +123,7 @@ class Tooltip extends PureComponent {
     }
     this.container.classList.add('el-tooltip--inactive');
   }
+
   showTooltip() {
     if (!this._mounted || !this._id || !this.container) {
       // stop if not mounted, not existing, no container available
@@ -135,6 +146,7 @@ class Tooltip extends PureComponent {
     }
     this.setState({ show: true });
   }
+
   hideTooltip() {
     if (this._mounted === false) {
       return;
@@ -153,12 +165,14 @@ class Tooltip extends PureComponent {
     }
     this.setState({ show: false });
   }
+
   hideTooltipBeforeScroll() {
     this._scrolling = true;
     this.hideTooltip();
     clearTimeout(this.tooltipTimeout);
     this.tooltipTimeout = setTimeout(this.showForcedTooltipAfterScroll, 500);
   }
+
   showForcedTooltipAfterScroll() {
     this._scrolling = false;
     this.showTooltip();

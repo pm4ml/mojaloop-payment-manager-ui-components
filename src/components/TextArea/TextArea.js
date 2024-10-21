@@ -42,6 +42,7 @@ class TextArea extends PureComponent {
   componentDidMount() {
     window.addEventListener('mouseup', this.onPageClick, false);
   }
+
   componentDidUpdate(prevProps) {
     const changes = {};
     const { value, disabled } = this.props;
@@ -57,6 +58,7 @@ class TextArea extends PureComponent {
       this.setState(changes);
     }
   }
+
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.onPageClick, false);
   }
@@ -64,12 +66,14 @@ class TextArea extends PureComponent {
   onTextAreaClick() {
     this.input.click();
   }
+
   onButtonClick(e) {
     e.stopPropagation();
     if (this.props.onButtonClick) {
       this.props.onButtonClick(e);
     }
   }
+
   onClick(e) {
     if (this.props.onClick) {
       this.props.onClick(e);
@@ -80,6 +84,7 @@ class TextArea extends PureComponent {
     this.input.focus();
     this.setState({ isOpen: true });
   }
+
   onChange(e) {
     const { value } = e.target;
     if (this.state.value !== value) {
@@ -90,17 +95,20 @@ class TextArea extends PureComponent {
       }
     }
   }
+
   onKeyPress(e) {
     if (this.props.onKeyPress) {
       this.props.onKeyPress(e);
     }
   }
+
   onBlur(e) {
     if (this.props.onBlur) {
       this.props.onBlur(e);
     }
     this.closeTextArea();
   }
+
   onFocus(e) {
     if (this.props.onFocus) {
       this.props.onFocus(e);
@@ -118,13 +126,16 @@ class TextArea extends PureComponent {
       this.input.blur();
     }
   }
+
   closeTextArea() {
     this.setState({ isOpen: false });
   }
+
   leaveTextArea(next) {
     this.closeTextArea();
     utils.focusNextFocusableElement(this.input, next);
   }
+
   enterTextArea() {
     if (this.props.disabled) {
       this.leaveTextArea();
@@ -132,6 +143,7 @@ class TextArea extends PureComponent {
     }
     this.setState({ isOpen: true });
   }
+
   testKey(e) {
     const { keyCode, shiftKey } = e.nativeEvent;
     if (keyCode === keyCodes.KEY_TAB) {
@@ -177,7 +189,7 @@ class TextArea extends PureComponent {
       size === 'm' && 'mb-textarea--medium',
       size === 'l' && 'mb-input--large',
       size === 'l' && 'mb-textarea--large',
-      /* eslint-disable max-len  */
+       
       isOpen &&
         'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
@@ -188,7 +200,7 @@ class TextArea extends PureComponent {
       required &&
         !hasValue &&
         'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
-      /* eslint-enable  */
+       
     ]);
 
     let customPlaceholder = null;

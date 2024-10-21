@@ -22,6 +22,7 @@ class Dropdown extends PureComponent {
   componentDidMount() {
     window.addEventListener('mouseup', this.handlePageClick, false);
   }
+
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.handlePageClick, false);
   }
@@ -35,11 +36,13 @@ class Dropdown extends PureComponent {
       isOpen: !this.state.isOpen,
     });
   }
+
   handlePageClick(e) {
     if (!this.container.contains(e.target)) {
       this.setState({ isOpen: false });
     }
   }
+
   testKey(e) {
     if (e.nativeEvent.keyCode === 9) {
       e.preventDefault();
@@ -52,6 +55,7 @@ class Dropdown extends PureComponent {
       this.onClick(e);
     }
   }
+
   render() {
     const {
       id,

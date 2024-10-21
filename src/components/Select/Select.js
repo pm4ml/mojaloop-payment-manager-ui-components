@@ -21,9 +21,11 @@ class Select extends PureComponent {
     }
     return options;
   }
+
   static getOptionIndex(options, value) {
     return findIndex(options, { value });
   }
+
   constructor(props) {
     super(props);
 
@@ -61,10 +63,12 @@ class Select extends PureComponent {
       filter: undefined,
     };
   }
+
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('mouseup', this.onPageClick, false);
   }
+
   componentDidUpdate(prevProps, prevState) {
     const { options, sortBy, sortAsc, disabled } = this.props;
     let { isOpen, highlightedOption, filter } = this.state;
@@ -104,10 +108,12 @@ class Select extends PureComponent {
       },
     );
   }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
     window.removeEventListener('mouseup', this.onPageClick, false);
   }
+
   onPageClick(e) {
     if (!this.state.isOpen) {
       return;
@@ -133,6 +139,7 @@ class Select extends PureComponent {
       this.closeSelect();
     }
   }
+
   onClearOption() {
     if (this.props.onClear) {
       this.setState({
@@ -143,11 +150,13 @@ class Select extends PureComponent {
       this.closeSelect();
     }
   }
+
   onBlur(e) {
     if (this.props.onBlur) {
       this.props.onBlur(e);
     }
   }
+
   onFocus(e) {
     if (this.props.onFocus) {
       this.props.onFocus(e);
@@ -177,9 +186,11 @@ class Select extends PureComponent {
     }
     this.closeSelect();
   }
+
   setInputValue(value) {
     this.inputFilter.value = value;
   }
+
   getOptions() {
     const { options, filter } = this.state;
     if (filter === undefined || filter === '') {
@@ -198,10 +209,12 @@ class Select extends PureComponent {
     this.setState({ isOpen: false, filter: undefined });
     this.onBlur();
   }
+
   leaveSelect(next) {
     this.closeSelect();
     utils.focusNextFocusableElement(this.inputFilter, next);
   }
+
   openSelect() {
     this.setState({
       isOpen: true,
@@ -209,6 +222,7 @@ class Select extends PureComponent {
     });
     this.handleResize();
   }
+
   handleResize() {
     const wrapper = utils.getParentOverflow(this.optionsPosition);
     const maxOptionsHeight = Math.min(240, this.state.options.length * 30);
@@ -223,6 +237,7 @@ class Select extends PureComponent {
     clearTimeout(this._forceUpdateTimeout);
     this._forceUpdateTimeout = setTimeout(() => this.forceUpdate(), 50);
   }
+
   testKey(e) {
     const { keyCode, shiftKey } = e;
 
@@ -244,9 +259,11 @@ class Select extends PureComponent {
       }
     }
   }
+
   applyFilter(e) {
     this.setState({ filter: e.target.value, isOpen: true });
   }
+
   highlightNextOption(next = true) {
     const { highlightedOption } = this.state;
     const options = this.getOptions();
@@ -316,7 +333,7 @@ class Select extends PureComponent {
       size === 's' && 'mb-input--small',
       size === 'm' && 'mb-input--medium',
       size === 'l' && 'mb-input--large',
-      /* eslint-disable max-len  */
+       
       isOpen &&
         'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
@@ -327,7 +344,7 @@ class Select extends PureComponent {
       required &&
         selectedLabel === undefined &&
         'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
-      /* eslint-enable */
+       
     ]);
 
     let customPlaceholder = null;

@@ -9,25 +9,25 @@ export default {
   component: FileUploader,
 };
 
-export const Default = () => (
-  <div className="m5">
+export function Default() {
+  return <div className="m5">
     <FileUploader placeholder="Default" />
   </div>
-);
+}
 
-export const WithPending = () => (
-  <div className="m5">
+export function WithPending() {
+  return <div className="m5">
     <FileUploader pending placeholder="Pending" />
   </div>
-);
+}
 
-export const WithInvalid = () => (
-  <div className="m5">
+export function WithInvalid() {
+  return <div className="m5">
     <FileUploader invalid placeholder="Invalid" />
   </div>
-);
+}
 
-export const WithValidation = () => {
+export function WithValidation() {
   const [value, setValue] = useState(undefined);
   const validators = createOptionalValidation([vd.isEmail, vd.maxLength(10), vd.isNum, vd.isText]);
   const validationResult = validate(value, validators);
@@ -42,76 +42,76 @@ export const WithValidation = () => {
       />
     </div>
   );
-};
+}
 
-export const WithRequired = () => (
-  <div className="m5">
+export function WithRequired() {
+  return <div className="m5">
     <FileUploader required placeholder="Required" />
   </div>
-);
+}
 
-export const WithDisabled = () => (
-  <div className="m5">
+export function WithDisabled() {
+  return <div className="m5">
     <FileUploader disabled placeholder="Disabled" />
   </div>
-);
+}
 
-export const WithIcon = () => (
-  <div className="m5">
+export function WithIcon() {
+  return <div className="m5">
     <FileUploader icon="close-small" placeholder="Icon" />
   </div>
-);
+}
 
-export const WithDisable = () => (
-  <div className="m5">
+export function WithDisable() {
+  return <div className="m5">
     <FileUploader placeholder="Required Disabled" required disabled />
   </div>
-);
+}
 
-export const WithRequiredDisabledInval = () => (
-  <div className="m5">
+export function WithRequiredDisabledInval() {
+  return <div className="m5">
     <FileUploader required disabled invalid placeholder="RequiredDisabledInvalid" />
   </div>
-);
+}
 
-export const WithSmall = () => (
-  <div className="m5">
+export function WithSmall() {
+  return <div className="m5">
     <FileUploader size="s" placeholder="Small" />
   </div>
-);
+}
 
-export const WithMedium = () => (
-  <div className="m5">
+export function WithMedium() {
+  return <div className="m5">
     <FileUploader size="m" placeholder="Medium" />
   </div>
-);
+}
 
-export const WithLarge = () => (
-  <div className="m5">
+export function WithLarge() {
+  return <div className="m5">
     <FileUploader size="l" placeholder="Large" />
   </div>
-);
+}
 
-export const WithSmallPending = () => (
-  <div className="m5">
+export function WithSmallPending() {
+  return <div className="m5">
     <FileUploader size="s" pending placeholder="Small" />
   </div>
-);
+}
 
-export const WithMediumPending = () => (
-  <div className="m5">
+export function WithMediumPending() {
+  return <div className="m5">
     <FileUploader size="m" pending placeholder="Medium" />
   </div>
-);
+}
 
-export const WithLargePending = () => (
-  <div className="m5">
+export function WithLargePending() {
+  return <div className="m5">
     <FileUploader size="l" pending placeholder="Large" />
   </div>
-);
+}
 
-export const WithEvents = () => (
-  <div className="m5">
+export function WithEvents() {
+  return <div className="m5">
     <FileUploader
       placeholder="Events (console)"
       onChange={value => console.log('onChange', value)}
@@ -122,4 +122,4 @@ export const WithEvents = () => (
       onFocus={() => console.log('onFocus')}
     />
   </div>
-);
+}

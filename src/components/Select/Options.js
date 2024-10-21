@@ -19,6 +19,7 @@ class Options extends PureComponent {
   onClickOption(item) {
     this.props.onSelect(item);
   }
+
   render() {
     const {
       options,
@@ -142,10 +143,12 @@ class Option extends PureComponent {
     super(props);
     this.onClick = this.onClick.bind(this);
   }
+
   onClick() {
     if (this.props.disabled) return;
     this.props.onClick();
   }
+
   render() {
     const { size, label, icon, selected, disabled, highlighted } = this.props;
     const optionsClassNames = utils.composeClassNames([
@@ -194,7 +197,7 @@ Option.propTypes = {
   icon: PropTypes.string,
 };
 
-const ClearOption = ({ onClick, size }) => {
+function ClearOption({ onClick, size }) {
   const clearOptionClassName = utils.composeClassNames([
     'input-select__options-item',
     size === 's' && 'input-select__options-item--small',
@@ -224,6 +227,6 @@ const ClearOption = ({ onClick, size }) => {
       </div>
     </div>
   );
-};
+}
 
 export default Options;

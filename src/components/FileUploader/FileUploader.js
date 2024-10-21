@@ -34,6 +34,7 @@ class FileUploader extends PureComponent {
   componentDidMount() {
     window.addEventListener('mouseup', this.onPageClick, false);
   }
+
   componentDidUpdate(prevProps) {
     const { file, disabled } = this.props;
     if (file && file !== this.state.fileContent) {
@@ -48,9 +49,11 @@ class FileUploader extends PureComponent {
       this.setState({ isOpen: false });
     }
   }
+
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.onPageClick, false);
   }
+
   async onChangeFile(e) {
     const readAsText = file => {
       const reader = new FileReader();
@@ -91,15 +94,18 @@ class FileUploader extends PureComponent {
       this.props.onChange(parseFile);
     }
   }
+
   onCloseFileUploader() {
     this.setState({ isOpen: false });
   }
+
   onEnterFileUploader() {
     this.setState({ isOpen: true });
     if (this.state.disabled) {
       this.leaveFileUploader();
     }
   }
+
   onClickFileUploader() {
     const isOpen = !this.state.isOpen;
     this.setState({ isOpen }, () => {
@@ -108,9 +114,11 @@ class FileUploader extends PureComponent {
       }
     });
   }
+
   onButtonClick() {
     this.fileuploader.click();
   }
+
   onRemoveButtonClick() {
     this.fileuploader.value = '';
     this.fileContent = undefined;
@@ -150,6 +158,7 @@ class FileUploader extends PureComponent {
       }
     }
   }
+
   onPageClick(e) {
     if (!this.state.isOpen) {
       return;
@@ -159,6 +168,7 @@ class FileUploader extends PureComponent {
       this.onCloseFileUploader();
     }
   }
+
   leaveFileUploader(next = true) {
     utils.focusNextFocusableElement(this.fileuploader, next);
     this.onCloseFileUploader();
@@ -191,7 +201,7 @@ class FileUploader extends PureComponent {
       size === 's' && 'mb-input--small',
       size === 'm' && 'mb-input--medium',
       size === 'l' && 'mb-input--large',
-      /* eslint-disable max-len  */
+       
       isOpen &&
         'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
@@ -202,7 +212,7 @@ class FileUploader extends PureComponent {
       required &&
         !hasFile &&
         'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
-      /* eslint-enable */
+       
     ]);
 
     let customPlaceholder = null;
