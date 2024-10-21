@@ -1,7 +1,8 @@
 import 'highlight.js/styles/googlecode.css';
 import './ContentReader.scss';
 
-import hljs from 'highlight.js/lib/highlight';
+// Update the imports as per the new modular system
+import hljs from 'highlight.js/lib/core';
 import json from 'highlight.js/lib/languages/json';
 import shell from 'highlight.js/lib/languages/shell';
 import xml from 'highlight.js/lib/languages/xml';
@@ -10,6 +11,7 @@ import vkbeautify from 'vkbeautify';
 
 import ScrollBox from '../ScrollBox';
 
+// Register the languages explicitly
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('shell', shell);
@@ -52,13 +54,13 @@ class ContentReader extends PureComponent {
   }
 
   componentDidMount() {
-    hljs.highlightBlock(this.code);
+    hljs.highlightElement(this.code);
   }
 
   componentDidUpdate() {
     // remove className preventing re-highlighting
     this.code.className = '';
-    hljs.highlightBlock(this.code);
+    hljs.highlightElement(this.code);
   }
 
   render() {

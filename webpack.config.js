@@ -40,8 +40,8 @@ module.exports = {
     }),
     new ESLintPlugin({
       extensions: ['js'],
-      fix: true, // Automatically fix linting errors
-      emitWarning: true, // Show warnings but do not fail the build
+      fix: true,
+      emitWarning: true,
     }),
   ],
   module: {
@@ -76,7 +76,15 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg-sprite-loader',
+        use: [
+          {
+            loader: 'file-loader', // Replacing svg-sprite-loader with file-loader for better compatibility
+            options: {
+              name: '[name].[hash].[ext]',
+              outputPath: 'images/',
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/,

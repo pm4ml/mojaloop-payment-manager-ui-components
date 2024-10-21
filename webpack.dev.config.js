@@ -55,11 +55,22 @@ module.exports = {
       {
         test: /\.(png|jpg|gif)$/i,
         loader: 'url-loader',
-        options: { limit: 8192, mimetype: 'image/png' },
+        options: {
+          limit: 8192,
+          mimetype: 'image/png',
+        },
       },
       {
         test: /\.svg$/,
-        loader: 'svg-sprite-loader',
+        use: [
+          {
+            loader: 'file-loader', // Replace svg-sprite-loader with file-loader
+            options: {
+              name: '[name].[hash].[ext]',
+              outputPath: 'images/',
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/i,
