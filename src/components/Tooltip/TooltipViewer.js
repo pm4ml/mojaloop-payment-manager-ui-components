@@ -233,11 +233,12 @@ export default class TooltipViewer extends PureComponent {
 
   constructor(props) {
     super(props);
+    const { custom, kind } = props; // Destructuring props here
     this._viewer = document.createElement('div');
     this._viewer.className = utils.composeClassNames([
       'el-tooltip__viewer',
-      !this.props.custom && 'el-tooltip__viewer--default',
-      !this.props.custom && `el-tooltip__viewer--${this.props.kind}`,
+      !custom && 'el-tooltip__viewer--default',
+      !custom && `el-tooltip__viewer--${kind}`,
     ]);
     this._location = document.body.appendChild(this._viewer);
     this.state = {
@@ -279,8 +280,8 @@ export default class TooltipViewer extends PureComponent {
   }
 
   render() {
-    const { direction, alignment } = this.state;
-    const { content, label, position, children, kind, custom } = this.props;
+    const { direction, alignment } = this.state; // Destructuring state here
+    const { content, label, position, children, kind, custom } = this.props; // Destructuring props here
 
     let tooltipInnerComponent = null;
 
