@@ -1,4 +1,9 @@
-jobs:
+name: CI Build and Test
+
+on:
+  workflow_dispatch:
+
+jjobs:
   build:
     runs-on: ubuntu-latest
 
