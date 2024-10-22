@@ -6,11 +6,11 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-// Resolve the path to your Sass variables
+// Configuration for resolving the path to your Sass variables
 const colorsSass = path.resolve(__dirname, 'src', 'assets', 'styles', 'vars', 'colors.scss');
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'production',
+  mode: 'production', // Set mode to production
   entry: {
     index: './src/components/index.js',
     'redux-fetch': './src/reduxFetch/index.js',
@@ -30,7 +30,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[id].css', // Handle dynamically loaded styles
+      chunkFilename: '[id].css',
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -41,11 +41,11 @@ module.exports = {
       ],
     }),
     new ESLintPlugin({
-      extensions: ['js', 'jsx'], // Ensures linting for JavaScript and JSX files
-      context: path.resolve(__dirname, 'src'), // Lint files in the src directory
-      overrideConfigFile: path.resolve(__dirname, 'eslint.config.js'), // Points to ESLint config
-      fix: true, // Automatically fix linting errors where possible
-      emitWarning: true, // Warn instead of failing the build on lint errors
+      extensions: ['js', 'jsx'],
+      context: path.resolve(__dirname, 'src'),
+      overrideConfigFile: path.resolve(__dirname, 'eslint.config.js'),
+      fix: true,
+      emitWarning: true,
     }),
   ],
   module: {
@@ -53,7 +53,7 @@ module.exports = {
       {
         test: /\.js$/, // Process JavaScript files
         include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|bower_components|build)/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -64,7 +64,7 @@ module.exports = {
       {
         test: /\.(css|scss)$/, // Process CSS/SCSS files
         use: [
-          MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader, // Use MiniCssExtractPlugin for production
           'css-loader',
           'postcss-loader',
           'sass-loader',
@@ -72,7 +72,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/i, // Process images and fonts
-        type: 'asset/resource', // Use Webpack 5's asset modules instead of file-loader
+        type: 'asset/resource', // Use Webpack 5's asset modules
         generator: {
           filename: 'images/[name].[hash].[ext]', // Set output path for assets
         },

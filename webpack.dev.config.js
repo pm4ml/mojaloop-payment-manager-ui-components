@@ -1,34 +1,24 @@
 const path = require('path');
 const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-const isDevelopment = process.env.NODE_ENV !== 'production'; // Check if we are in development mode
+// Configuration for resolving the path to your Sass variables
+const colorsSass = path.resolve(__dirname, 'src', 'assets', 'styles', 'vars', 'colors.scss');
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
-  entry: ['./src/Root'],
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+  mode: 'development', // Set mode to development
+  entry: {
+    index: './src/components/index.js',
+    'redux-fetch': './src/reduxFetch/index.js',
+    'redux-validation': './src/reduxValidation/index.js',
   },
-  devtool: 'cheap-module-source-map',
-  devServer: {
-    static: path.join(__dirname, 'dist'),
-    hot: true, // Enable Hot Module Replacement
-    port: 9090,
-    open: true,
-    historyApiFallback: true,
-    devMiddleware: {
-      writeToDisk: true,
-    },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    libraryTarget: 'umd',
+    library: 'mojaloop-payment-manager-ui-components',
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
-    }),
     new webpack.IgnorePlugin({
       resourceRegExp: /^\.\/locale$/,
       contextRegExp: /moment$/,
@@ -40,58 +30,30 @@ module.exports = {
       fix: true,
       emitWarning: true,
     }),
-    isDevelopment && new webpack.HotModuleReplacementPlugin(),
-    isDevelopment && new ReactRefreshWebpackPlugin(), // Add Fast Refresh plugin in development
-  ].filter(Boolean), // Filter out any false entries (e.g., in production mode, the HMR and ReactRefreshWebpackPlugin won't be included)
+  ],
   module: {
     rules: [
       {
-        test: /\.js$/, // Transpile JS files using Babel
+        test: /\.js$/, // Process JavaScript files
         include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|bower_components|build)/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean), // Enable Fast Refresh in development mode
-            },
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
           },
-        ],
+        },
       },
       {
-        test: /\.(css|scss)?$/, // Process CSS/SCSS files
+        test: /\.(css|scss)$/, // Process CSS/SCSS files
         use: [
-          'style-loader',
+          'style-loader', // Use style-loader in development for HMR
           'css-loader',
           'postcss-loader',
           'sass-loader',
         ],
       },
-      {
-        test: /\.(png|jpg|gif)$/i,
-        loader: 'url-loader',
-        options: {
-          limit: 8192,
-          mimetype: 'image/png',
-        },
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[hash].[ext]',
-              outputPath: 'images/',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(eot|ttf|woff|woff2)$/i,
-        loader: 'file-loader',
-      },
     ],
   },
+  devtool: 'source-map', // Enable source maps for easier debugging
 };
