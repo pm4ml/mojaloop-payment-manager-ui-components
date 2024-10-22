@@ -1,4 +1,4 @@
-@import '../../assets/styles/vars/shadow.scss';
+@use '../../assets/styles/vars/shadow.scss';
 
 /* MULTI SELECTION */
 .input-radio {
@@ -29,7 +29,7 @@
 
     &:hover {
       &:before {
-        box-shadow: $shadow-size rgba(0, 0, 0, 0.13);
+        box-shadow: shadow.$shadow-size rgba(0, 0, 0, 0.13);
       }
     }
 
@@ -94,7 +94,7 @@
   &.focused {
     + label {
       &:before {
-        box-shadow: $shadow-size rgba(0, 175, 255, 0.5);
+        box-shadow: shadow.$shadow-size rgba(0, 175, 255, 0.5);
       }
     }
   }

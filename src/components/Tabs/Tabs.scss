@@ -1,4 +1,4 @@
-@import '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/colors.scss';
 
 .el-tabs {
 }
@@ -27,8 +27,8 @@
   text-align: center;
   justify-content: flex-start;
   align-items: center;
-  color: $color__dark-gray-3;
-  border-bottom: 3px solid $color__gray-2;
+  color: colors.$color__dark-gray-3;
+  border-bottom: 3px solid colors.$color__gray-2;
   transition: all 0.1s ease-out;
   padding: 0px 10px;
 
@@ -37,20 +37,20 @@
   }
 
   &:hover:not(.el-tabs__tab-item--disabled):not(.el-tabs__tab-item--selected) {
-    border-bottom-color: $color__gray-4;
+    border-bottom-color: colors.$color__gray-4;
     cursor: pointer;
   }
   &.el-tabs__tab-item--selected {
-    border-bottom-color: $color__main-primary;
-    color: $color__main-primary;
+    border-bottom-color: colors.$color__main-primary;
+    color: colors.$color__main-primary;
     cursor: pointer;
   }
   &.el-tabs__tab-item--focused {
-    border-bottom-color: $color__main-primary--active;
-    color: $color__main-primary--active;
+    border-bottom-color: colors.$color__main-primary--active;
+    color: colors.$color__main-primary--active;
   }
   &.el-tabs__tab-item--disabled {
-    color: $color__main-disabled;
+    color: colors.$color__main-disabled;
     cursor: default;
   }
 }

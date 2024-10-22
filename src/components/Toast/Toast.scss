@@ -1,4 +1,4 @@
-@import '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/colors.scss';
 
 /* global animations for toast */
 @keyframes rcNotificationFadeIn {
@@ -40,15 +40,15 @@
   padding: 0px;
 }
 .el-toast--info {
-  background: $color__blue-3;
+  background: colors.$color__blue-3;
   fill: #fff;
 }
 .el-toast--error {
-  background: $color__main-danger;
+  background: colors.$color__main-danger;
   fill: #fff;
 }
 .el-toast--success {
-  background: $color__main-success;
+  background: colors.$color__main-success;
   fill: #fff;
 }
 .el-toast__title {

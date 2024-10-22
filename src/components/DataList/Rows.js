@@ -11,9 +11,11 @@ class Rows extends PureComponent {
     super(props);
     this.onItemClick = this.onItemClick.bind(this);
   }
+
   onItemClick(index) {
     this.props.onItemClick(index);
   }
+
   render() {
     const { items, columns } = this.props;
     const rows = items.map(item => (
@@ -35,6 +37,9 @@ class Rows extends PureComponent {
   }
 }
 
+// Set display name for Rows
+Rows.displayName = 'Rows';
+
 class RowItem extends PureComponent {
   static getCells(item) {
     return column => (
@@ -50,13 +55,16 @@ class RowItem extends PureComponent {
       />
     );
   }
+
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
   }
+
   onClick() {
     this.props.onClick(this.props.item._index);
   }
+
   render() {
     const { item, columns, selected, visible } = this.props;
     const rowCells = columns.map(RowItem.getCells(item));
@@ -74,6 +82,9 @@ class RowItem extends PureComponent {
   }
 }
 
+// Set display name for RowItem
+RowItem.displayName = 'RowItem';
+
 class ItemCell extends PureComponent {
   render() {
     const {
@@ -85,12 +96,14 @@ class ItemCell extends PureComponent {
       className,
       disableTooltip,
     } = this.props;
+
     const itemCellClassName = utils.composeClassNames([
       className,
       'el-datalist__item-cell',
       isCentered && 'el-datalist__item-cell--centered',
       isCheckbox && 'el-datalist__item-cell--checkbox',
     ]);
+
     let cell = null;
     if (isCheckbox && content) {
       cell = React.cloneElement(content, { ...content.props, checked });
@@ -101,7 +114,9 @@ class ItemCell extends PureComponent {
     } else {
       cell = value;
     }
+
     return <div className={itemCellClassName}>{cell}</div>;
   }
 }
+
 export default Rows;

@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/transitions.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/transitions.scss';
 
 .input-fileuploader {
 }
@@ -7,7 +7,7 @@
   display: flex;
   position: relative;
   cursor: pointer;
-  transition: $input__main-transition;
+  transition: transitions.$input__main-transition;
 
   &.input-fileuploader__mb-input--open {
   }
@@ -46,14 +46,14 @@
   white-space: nowrap;
   position: relative;
   font-size: 14px;
-  color: $color__dark-gray-3;
+  color: colors.$color__dark-gray-3;
   overflow: hidden;
   padding: 0px;
   padding-top: 5px;
   height: 100%;
 
   &.input-fileuploader__filename--no-file {
-    color: $color__gray-4;
+    color: colors.$color__gray-4;
   }
 }
 .input-fileuploader__filename--small {

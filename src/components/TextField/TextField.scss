@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/transitions.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/transitions.scss';
 
 .input-textfield {
 }
@@ -7,7 +7,7 @@
   display: flex;
   position: relative;
   cursor: text;
-  transition: $input__main-transition;
+  transition: transitions.$input__main-transition;
 
   &.input-textfield__mb-input--open {
   }
@@ -53,28 +53,28 @@
   transition: background 0.1s ease-out, color 0.1s ease-out;
 }
 .input-textfield__value__token--matching {
-  color: $color__main-secondary;
+  color: colors.$color__main-secondary;
   cursor: pointer;
   font-weight: bold;
 
   &.input-textfield__value__token--selected {
-    background: $color__main-secondary;
+    background: colors.$color__main-secondary;
     color: #fff;
     border-radius: 3px;
   }
 }
 .input-textfield__value__token--invalid {
-  color: $color__main-danger;
+  color: colors.$color__main-danger;
   &.input-textfield__value__token--selected {
-    background: $color__main-danger;
+    background: colors.$color__main-danger;
     color: #fff;
   }
 }
 
 .input-textfield__value__token--missing {
-  color: $color__main-warning;
+  color: colors.$color__main-warning;
   &.input-textfield__value__token--selected {
-    background: $color__main-warning;
+    background: colors.$color__main-warning;
     color: #fff;
   }
 }
@@ -95,7 +95,7 @@
   white-space: nowrap;
   justify-content: center;
   align-items: center;
-  color: $color__dark-gray-3;
+  color: colors.$color__dark-gray-3;
   flex: 1 0 auto;
   font-family: inherit;
   font-size: inherit;

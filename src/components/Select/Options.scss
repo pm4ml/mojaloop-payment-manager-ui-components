@@ -1,4 +1,4 @@
-@import '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/colors.scss';
 
 .input-select__options {
   position: absolute;
@@ -13,10 +13,10 @@
   animation: fadeInOptions 0.15s ease-in-out;
 }
 .input-select__options-wrapper--regular {
-  border-bottom: 2px solid $color__main-tertiary;
+  border-bottom: 2px solid colors.$color__main-tertiary;
 }
 .input-select__options-wrapper--reverse {
-  border-top: 2px solid $color__main-tertiary;
+  border-top: 2px solid colors.$color__main-tertiary;
 }
 .input-select__options-wrapper--reverse-small {
   bottom: 45px;
@@ -42,18 +42,18 @@
   display: flex;
   align-items: center;
   flex: 0 0 40px;
-  color: $color__dark-gray-3;
+  color: colors.$color__dark-gray-3;
   padding-left: 10px;
   padding-right: 10px;
   line-height: 40px;
   font-size: 13px;
-  background: $color__white;
+  background: colors.$color__white;
 
-  border-left: 2px solid $color__main-tertiary;
-  border-right: 2px solid $color__main-tertiary;
+  border-left: 2px solid colors.$color__main-tertiary;
+  border-right: 2px solid colors.$color__main-tertiary;
   cursor: pointer;
-  color: $color__dark-gray-1;
-  fill: $color__dark-gray-1;
+  color: colors.$color__dark-gray-1;
+  fill: colors.$color__dark-gray-1;
 
   transition: border 0.05s ease-out, background 0.05s ease-out, color 0.05s ease-out;
 }
@@ -82,23 +82,23 @@
 
 .input-select__options-item:hover,
 .input-select__options-item--highlighted {
-  background: $color__main-tertiary--active;
-  border-color: $color__main-tertiary--active;
-  color: $color__dark-gray-3;
-  fill: $color__dark-gray-3;
+  background: colors.$color__main-tertiary--active;
+  border-color: colors.$color__main-tertiary--active;
+  color: colors.$color__dark-gray-3;
+  fill: colors.$color__dark-gray-3;
 }
 .input-select__options-item--selected,
 .input-select__options-item--selected:hover {
-  background: $color__main-secondary--active;
-  border-color: $color__main-secondary--active;
+  background: colors.$color__main-secondary--active;
+  border-color: colors.$color__main-secondary--active;
   color: #fff;
   fill: #fff;
 }
 .input-select__options-item--disabled,
 .input-select__options-item--disabled:hover {
-  background: $color__white;
-  color: $color__main-disabled;
-  border-color: $color__main-disabled;
+  background: colors.$color__white;
+  color: colors.$color__main-disabled;
+  border-color: colors.$color__main-disabled;
   cursor: auto;
 }
 .input-select__options-item--clear {
@@ -107,8 +107,8 @@
   background: #fee;
 }
 .input-select__options-item--clear:hover {
-  color: $color__main-danger;
-  fill: $color__main-danger;
+  color: colors.$color__main-danger;
+  fill: colors.$color__main-danger;
   background: #fee;
 }
 
@@ -132,12 +132,12 @@
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: $color__white;
-  color: $color__gray-5;
-  fill: $color__gray-5;
+  background: colors.$color__white;
+  color: colors.$color__gray-5;
+  fill: colors.$color__gray-5;
   line-height: 40px;
-  border-left: 2px solid $color__main-tertiary;
-  border-right: 2px solid $color__main-tertiary;
+  border-left: 2px solid colors.$color__main-tertiary;
+  border-right: 2px solid colors.$color__main-tertiary;
 }
 .input-select__options-item--no-options__message {
   margin-left: 10px;

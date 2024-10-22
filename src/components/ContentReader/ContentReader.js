@@ -34,9 +34,11 @@ class ContentReader extends PureComponent {
     try {
       content = vkbeautify.json(source, 2);
     } catch (jsonErr) {
+      console.error('JSON parsing error:', jsonErr); // Log the error
       try {
         content = vkbeautify.xml(source, 2);
       } catch (xmlErr) {
+        console.error('XML parsing error:', xmlErr); // Log the error
         error = true;
       }
     }

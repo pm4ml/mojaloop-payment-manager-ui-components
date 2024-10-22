@@ -1,10 +1,9 @@
 import './MessageBox.scss';
-
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 
 import { composeClassNames } from '../../utils/common';
-import { Icon } from '../index';
+import Icon from '../Icon'; // Import directly from the Icon file
 
 const splitLines = (prev, curr) => [...prev, ...curr.split(`\n`)];
 

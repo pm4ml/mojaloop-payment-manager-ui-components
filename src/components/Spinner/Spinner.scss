@@ -1,4 +1,4 @@
-@import '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/colors.scss';
 
 .el-spinner {
   animation: rotateSpinner 4s linear infinite;
@@ -21,7 +21,7 @@
   stroke-dashoffset: 0;
   transform-origin: center;
   stroke-linecap: round;
-  stroke: $color__main-primary;
+  stroke: colors.$color__main-primary;
 }
 
 @keyframes rotateSpinner {

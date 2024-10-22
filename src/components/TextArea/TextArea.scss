@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/transitions.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/transitions.scss';
 
 .input-textarea {
 }
@@ -8,7 +8,7 @@
   display: flex;
   position: relative;
   cursor: text;
-  transition: $input__main-transition;
+  transition: transitions.$input__main-transition;
 
   &.input-textarea__mb-input--open {
   }
@@ -82,7 +82,7 @@
   white-space: nowrap;
   justify-content: center;
   align-items: center;
-  color: $color__dark-gray-3;
+  color: colors.$color__dark-gray-3;
   resize: none;
 }
 .input-textarea__icon {

@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/fonts.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/fonts.scss';
 
 .validation__icon {
   fill: transparent;
@@ -8,7 +8,7 @@
 .validation__icon.validation__icon--invalid {
   height: auto;
   width: auto;
-  fill: $color__main-danger;
+  fill: colors.$color__main-danger;
 }
 
 .validation__messages {
@@ -16,27 +16,27 @@
   margin: 0;
   padding: 14px;
   padding-right: 18px;
-  background: $color__gray-1;
-  box-shadow: 0px 1px 2px $color__alpha-2;
+  background: colors.$color__gray-1;
+  box-shadow: 0px 1px 2px colors.$color__alpha-2;
   border-radius: 3px;
   min-width: 60px;
   display: block;
 }
 
 .validation__message {
-  font-family: $font__primary, $font__primary-fallback;
-  letter-spacing: $font__primary-spacing;
+  font-family: fonts.$font__primary, fonts.$font__primary-fallback;
+  letter-spacing: fonts.$font__primary-spacing;
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: $color__dark-gray-1;
+  color: colors.$color__dark-gray-1;
   min-width: 60px;
 }
 
 .validation__message--inactive {
   text-decoration: line-through;
   stroke: none;
-  color: $color__gray-5;
+  color: colors.$color__gray-5;
 }
 
 .validation__message__text {
@@ -54,13 +54,13 @@
 
 .validation__message__icon--active {
   animation: fadeInValidationMessageIcon 0.2s ease-out;
-  fill: $color__main-danger;
-  stroke: $color__main-danger;
+  fill: colors.$color__main-danger;
+  stroke: colors.$color__main-danger;
 }
 
 .validation__message__icon--inactive {
   animation: fadeInValidationMessageIcon 0.2s ease-out;
-  fill: $color__main-success;
+  fill: colors.$color__main-success;
 }
 
 .validation__message__icon--unset {

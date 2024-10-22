@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/transitions.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/transitions.scss';
 
 .input-select {
   display: block;
@@ -8,7 +8,7 @@
   display: flex;
   position: relative;
   cursor: pointer;
-  transition: $input__main-transition;
+  transition: transitions.$input__main-transition;
 
   &.input-select__mb-input--open {
   }
@@ -37,9 +37,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  color: $color__dark-gray-3;
+  color: colors.$color__dark-gray-3;
   &.has-filter {
-    color: $color__blue-4;
+    color: colors.$color__blue-4;
   }
 }
 .input-select__icon {

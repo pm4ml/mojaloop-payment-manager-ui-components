@@ -7,9 +7,7 @@ import ReactDOM from 'react-dom';
 import Views from './views';
 
 function Root() {
-  return <div id="root">
-    <Views />
-  </div>
+  return <Views />;  // Render the Views component directly
 }
 
 ReactDOM.render(<Root />, document.getElementById('root'));

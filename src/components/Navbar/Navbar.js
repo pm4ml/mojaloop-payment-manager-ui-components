@@ -12,7 +12,7 @@ import Icon from '../Icon';
 import Modal from '../Modal';
 import ScrollBox from '../ScrollBox';
 import Spinner from '../Spinner';
-import logo from './PortXLogoSmall.png';
+import logo from './PM4MLLogoSmall.png';
 
 export default class PM4MLNav extends PureComponent {
   render() {

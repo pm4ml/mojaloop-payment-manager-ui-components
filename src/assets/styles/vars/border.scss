@@ -1,4 +1,4 @@
-@import './colors.scss';
+@use 'colors.scss';
 
 $border-radius: 0px;
 
@@ -7,8 +7,8 @@ $border-right-size: 2px solid;
 $border-top-size: 2px solid;
 $border-bottom-size: 2px solid;
 
-$border-color--default: $color__main-primary;
-$border-color--open: $color__dark-gray-2;
-$border-color--pending: $color__blue-4;
-$border-color--invalid: $color__main-danger;
-$border-color--required: $color__main-warning;
+$border-color--default: colors.$color__main-primary;
+$border-color--open: colors.$color__dark-gray-2;
+$border-color--pending: colors.$color__blue-4;
+$border-color--invalid: colors.$color__main-danger;
+$border-color--required: colors.$color__main-warning;

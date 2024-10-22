@@ -1,4 +1,4 @@
-@import '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/colors.scss';
 
 .el-datalist__link {
   position: relative;
@@ -19,8 +19,8 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: row;
-  color: $color__blue-4;
-  fill: $color__blue-4;
+  color: colors.$color__blue-4;
+  fill: colors.$color__blue-4;
 }
 .el-datalist__link__icon {
   display: none;

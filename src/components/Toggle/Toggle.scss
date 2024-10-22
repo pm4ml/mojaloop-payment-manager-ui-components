@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/shadow.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/shadow.scss';
 
 .input-toggle {
   display: flex;
@@ -17,7 +17,7 @@
   &:focus {
     + label {
       &:before {
-        box-shadow: $shadow-size rgba(0, 175, 255, 0.5);
+        box-shadow: shadow.$shadow-size rgba(0, 175, 255, 0.5);
       }
     }
   }
@@ -34,7 +34,7 @@
 
     &:hover {
       &:before {
-        box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.1), $shadow-size rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.1), shadow.$shadow-size rgba(0, 0, 0, 0.05);
       }
     }
     &:before {

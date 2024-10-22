@@ -1,7 +1,7 @@
-@import './colors.scss';
+@use 'colors.scss';
 
-$background--default: $color__gray-1;
-$background--open: $color__gray-1;
-$background--pending: $color__gray-1;
-$background--invalid: $color__gray-1;
-$background--required: $color__gray-1;
+$background--default: colors.$color__gray-1;
+$background--open: colors.$color__gray-1;
+$background--pending: colors.$color__gray-1;
+$background--invalid: colors.$color__gray-1;
+$background--required: colors.$color__gray-1;

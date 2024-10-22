@@ -12,10 +12,9 @@ class Toggle extends PureComponent {
     this.state = {
       checked,
     };
-    this.onClick = this.onClick.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
     this.testKey = this.testKey.bind(this);
   }
 
@@ -50,15 +49,6 @@ class Toggle extends PureComponent {
     }
   }
 
-  onClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const { onClick } = this.props;
-    if (onClick) {
-      onClick(e);
-    }
-  }
-
   onFocus(e) {
     const { onFocus } = this.props;
     if (onFocus) {
@@ -67,14 +57,8 @@ class Toggle extends PureComponent {
   }
 
   testKey(e) {
-    const { keyCode, shiftKey } = e;
-    if (keyCode === 9) {
-      e.stopPropagation();
-      e.preventDefault();
-      utils.focusNextFocusableElement(this.input, !shiftKey);
-      return;
-    }
-    if (keyCode === 13) {
+    const { keyCode } = e;
+    if (keyCode === 13 || keyCode === 32) { // Space or Enter key
       e.stopPropagation();
       e.preventDefault();
       this.onChange(e);
@@ -96,28 +80,20 @@ class Toggle extends PureComponent {
           type="checkbox"
           id={id}
           className="input-toggle__input"
-          onClick={this.onClick}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
-          onKeyDown={this.testKey}
-          onChange={e => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
+          onChange={this.onChange} // Use this for the checkbox's change event
+          onKeyDown={this.testKey} // Handle keyboard events on the checkbox
           checked={checked}
           disabled={disabled}
         />
         <label
           htmlFor={id}
           className={labelClassName}
-          onClick={this.onChange}
-          role="button"
           tabIndex={0} // Makes the label focusable by keyboard
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              this.onChange();
-            }
-          }}
+          role="button" // Explicitly makes the label an interactive element
+          onClick={() => this.input.click()} // Allow label click to toggle
+          onKeyDown={this.testKey} // Handle keyboard events (Enter or Space)
         >
           {label}
         </label>
@@ -129,10 +105,9 @@ class Toggle extends PureComponent {
 Toggle.propTypes = {
   style: PropTypes.shape(),
   className: PropTypes.string,
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   label: PropTypes.string,
   onBlur: PropTypes.func,
-  onClick: PropTypes.func,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
   checked: PropTypes.bool,
@@ -142,10 +117,8 @@ Toggle.propTypes = {
 Toggle.defaultProps = {
   style: undefined,
   className: undefined,
-  id: undefined,
   label: undefined,
   onBlur: undefined,
-  onClick: undefined,
   onChange: undefined,
   onFocus: undefined,
   checked: false,

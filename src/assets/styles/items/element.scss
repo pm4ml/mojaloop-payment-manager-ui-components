@@ -1,12 +1,12 @@
-@import '../vars/colors.scss';
-@import '../vars/border.scss';
-@import '../vars/background.scss';
-@import '../vars/general.scss';
-@import '../vars/fonts.scss';
+@use '../vars/colors.scss';
+@use '../vars/border.scss';
+@use '../vars/background.scss';
+@use '../vars/general.scss';
+@use '../vars/fonts.scss';
 
 .el {
-  font-family: $font__primary, $font__primary-fallback;
-  letter-spacing: $font__primary-spacing;
+  font-family: fonts.$font__primary, fonts.$font__primary-fallback;
+  letter-spacing: fonts.$font__primary-spacing;
 }
 .el__holder {
   position: absolute;

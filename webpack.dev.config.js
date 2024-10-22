@@ -1,35 +1,48 @@
 const path = require('path');
 const webpack = require('webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
+const isDevelopment = process.env.NODE_ENV !== 'production'; // Check if we are in development mode
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  entry: {
-    bundle: ['./src/Root'],
-  },
+  entry: ['./src/Root'],
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
-  devtool: 'cheap-module-source-map', // Useful for debugging with source maps in dev
+  devtool: 'cheap-module-source-map',
   devServer: {
-    static: path.join(__dirname, 'dist'), // Serve files from dist
-    hot: true, // Enable hot reloading
-    port: 9090, // Development server port
-    open: true, // Automatically open the browser
-    historyApiFallback: true, // Support single-page applications
+    static: path.join(__dirname, 'dist'),
+    hot: true, // Enable Hot Module Replacement
+    port: 9090,
+    open: true,
+    historyApiFallback: true,
+    devMiddleware: {
+      writeToDisk: true,
+    },
   },
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // Ignore moment locale files to reduce bundle size
-    new ESLintPlugin({
-      extensions: ['js', 'jsx'], // Ensure eslint checks JS and JSX files
-      context: path.resolve(__dirname, 'src'), // Set context to the src folder
-      overrideConfigFile: path.resolve(__dirname, 'eslint.config.js'), // Explicitly define ESLint config
-      fix: true, // Auto-fix linting issues
-      emitWarning: true, // Emit warnings instead of errors
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
     }),
-    new webpack.HotModuleReplacementPlugin(), // Hot Module Replacement for live updating
-  ],
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
+    }),
+    new ESLintPlugin({
+      extensions: ['js', 'jsx'],
+      context: path.resolve(__dirname, 'src'),
+      overrideConfigFile: path.resolve(__dirname, 'eslint.config.js'),
+      fix: true,
+      emitWarning: true,
+    }),
+    isDevelopment && new webpack.HotModuleReplacementPlugin(),
+    isDevelopment && new ReactRefreshWebpackPlugin(), // Add Fast Refresh plugin in development
+  ].filter(Boolean), // Filter out any false entries (e.g., in production mode, the HMR and ReactRefreshWebpackPlugin won't be included)
   module: {
     rules: [
       {
@@ -40,7 +53,8 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'], // React support
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean), // Enable Fast Refresh in development mode
             },
           },
         ],
@@ -48,34 +62,34 @@ module.exports = {
       {
         test: /\.(css|scss)?$/, // Process CSS/SCSS files
         use: [
-          'style-loader', // Inject CSS into the DOM
-          'css-loader',   // Translates CSS into CommonJS modules
-          'postcss-loader', // Apply PostCSS transformations
-          'sass-loader',  // Compiles Sass to CSS
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
         ],
       },
       {
-        test: /\.(png|jpg|gif)$/i, // Handle image assets
+        test: /\.(png|jpg|gif)$/i,
         loader: 'url-loader',
         options: {
-          limit: 8192, // Inline files smaller than 8KB as Base64 strings
+          limit: 8192,
           mimetype: 'image/png',
         },
       },
       {
-        test: /\.svg$/, // Handle SVG assets
+        test: /\.svg$/,
         use: [
           {
-            loader: 'file-loader', // Use file-loader to process SVGs
+            loader: 'file-loader',
             options: {
               name: '[name].[hash].[ext]',
-              outputPath: 'images/', // Set output directory for images
+              outputPath: 'images/',
             },
           },
         ],
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/i, // Handle font files
+        test: /\.(eot|ttf|woff|woff2)$/i,
         loader: 'file-loader',
       },
     ],

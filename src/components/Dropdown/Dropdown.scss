@@ -1,5 +1,5 @@
-@import '../../assets/styles/vars/colors.scss';
-@import '../../assets/styles/vars/shadow.scss';
+@use '../../assets/styles/vars/colors.scss';
+@use '../../assets/styles/vars/shadow.scss';
 
 .input-dropdown {
   display: inline-block;
@@ -21,15 +21,15 @@
   -webkit-font-smoothing: antialiased;
   border: 1px solid;
   align-items: center;
-  color: $color__white;
-  fill: $color__white;
-  stroke: $color__white;
+  color: colors.$color__white;
+  fill: colors.$color__white;
+  stroke: colors.$color__white;
   border-bottom-width: 2px;
 
   &:active {
-    color: $color__alpha-3;
-    fill: $color__alpha-3;
-    stroke: $color__alpha-3;
+    color: colors.$color__alpha-3;
+    fill: colors.$color__alpha-3;
+    stroke: colors.$color__alpha-3;
   }
 }
 
@@ -77,264 +77,264 @@
 }
 
 .input-dropdown__mb-input--primary {
-  background-color: $color__main-primary;
-  border-color: $color__main-primary;
+  background-color: colors.$color__main-primary;
+  border-color: colors.$color__main-primary;
 
   &.noFill {
     background-color: transparent;
-    color: $color__main-primary;
-    fill: $color__main-primary;
-    stroke: $color__main-primary;
+    color: colors.$color__main-primary;
+    fill: colors.$color__main-primary;
+    stroke: colors.$color__main-primary;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--primary;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--primary;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__main-primary--active;
-    border-color: $color__main-primary--active;
+    background-color: colors.$color__main-primary--active;
+    border-color: colors.$color__main-primary--active;
 
     &.noFill {
-      color: $color__white;
-      fill: $color__white;
-      stroke: $color__white;
+      color: colors.$color__white;
+      fill: colors.$color__white;
+      stroke: colors.$color__white;
     }
   }
 }
 .input-dropdown__mb-input--secondary {
-  background-color: $color__main-secondary;
-  border-color: $color__main-secondary;
+  background-color: colors.$color__main-secondary;
+  border-color: colors.$color__main-secondary;
 
   &.noFill {
     background: transparent;
-    color: $color__main-secondary;
-    fill: $color__main-secondary;
-    stroke: $color__main-secondary;
+    color: colors.$color__main-secondary;
+    fill: colors.$color__main-secondary;
+    stroke: colors.$color__main-secondary;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--secondary;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--secondary;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__main-secondary--active;
-    border-color: $color__main-secondary--active;
+    background-color: colors.$color__main-secondary--active;
+    border-color: colors.$color__main-secondary--active;
 
     &.noFill {
-      color: $color__white;
-      fill: $color__white;
-      stroke: $color__white;
+      color: colors.$color__white;
+      fill: colors.$color__white;
+      stroke: colors.$color__white;
     }
   }
 }
 
 .input-dropdown__mb-input--success {
-  background-color: $color__main-success;
-  border-color: $color__main-success;
-  color: $color__white;
-  fill: $color__white;
-  stroke: $color__white;
+  background-color: colors.$color__main-success;
+  border-color: colors.$color__main-success;
+  color: colors.$color__white;
+  fill: colors.$color__white;
+  stroke: colors.$color__white;
 
   &.noFill {
     background: transparent;
-    color: $color__main-success;
-    fill: $color__main-success;
-    stroke: $color__main-success;
+    color: colors.$color__main-success;
+    fill: colors.$color__main-success;
+    stroke: colors.$color__main-success;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--success;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--success;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__main-success--active;
-    border-color: $color__main-success--active;
+    background-color: colors.$color__main-success--active;
+    border-color: colors.$color__main-success--active;
 
     &.noFill {
-      color: $color__white;
-      fill: $color__white;
-      stroke: $color__white;
+      color: colors.$color__white;
+      fill: colors.$color__white;
+      stroke: colors.$color__white;
     }
   }
 }
 .input-dropdown__mb-input--danger {
-  background-color: $color__main-danger;
-  border-color: $color__main-danger;
-  color: $color__white;
-  fill: $color__white;
-  stroke: $color__white;
+  background-color: colors.$color__main-danger;
+  border-color: colors.$color__main-danger;
+  color: colors.$color__white;
+  fill: colors.$color__white;
+  stroke: colors.$color__white;
 
   &.noFill {
     background: transparent;
-    color: $color__main-danger;
-    fill: $color__main-danger;
-    stroke: $color__main-danger;
+    color: colors.$color__main-danger;
+    fill: colors.$color__main-danger;
+    stroke: colors.$color__main-danger;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--danger;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--danger;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__main-danger--active;
-    border-color: $color__main-danger--active;
+    background-color: colors.$color__main-danger--active;
+    border-color: colors.$color__main-danger--active;
 
     &.noFill {
-      color: $color__white;
-      fill: $color__white;
-      stroke: $color__white;
+      color: colors.$color__white;
+      fill: colors.$color__white;
+      stroke: colors.$color__white;
     }
   }
 }
 
 .input-dropdown__mb-input--warning {
-  background-color: $color__main-warning;
-  border-color: $color__main-warning;
+  background-color: colors.$color__main-warning;
+  border-color: colors.$color__main-warning;
 
   &.noFill {
     background-color: transparent;
-    color: $color__main-warning;
-    fill: $color__main-warning;
-    stroke: $color__main-warning;
+    color: colors.$color__main-warning;
+    fill: colors.$color__main-warning;
+    stroke: colors.$color__main-warning;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--warning;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--warning;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__main-warning--active;
-    border-color: $color__main-warning--active;
+    background-color: colors.$color__main-warning--active;
+    border-color: colors.$color__main-warning--active;
 
     &.noFill {
-      color: $color__white;
-      fill: $color__white;
-      stroke: $color__white;
+      color: colors.$color__white;
+      fill: colors.$color__white;
+      stroke: colors.$color__white;
     }
   }
 }
 
 .input-dropdown__mb-input--dark {
-  background-color: $color__alpha-5;
+  background-color: colors.$color__alpha-5;
   border-color: transparent;
-  color: $color__white;
-  fill: $color__white;
-  stroke: $color__white;
+  color: colors.$color__white;
+  fill: colors.$color__white;
+  stroke: colors.$color__white;
 
   &.noFill {
     background-color: transparent;
-    border-color: $color__alpha-5;
-    color: $color__alpha-4;
-    fill: $color__alpha-4;
-    stroke: $color__alpha-4;
+    border-color: colors.$color__alpha-5;
+    color: colors.$color__alpha-4;
+    fill: colors.$color__alpha-4;
+    stroke: colors.$color__alpha-4;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--dark;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--dark;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__alpha-4;
+    background-color: colors.$color__alpha-4;
     border-color: transparent;
 
     &.noFill {
-      color: $color__white;
-      fill: $color__white;
-      stroke: $color__white;
+      color: colors.$color__white;
+      fill: colors.$color__white;
+      stroke: colors.$color__white;
     }
   }
 }
 
 .input-dropdown__mb-input--light {
-  background-color: $color__white;
+  background-color: colors.$color__white;
   border-color: transparent;
-  color: $color__gray-5;
-  fill: $color__gray-5;
-  stroke: $color__gray-5;
+  color: colors.$color__gray-5;
+  fill: colors.$color__gray-5;
+  stroke: colors.$color__gray-5;
 
   &.noFill {
     background-color: transparent;
-    border-color: $color__white;
-    color: $color__white;
-    fill: $color__white;
-    stroke: $color__white;
+    border-color: colors.$color__white;
+    color: colors.$color__white;
+    fill: colors.$color__white;
+    stroke: colors.$color__white;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--light;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--light;
   }
 
   &:hover,
   &:focus {
-    background-color: $color__white;
+    background-color: colors.$color__white;
     border-color: transparent;
-    color: $color__gray-4;
+    color: colors.$color__gray-4;
 
     &.noFill {
-      color: $color__gray-5;
-      fill: $color__gray-5;
-      stroke: $color__gray-5;
+      color: colors.$color__gray-5;
+      fill: colors.$color__gray-5;
+      stroke: colors.$color__gray-5;
     }
   }
 }
 
 .input-dropdown__mb-input--tertiary {
-  background-color: $color__main-tertiary;
-  border-color: $color__main-tertiary;
-  color: $color__dark-gray-2;
-  fill: $color__dark-gray-2;
-  stroke: $color__dark-gray-2;
+  background-color: colors.$color__main-tertiary;
+  border-color: colors.$color__main-tertiary;
+  color: colors.$color__dark-gray-2;
+  fill: colors.$color__dark-gray-2;
+  stroke: colors.$color__dark-gray-2;
 
   &.noFill {
-    border-color: $color__gray-4;
+    border-color: colors.$color__gray-4;
     background: transparent;
-    color: $color__gray-5;
-    fill: $color__gray-5;
-    stroke: $color__gray-5;
+    color: colors.$color__gray-5;
+    fill: colors.$color__gray-5;
+    stroke: colors.$color__gray-5;
   }
 
   &:active,
   &:focus {
-    box-shadow: $shadow-size $shadow-color--tertiary;
+    box-shadow: shadow.$shadow-size shadow.$shadow-color--tertiary;
   }
 
   &:hover,
   &:focus {
-    color: $color__dark-gray-2;
-    fill: $color__dark-gray-2;
-    stroke: $color__dark-gray-2;
-    background-color: $color__main-tertiary--active;
-    border-color: $color__main-tertiary--active;
+    color: colors.$color__dark-gray-2;
+    fill: colors.$color__dark-gray-2;
+    stroke: colors.$color__dark-gray-2;
+    background-color: colors.$color__main-tertiary--active;
+    border-color: colors.$color__main-tertiary--active;
   }
 }
 
 .input-dropdown__mb-input--disabled {
-  background-color: $color__gray-2;
-  border-color: $color__gray-2;
-  color: $color__dark-gray-1;
-  fill: $color__gray-5;
-  stroke: $color__gray-5;
+  background-color: colors.$color__gray-2;
+  border-color: colors.$color__gray-2;
+  color: colors.$color__dark-gray-1;
+  fill: colors.$color__gray-5;
+  stroke: colors.$color__gray-5;
 
   &.noFill {
-    border-color: $color__gray-2;
+    border-color: colors.$color__gray-2;
     background: transparent;
-    color: $color__gray-5;
-    fill: $color__gray-5;
-    stroke: $color__gray-5;
+    color: colors.$color__gray-5;
+    fill: colors.$color__gray-5;
+    stroke: colors.$color__gray-5;
   }
 }
 
@@ -348,15 +348,15 @@
   &:hover {
     &.noFill {
       &:active {
-        color: $color__alpha-3;
-        fill: $color__alpha-3;
-        stroke: $color__alpha-3;
+        color: colors.$color__alpha-3;
+        fill: colors.$color__alpha-3;
+        stroke: colors.$color__alpha-3;
       }
     }
   }
   &:active {
-    color: $color__alpha-3;
-    fill: $color__alpha-3;
-    stroke: $color__alpha-3;
+    color: colors.$color__alpha-3;
+    fill: colors.$color__alpha-3;
+    stroke: colors.$color__alpha-3;
   }
 }

@@ -106,23 +106,23 @@ class TextField extends PureComponent {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
     document.body.appendChild(tmp);
-
-    element.style.width = `${tmp.getBoundingClientRect().width + 3}px`;
+    // eslint-disable-next-line
+    element.style.width = tmp.getBoundingClientRect().width + 3 + 'px';
     document.body.removeChild(tmp);
   }
-
   static getRegex(delimiters) {
     const [open, close] = delimiters;
+
     return new RegExp(`(\\${open}[^\\${open}\\${close}]*[\\${close}]{0,1})`);
   }
-
   static getIsWrappedBetweenDelimiters(value, delimiters) {
     const [open, close] = delimiters;
     return value.startsWith(open) && value.endsWith(close);
   }
-
   static getIsCardable(value, delimiters) {
-    if (!delimiters) return false;
+    if (!delimiters) {
+      return false;
+    }
 
     const [open] = delimiters;
     return (
@@ -132,12 +132,10 @@ class TextField extends PureComponent {
         .match(TextField.getRegex(delimiters)) !== null
     );
   }
-
   static getTokensAndInput(value = '', delimiters) {
     if (!delimiters) {
       return { tokens: [], inputValue: value };
     }
-
     const [open, close] = delimiters;
 
     function defineToken(tokenValue, index, arr) {
@@ -162,19 +160,17 @@ class TextField extends PureComponent {
 
     return { tokens, inputValue: value.slice(TextField.getTokensText(tokens).length) };
   }
-
   static getTokensText(tokens) {
     return tokens.map(token => token.word).join('');
   }
-
   static getTotalLength(...items) {
-    return items.reduce((total, current) => total + current.length, 0);
+    return items.reduce((total, current) => {
+      return total + current.length;
+    }, 0);
   }
-
   static getFullValue(tokens, inputValue) {
     return TextField.getTokensText(tokens) + (inputValue || '');
   }
-
   static getNextPosition(tokens, inputValue, positionFromRight) {
     let remaining = positionFromRight - inputValue.length;
     if (remaining <= 0) {
@@ -205,27 +201,21 @@ class TextField extends PureComponent {
     }
     return str;
   }
-
   static isSelectionAtStart(element) {
     return element.selectionStart === 0;
   }
-
   static isSelectionAtEnd(element) {
     return element.selectionStart === element.value.length;
   }
-
   static isSelectionAfterFirstChar(element) {
     return element.selectionStart === 1;
   }
-
   static isSelectionBeforeLastChar(element) {
     return element.selectionStart === element.value.length - 1;
   }
-
   static isMultiSelection(element) {
     return element.selectionStart !== element.selectionEnd;
   }
-
   constructor(props) {
     super(props);
 
@@ -280,9 +270,7 @@ class TextField extends PureComponent {
     this.valueTokens.forEach(TextField.setElementWidth);
     TextField.setElementWidth(this.input);
   }
-
   componentDidUpdate(prevProps) {
-    const { tokens, inputValue, valueToken } = this.state;
     this.valueTokens.forEach(TextField.setElementWidth);
     TextField.setElementWidth(this.input);
 
@@ -298,19 +286,17 @@ class TextField extends PureComponent {
       this._nextCardToken = undefined;
       this._nextPosition = undefined;
     }
-
     const changes = {};
     const { value, disabled, tokenDelimiters } = this.props;
 
     if (
       value !== prevProps.value &&
-      value !== TextField.getFullValue(tokens, inputValue)
+      value !== TextField.getFullValue(this.state.tokens, this.state.inputValue)
     ) {
-      const { tokens: newTokens, inputValue: newInputValue } = TextField.getTokensAndInput(value, tokenDelimiters);
-      changes.tokens = newTokens;
-      changes.inputValue = newInputValue;
+      const { tokens, inputValue } = TextField.getTokensAndInput(value, tokenDelimiters);
+      changes.tokens = tokens;
+      changes.inputValue = inputValue;
     }
-
     if (disabled !== prevProps.disabled) {
       changes.isOpen = false;
     }
@@ -319,13 +305,345 @@ class TextField extends PureComponent {
       this.setState(changes);
     }
   }
-
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.onPageClick, false);
   }
+  onTextFieldClick() {
+    this.input.click();
+  }
+  onButtonClick(e) {
+    e.stopPropagation();
+    if (this.props.onButtonClick) {
+      this.props.onButtonClick(e);
+    }
+  }
+  onClick(e) {
+    if (this.props.onClick) {
+      this.props.onClick(e);
+    }
 
-  // Other methods ...
+    this.setState({ isOpen: true }, () => this.input.focus());
+  }
+  onChange(e) {
+    this.applyTokens(
+      this.state.tokens,
+      e.target.value,
+      e.target.value.length - e.target.selectionStart || 0,
+    );
+  }
+  onKeyPress(e) {
+    if (this.props.onKeyPress) {
+      this.props.onKeyPress(e);
+    }
+  }
+  onCardChange(value) {
+    const { valueToken, tokens } = this.state;
+    const { tokenDelimiters } = this.props;
+    const [openSelector, closeSelector] = tokenDelimiters;
+    const tokenValue = `${openSelector}${value}${closeSelector}`;
+    let fullValue;
+    let positionFromRight = 0;
 
+    if (valueToken !== undefined) {
+      const str = tokens[valueToken].word;
+      const idx = str.lastIndexOf(openSelector);
+      const tmpValue = `${str.slice(0, idx)}${tokenValue}`;
+      fullValue =
+        TextField.getTokensText(tokens.slice(0, valueToken)) +
+        tmpValue +
+        TextField.getTokensText(tokens.slice(valueToken + 1)) +
+        this.state.inputValue;
+
+      positionFromRight = TextField.getTotalLength(
+        TextField.getTokensText(tokens.slice(valueToken + 1)),
+        this.state.inputValue,
+      );
+    } else {
+      const idx = this.state.inputValue.lastIndexOf(openSelector);
+      const tmpValue = `${this.state.inputValue.slice(0, idx)}${tokenValue}`;
+      fullValue = TextField.getTokensText(tokens) + tmpValue;
+    }
+    const values = TextField.getTokensAndInput(fullValue, tokenDelimiters);
+    this.applyTokens(values.tokens, values.inputValue, positionFromRight);
+  }
+  onTokenClick(e, index) {
+    e.preventDefault();
+    e.stopPropagation();
+    this._nextCardToken = index;
+    this.setState({
+      isOpen: true,
+      valueToken: index,
+    });
+  }
+  onTokenChange(e, index) {
+    const { tokens, inputValue } = this.state;
+    const newWord = e.target.value;
+    const nextPosition = TextField.getTotalLength(
+      newWord.slice(e.target.selectionStart),
+      TextField.getTokensText(tokens.slice(index + 1)),
+      this.state.inputValue,
+    );
+
+    this.applyTokens(
+      [
+        ...tokens.slice(0, index),
+        {
+          ...tokens[index],
+          word: newWord,
+        },
+        ...tokens.slice(index + 1),
+      ],
+      inputValue,
+      nextPosition,
+    );
+  }
+  onTokenFocus(e) {
+    const valueToken = this.valueTokens.indexOf(e.target);
+    if (this.state.valueToken !== valueToken) {
+      this.setState({
+        valueToken,
+      });
+    }
+  }
+  async onBlur(e) {
+    if (this.state.valueToken !== undefined) {
+      return;
+    }
+    if (this.card) {
+      return;
+    }
+    if (this.valueTokens.includes(e.relatedTarget)) {
+      return;
+    }
+    if (e.relatedTarget === this.input) {
+      return;
+    }
+    if (this.props.onBlur) {
+      this.props.onBlur(e);
+    }
+    this.closeTextField();
+  }
+  onFocus(e) {
+    if (this.props.onFocus) {
+      this.props.onFocus(e);
+    }
+    this.setState({ valueToken: undefined });
+    this.enterTextField(e);
+  }
+
+  onPageClick(evt) {
+    if (!this.state.isOpen) {
+      return;
+    }
+    const isClickWithinTextFieldBox = this.area.contains(evt.target);
+    const isClickWithinCardBox =
+      document.body.contains(this.card) && this.card && this.card.contains(evt.target);
+
+    if (!isClickWithinTextFieldBox && !isClickWithinCardBox) {
+      this.closeTextField();
+      this.input.blur();
+    }
+  }
+  onShowPasswordClick(e) {
+    e.stopPropagation();
+    this.setState({ isPasswordVisible: !this.state.isPasswordVisible });
+  }
+  onKeyDown(e) {
+    const { keyCode, shiftKey } = e.nativeEvent;
+    const isSelectionAtStart = TextField.isSelectionAtStart(e.target);
+    const isSelectionAtEnd = TextField.isSelectionAtEnd(e.target);
+    const isSelectionAfterFirstChar = TextField.isSelectionAfterFirstChar(e.target);
+    const isSelectionBeforeLastChar = TextField.isSelectionBeforeLastChar(e.target);
+    const isMultiSelection = TextField.isMultiSelection(e.target);
+    const isInput = e.target === this.input;
+    const { valueToken, tokens } = this.state;
+
+    if (keyCode === keyCodes.KEY_BACK_SPACE && isMultiSelection) {
+      return;
+    }
+
+    if (keyCode === keyCodes.KEY_BACK_SPACE && isSelectionAtStart) {
+      e.preventDefault();
+      if (!tokens.length || valueToken === 0) {
+        return;
+      }
+      const lastToken = isInput ? tokens.length - 1 : valueToken - 1;
+      if (tokens[lastToken].isCardable) {
+        this.deleteToken(lastToken);
+      } else {
+        this.deleteTokenLastChar(lastToken);
+      }
+      return;
+    }
+
+    if (keyCode === keyCodes.KEY_BACK_SPACE && isSelectionAtEnd && !isInput) {
+      if (tokens[valueToken].isCardable) {
+        e.preventDefault();
+        this.deleteToken(valueToken);
+        return;
+      }
+    }
+
+    if (keyCode === keyCodes.KEY_BACK_SPACE && isSelectionAfterFirstChar && !isInput) {
+      e.preventDefault();
+      this.deleteTokenFirstChar(this.state.valueToken);
+      return;
+    }
+
+    if (keyCode === keyCodes.KEY_TAB) {
+      e.preventDefault();
+      this.leaveTextField(!shiftKey);
+      return;
+    }
+
+    if (keyCode === keyCodes.KEY_RETURN) {
+      e.preventDefault();
+      if (this.props.buttonText) {
+        this.onButtonClick(e);
+      } else {
+        this.leaveTextField(!shiftKey);
+      }
+    }
+
+    if (keyCode === keyCodes.KEY_LEFT && isSelectionAtStart && this.state.valueToken !== 0) {
+      e.preventDefault();
+      this.goPrevToken(e.target);
+    }
+
+    if (keyCode === keyCodes.KEY_RIGHT && isSelectionBeforeLastChar && !isInput) {
+      e.preventDefault();
+      this.goNextToken(e.target);
+    }
+  }
+  closeTextField() {
+    this.setState({ isOpen: false, valueToken: undefined });
+  }
+  leaveTextField(next) {
+    const nextInput = utils.getNextFocusableElement(this.input, next);
+    if (nextInput === this.input) {
+      return;
+    } else if (!this.card || !this.card.contains(nextInput)) {
+      this.closeTextField();
+    }
+    utils.focusNextFocusableElement(this.input, next);
+  }
+  enterTextField() {
+    if (this.props.disabled) {
+      this.leaveTextField();
+      return;
+    }
+    if (!this.state.isOpen) {
+      this.setState({ isOpen: true });
+    }
+  }
+  deleteToken(index) {
+    const { tokens, inputValue } = this.state;
+    this.applyTokens(
+      [...tokens.slice(0, index), ...tokens.slice(index + 1)],
+      inputValue,
+      TextField.getTotalLength(TextField.getTokensText(tokens.slice(index + 1)), inputValue),
+    );
+  }
+  deleteTokenFirstChar(index) {
+    const { tokens, inputValue } = this.state;
+    const word = tokens[index].word.slice(1);
+    const nextPosition = TextField.getTotalLength(
+      word,
+      TextField.getTokensText(tokens.slice(index + 1)),
+      inputValue,
+    );
+
+    this.applyTokens(
+      [...tokens.slice(0, index), { ...tokens[index], word }, ...tokens.slice(index + 1)],
+      inputValue,
+      nextPosition,
+    );
+  }
+  deleteTokenLastChar(index) {
+    const { tokens, inputValue } = this.state;
+    const word = tokens[index].word.slice(0, -1);
+    const nextPosition = TextField.getTotalLength(
+      TextField.getTokensText(tokens.slice(index + 1)),
+      inputValue,
+    );
+
+    this.applyTokens(
+      [...tokens.slice(0, index), { ...tokens[index], word }, ...tokens.slice(index + 1)],
+      inputValue,
+      nextPosition,
+    );
+  }
+  applyTokens(nextTokens, nextInputValue, nextRightPosition) {
+    const nextFullValue = TextField.getFullValue(nextTokens, nextInputValue);
+    const { tokens, inputValue } = TextField.getTokensAndInput(
+      nextFullValue,
+      this.props.tokenDelimiters,
+    );
+
+    let nextCardToken = this.state.valueToken;
+    let nextPosition;
+    if (nextRightPosition !== undefined) {
+      ({ nextCardToken, nextPosition } = TextField.getNextPosition(
+        tokens,
+        inputValue,
+        nextRightPosition,
+      ));
+    }
+
+    if (nextPosition !== undefined) {
+      this._nextCardToken = nextCardToken;
+      this._nextPosition = nextPosition;
+    }
+
+    this.setState(
+      {
+        inputValue,
+        tokens,
+        valueToken: tokens.length > nextCardToken ? nextCardToken : undefined,
+      },
+      () => {
+        if (this.props.onChange) {
+          let onChangeValue = nextFullValue;
+
+          if (this.props.type === 'number') {
+            onChangeValue = parseFloat(onChangeValue);
+            if (Number.isNaN(onChangeValue)) {
+              onChangeValue = undefined;
+            }
+          }
+          this.props.onChange(onChangeValue);
+        }
+      },
+    );
+  }
+  goPrevToken(target) {
+    let valueToken;
+    if (target === this.input) {
+      valueToken = this.valueTokens.length - 1;
+    } else if (this.state.valueToken > 0) {
+      valueToken = this.state.valueToken - 1;
+    }
+    this.afterTokenSelection(valueToken, false);
+  }
+  goNextToken(target) {
+    let valueToken;
+    if (target === this.input) {
+      return;
+    } else if (this.state.valueToken === this.state.tokens.length - 1) {
+      valueToken = undefined;
+    } else if (this.state.valueToken !== undefined) {
+      valueToken = this.state.valueToken + 1;
+    }
+    this.afterTokenSelection(valueToken, true);
+  }
+  afterTokenSelection(valueToken, isNext) {
+    this._nextCardToken = valueToken;
+    this._nextPosition =
+      isNext || valueToken === undefined ? 0 : this.state.tokens[valueToken].word.length - 1;
+    this.setState({
+      valueToken,
+    });
+  }
   render() {
     this.card = null;
     this.valueTokens = [];
@@ -388,7 +706,7 @@ class TextField extends PureComponent {
       size === 's' && 'mb-input--small',
       size === 'm' && 'mb-input--medium',
       size === 'l' && 'mb-input--large',
-
+      /* eslint-disable */
       isOpen &&
         'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
@@ -399,6 +717,7 @@ class TextField extends PureComponent {
       required &&
         !hasValue &&
         'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
+      /* eslint-enable */
     ]);
 
     let passwordToggle = null;

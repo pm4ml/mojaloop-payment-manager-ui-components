@@ -1,10 +1,10 @@
-@import './vars/background.scss';
-@import './vars/border.scss';
-@import './vars/colors.scss';
-@import './vars/fonts.scss';
-@import './vars/general.scss';
-@import './vars/shadow.scss';
-@import './vars/transitions.scss';
+@use 'vars/background.scss';
+@use 'vars/border.scss';
+@use 'vars/colors.scss';
+@use 'vars/fonts.scss';
+@use 'vars/general.scss';
+@use 'vars/shadow.scss';
+@use 'vars/transitions.scss';
 
-@import './items/input.scss';
-@import './items/element.scss';
+@use 'items/input.scss';
+@use 'items/element.scss';
