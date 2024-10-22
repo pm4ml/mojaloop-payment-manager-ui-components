@@ -144,13 +144,13 @@ jobs:
   # Vulnerability scan using OWASP Dependency-Check
   Vulnerability Test:
     docker:
-      - image: owasp/dependency-check:latest
+    - image: owasp/dependency-check:latest
     steps:
       - checkout
       - run:
-          name: Run OWASP Dependency-Check
+          name: Run OWASP Dependency-Check with NVD API Key
           command: |
-            /usr/share/dependency-check/bin/dependency-check.sh --project "$CIRCLE_PROJECT_REPONAME" --scan ./ --format "HTML" --out ./dependency-check-report.html
+            /usr/share/dependency-check/bin/dependency-check.sh --project "$CIRCLE_PROJECT_REPONAME" --scan ./ --format "HTML" --out ./dependency-check-report.html --nvdApiKey $NVD_API_KEY
       - store_artifacts:
           path: ./dependency-check-report.html
           destination: dependency-check-report.html
