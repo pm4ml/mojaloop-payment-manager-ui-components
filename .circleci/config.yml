@@ -1,42 +1,9 @@
-# CircleCI v2.1 Config
 version: 2.1
 
-##
-# orbs
-#
-# Orbs used in this pipeline
-###
 orbs:
   docker: circleci/docker@2.6.0
-  slack: circleci/slack@4.12.5 # Ref: https://github.com/mojaloop/ci-config/tree/main/slack-templates
+  slack: circleci/slack@4.12.5
 
-##
-# defaults
-#
-# YAML defaults templates, in alphabetical order
-##
-defaults_Dependencies: &defaults_Dependencies |
-  apk --no-cache add bash
-  apk --no-cache add git
-  apk --no-cache add ca-certificates
-  apk --no-cache add curl
-  apk --no-cache add openssh-client
-  apk add --no-cache -t build-dependencies make gcc g++ python3 libtool autoconf automake jq
-  apk add --no-cache -t openssl ncurses coreutils libgcc linux-headers grep util-linux binutils findutils
-  npm install -g node-gyp
-
-defaults_machine_Dependencies: &defaults_machine_Dependencies |
-  sudo apt update
-  sudo apt install -y docker
-  sudo apt install -y docker-compose
-  sudo apt install -y musl-dev
-  sudo apt install -y build-essential
-
-##
-# Executors
-#
-# CircleCI Executors
-##
 executors:
   default-docker:
     working_directory: &WORKING_DIR /home/circleci/project/git
@@ -48,18 +15,21 @@ executors:
     machine:
       image: ubuntu-2204:2023.04.2 # Ref: https://circleci.com/developer/machine/image/ubuntu-2204
 
-##
-# Jobs
-#
-# A map of CircleCI jobs
-##
 jobs:
   Setup:
     executor: default-docker
     steps:
       - run:
           name: Install general dependencies
-          command: *defaults_Dependencies
+          command: |
+            apk --no-cache add bash
+            apk --no-cache add git
+            apk --no-cache add ca-certificates
+            apk --no-cache add curl
+            apk --no-cache add openssh-client
+            apk add --no-cache -t build-dependencies make gcc g++ python3 libtool autoconf automake jq
+            apk add --no-cache -t openssl ncurses coreutils libgcc linux-headers grep util-linux binutils findutils
+            npm install -g node-gyp
       - checkout
       - run:
           name: Install dependencies (using yarn install)
@@ -77,11 +47,19 @@ jobs:
     steps:
       - run:
           name: Install general dependencies
-          command: *defaults_Dependencies
+          command: |
+            apk --no-cache add bash
+            apk --no-cache add git
+            apk --no-cache add ca-certificates
+            apk --no-cache add curl
+            apk --no-cache add openssh-client
+            apk add --no-cache -t build-dependencies make gcc g++ python3 libtool autoconf automake jq
+            apk add --no-cache -t openssl ncurses coreutils libgcc linux-headers grep util-linux binutils findutils
+            npm install -g node-gyp
       - checkout
       - restore_cache:
           keys:
-          - dependency-cache-v2-{{ checksum "yarn.lock" }}
+            - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Execute unit tests
           command: yarn test
@@ -120,7 +98,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - dependency-cache-v2-{{ checksum "yarn.lock" }}
+            - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Execute linting
           command: yarn lint
@@ -170,7 +148,30 @@ jobs:
           paths:
             - ./docker-image.tar
 
-## Workflows
+  Publish:
+    executor: default-docker
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-v2-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run:
+          name: Build package
+          command: yarn build
+      - run:
+          name: Publish to NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+            npm publish --access public
+          environment:
+            NPM_TOKEN: $NPM_TOKEN
+      - slack/notify:
+          event: always
+          template: basic_success
+
 workflows:
   version: 2
   build_and_test:
@@ -215,3 +216,12 @@ workflows:
           context: pm4ml-ci
           requires:
             - Lint
+      - Publish:
+          context: pm4ml-ci
+          requires:
+            - Build
+          filters:
+            branches:
+              only:
+                - main
+                - release/*
