@@ -134,8 +134,9 @@ jobs:
           name: Install license-checker
           command: npm install -g license-checker
       - run:
-          name: Run license-checker with output
-          command: license-checker --json > license-audit-report.json
+          name: Run license-checker and check all dependencies
+          command: |
+            license-checker --production --json > license-audit-report.json
       - store_artifacts:
           path: ./license-audit-report.json
           destination: license-audit-report.json
