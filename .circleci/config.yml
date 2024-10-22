@@ -54,7 +54,7 @@ executors:
 # A map of CircleCI jobs
 ##
 jobs:
-  setup:
+  Setup:
     executor: default-docker
     steps:
       - run:
@@ -72,7 +72,7 @@ jobs:
           paths:
             - node_modules
 
-  test-unit:
+  Unit Tests:
     executor: default-docker
     steps:
       - run:
@@ -114,7 +114,7 @@ jobs:
       - store_artifacts:
           path: /home/circleci/project/git/junit.xml
 
-  lint:
+  Lint:
     executor: default-docker
     steps:
       - checkout
@@ -126,7 +126,7 @@ jobs:
           command: yarn lint
 
   # Consolidated License Audit using license-checker
-  license-audit:
+  License Audit:
     executor: default-docker
     steps:
       - checkout
@@ -141,7 +141,7 @@ jobs:
           destination: license-audit-report.json
 
   # Vulnerability scan using OWASP Dependency-Check
-  vulnerability:
+  Vulnerability Test:
     docker:
       - image: owasp/dependency-check:latest
     steps:
@@ -154,7 +154,7 @@ jobs:
           path: ./dependency-check-report.html
           destination: dependency-check-report.html
 
-  build:
+  Build:
     executor: default-machine
     steps:
       - checkout
