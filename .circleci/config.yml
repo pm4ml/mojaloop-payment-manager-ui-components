@@ -32,12 +32,6 @@ defaults_machine_Dependencies: &defaults_machine_Dependencies |
   sudo apt install -y musl-dev
   sudo apt install -y build-essential
 
-defaults_license_scanner: &defaults_license_scanner
-  name: Install and set up license-scanner
-  command: |
-    git clone https://github.com/mojaloop/license-scanner /tmp/license-scanner
-    cd /tmp/license-scanner && make build default-files set-up
-
 ##
 # Executors
 #
@@ -131,22 +125,34 @@ jobs:
           name: Execute linting
           command: yarn lint
 
-  audit-licenses:
+  # Consolidated License Audit using license-checker
+  license-audit:
     executor: default-docker
     steps:
-      - run:
-          name: Install general dependencies
-          command: *defaults_Dependencies
-      - run:
-          <<: *defaults_license_scanner
       - checkout
-      - restore_cache:
-          key: dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
-          name: Run the license-scanner
-          command: cd /tmp/license-scanner && pathToRepo=$CIRCLE_WORKING_DIRECTORY make run
+          name: Install license-checker
+          command: npm install -g license-checker
+      - run:
+          name: Run license-checker with output
+          command: license-checker --json > license-audit-report.json
       - store_artifacts:
-          path: /tmp/license-scanner/results
+          path: ./license-audit-report.json
+          destination: license-audit-report.json
+
+  # Vulnerability scan using OWASP Dependency-Check
+  vulnerability:
+    docker:
+      - image: owasp/dependency-check:latest
+    steps:
+      - checkout
+      - run:
+          name: Run OWASP Dependency-Check
+          command: |
+            dependency-check.sh --project "My Project" --scan ./ --format "HTML" --out ./dependency-check-report.html
+      - store_artifacts:
+          path: ./dependency-check-report.html
+          destination: dependency-check-report.html
 
   build:
     executor: default-machine
@@ -165,40 +171,7 @@ jobs:
           paths:
             - ./docker-image.tar
 
-  # Vulnerability scan using OWASP Dependency-Check
-  vulnerability:
-    docker:
-      - image: owasp/dependency-check:latest
-    steps:
-      - checkout
-      - run:
-          name: Run OWASP Dependency-Check
-          command: |
-            dependency-check.sh --project "My Project" --scan ./ --format "HTML" --out ./dependency-check-report.html
-      - store_artifacts:
-          path: ./dependency-check-report.html
-          destination: dependency-check-report.html
-
-  # License Audit using license-checker
-  license-audit:
-    executor: default-docker
-    steps:
-      - checkout
-      - run:
-          name: Install license-checker
-          command: npm install -g license-checker
-      - run:
-          name: Run license-checker
-          command: license-checker --json > license-audit-report.json
-      - store_artifacts:
-          path: ./license-audit-report.json
-          destination: license-audit-report.json
-
-##
-# Workflows
-#
-# CircleCI Workflow config
-##
+## Workflows
 workflows:
   version: 2
   build_and_test:
@@ -231,29 +204,17 @@ workflows:
                 - /feature*/
                 - /bugfix*/
                 - /hotfix*/
-      - audit-licenses:
+      - license-audit:  # Replaced audit-licenses with license-audit
           context: pm4ml-ci
           requires:
             - setup
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
-      - license-audit:  # Added License Audit job
-          context: pm4ml-ci
-          requires:
-            - setup
-      - vulnerability:  # Added Vulnerability scan job
+      - vulnerability:  # Vulnerability scan job added
           context: pm4ml-ci
           requires:
             - setup
       - build:
           context: pm4ml-ci
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
+          requires:
+            - lint
+            - license-audit
+            - vulnerability
