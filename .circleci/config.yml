@@ -126,7 +126,7 @@ jobs:
           command: yarn lint
 
   # Consolidated License Audit using license-checker
-  LLicense Audit:
+  License Audit:
     executor: default-docker
     steps:
       - checkout
@@ -138,7 +138,7 @@ jobs:
       - store_artifacts:
           path: ./license-audit-report.json
           destination: license-audit-report.json
-          
+
   # Vulnerability scan using OWASP Dependency-Check
   Vulnerability Test:
     docker:
