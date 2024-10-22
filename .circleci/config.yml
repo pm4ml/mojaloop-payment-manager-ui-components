@@ -1,12 +1,20 @@
 # CircleCI v2.1 Config
 version: 2.1
 
-## Orbs
+##
+# orbs
+#
+# Orbs used in this pipeline
+###
 orbs:
   docker: circleci/docker@2.6.0
-  slack: circleci/slack@4.12.5
+  slack: circleci/slack@4.12.5 # Ref: https://github.com/mojaloop/ci-config/tree/main/slack-templates
 
-## Defaults
+##
+# defaults
+#
+# YAML defaults templates, in alphabetical order
+##
 defaults_Dependencies: &defaults_Dependencies |
   apk --no-cache add bash
   apk --no-cache add git
@@ -24,7 +32,17 @@ defaults_machine_Dependencies: &defaults_machine_Dependencies |
   sudo apt install -y musl-dev
   sudo apt install -y build-essential
 
-## Executors
+defaults_license_scanner: &defaults_license_scanner
+  name: Install and set up license-scanner
+  command: |
+    git clone https://github.com/mojaloop/license-scanner /tmp/license-scanner
+    cd /tmp/license-scanner && make build default-files set-up
+
+##
+# Executors
+#
+# CircleCI Executors
+##
 executors:
   default-docker:
     working_directory: &WORKING_DIR /home/circleci/project/git
@@ -36,7 +54,11 @@ executors:
     machine:
       image: ubuntu-2204:2023.04.2 # Ref: https://circleci.com/developer/machine/image/ubuntu-2204
 
-## Jobs
+##
+# Jobs
+#
+# A map of CircleCI jobs
+##
 jobs:
   setup:
     executor: default-docker
@@ -46,7 +68,7 @@ jobs:
           command: *defaults_Dependencies
       - checkout
       - run:
-          name: Install dependencies (using `yarn install`)
+          name: Install dependencies (using yarn install)
           command: yarn install --frozen-lockfile
       - run:
           name: Delete build dependencies
@@ -55,6 +77,93 @@ jobs:
           key: dependency-cache-v2-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+
+  test-unit:
+    executor: default-docker
+    steps:
+      - run:
+          name: Install general dependencies
+          command: *defaults_Dependencies
+      - checkout
+      - restore_cache:
+          keys:
+          - dependency-cache-v2-{{ checksum "yarn.lock" }}
+      - run:
+          name: Execute unit tests
+          command: yarn test
+      - store_test_results:
+          path: /home/circleci/project/git/
+      - store_artifacts:
+          path: /home/circleci/project/git/junit.xml
+
+  test-integration:
+    executor: default-machine
+    steps:
+      - checkout
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-uname -s-uname -m > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - run:
+          name: Start docker-compose
+          command: docker-compose -f docker-compose.yml -f docker-compose.integration.yml up -d
+      - run:
+          name: Execute integration tests
+          command: docker exec -it scheme-adapter-int sh -c 'yarn run test:int'
+      - run:
+          name: Copy results from docker
+          command: docker cp scheme-adapter-int:/junit.xml .
+      - store_test_results:
+          path: /home/circleci/project/git
+      - store_artifacts:
+          path: /home/circleci/project/git/junit.xml
+
+  lint:
+    executor: default-docker
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - dependency-cache-v2-{{ checksum "yarn.lock" }}
+      - run:
+          name: Execute linting
+          command: yarn lint
+
+  audit-licenses:
+    executor: default-docker
+    steps:
+      - run:
+          name: Install general dependencies
+          command: *defaults_Dependencies
+      - run:
+          <<: *defaults_license_scanner
+      - checkout
+      - restore_cache:
+          key: dependency-cache-v2-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run the license-scanner
+          command: cd /tmp/license-scanner && pathToRepo=$CIRCLE_WORKING_DIRECTORY make run
+      - store_artifacts:
+          path: /tmp/license-scanner/results
+
+  build:
+    executor: default-machine
+    steps:
+      - checkout
+      - run:
+          name: Build Docker local image
+          command: |
+            echo "Building Docker image: local"
+            docker build -t $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local .
+      - run:
+          name: Save docker image to workspace
+          command: docker save -o /tmp/docker-image.tar $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - ./docker-image.tar
 
   # Vulnerability scan using OWASP Dependency-Check
   vulnerability:
@@ -85,74 +194,66 @@ jobs:
           path: ./license-audit-report.json
           destination: license-audit-report.json
 
-  test-unit:
-    executor: default-docker
-    steps:
-      - run:
-          name: Install general dependencies
-          command: *defaults_Dependencies
-      - checkout
-      - restore_cache:
-          keys:
-          - dependency-cache-v2-{{ checksum "yarn.lock" }}
-      - run:
-          name: Execute unit tests
-          command: yarn test
-      - store_test_results:
-          path: /home/circleci/project/git/
-      - store_artifacts:
-          path: /home/circleci/project/git/junit.xml
-
-  test-integration:
-    executor: default-machine
-    steps:
-      - checkout
-      - run:
-          name: Install Docker Compose
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - run:
-          name: Start docker-compose
-          command: docker-compose -f docker-compose.yml -f docker-compose.integration.yml up -d
-      - run:
-          name: Execute integration tests
-          command: docker exec -it scheme-adapter-int sh -c 'yarn run test:int'
-      - run:
-          name: Copy results from docker
-          command: docker cp scheme-adapter-int:/junit.xml .
-      - store_test_results:
-          path: /home/circleci/project/git
-      - store_artifacts:
-          path: /home/circleci/project/git/junit.xml
-
-## Workflows
+##
+# Workflows
+#
+# CircleCI Workflow config
+##
 workflows:
   version: 2
   build_and_test:
     jobs:
       - setup:
           context: pm4ml-ci
+          filters:
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
+                - /hotfix*/
       - test-unit:
           context: pm4ml-ci
           requires:
             - setup
+          filters:
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
+                - /hotfix*/
       - lint:
           context: pm4ml-ci
           requires:
             - setup
+          filters:
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
+                - /hotfix*/
       - audit-licenses:
           context: pm4ml-ci
           requires:
             - setup
+          filters:
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
+                - /hotfix*/
       - license-audit:  # Added License Audit job
           context: pm4ml-ci
           requires:
             - setup
-      - vulnerability:
+      - vulnerability:  # Added Vulnerability scan job
           context: pm4ml-ci
           requires:
             - setup
       - build:
           context: pm4ml-ci
+          filters:
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
+                - /hotfix*/
