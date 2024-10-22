@@ -224,5 +224,4 @@ workflows:
             branches:
               only:
                 - master
-                - main
                 - release/*
