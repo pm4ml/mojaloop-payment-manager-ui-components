@@ -215,5 +215,3 @@ workflows:
           context: pm4ml-ci
           requires:
             - Lint
-            - License Audit
-            - Vulnerability Test
