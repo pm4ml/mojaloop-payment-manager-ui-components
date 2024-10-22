@@ -1,12 +1,12 @@
-import babelParser from '@babel/eslint-parser';
-import eslintConfigAirbnbBase from 'eslint-config-airbnb-base';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import reactPlugin from 'eslint-plugin-react';
-import jestPlugin from 'eslint-plugin-jest';
-import importPlugin from 'eslint-plugin-import';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+const babelParser = require('@babel/eslint-parser');
+const eslintConfigAirbnbBase = require('eslint-config-airbnb-base');
+const eslintConfigPrettier = require('eslint-config-prettier');
+const reactPlugin = require('eslint-plugin-react');
+const jestPlugin = require('eslint-plugin-jest');
+const importPlugin = require('eslint-plugin-import');
+const jsxA11yPlugin = require('eslint-plugin-jsx-a11y');
 
-export default [
+module.exports = [
   {
     files: ['**/*.js', '**/*.jsx'], // Apply to JavaScript and JSX files
     languageOptions: {
@@ -19,11 +19,9 @@ export default [
         },
         requireConfigFile: false,
       },
-    },
-    environment: {
-      browser: true,
-      node: true,
-      es6: true,
+      globals: {
+        // Define global variables if needed (e.g., jest, window, document)
+      },
     },
     plugins: {
       react: reactPlugin,

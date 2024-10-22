@@ -3,7 +3,7 @@ import React from 'react';
 
 import Navbar from '../../components/Navbar';
 
-/* eslint-disable */
+ 
 const userJson = `{
   "name": "Ivan",
   "username": "Ivan",
@@ -160,7 +160,7 @@ const getOrganizations = async companyId =>
     );
     setTimeout(() => resolve(availableOrganizations), 2500);
   });
-/* eslint-enable */
+ 
 
 class NavbarWrapper extends React.Component {
   static changeOrganization(organization) {

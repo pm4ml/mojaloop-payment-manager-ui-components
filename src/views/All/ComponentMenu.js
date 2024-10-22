@@ -1,5 +1,5 @@
 /* eslint no-console: "off" */
-/* eslint-disable */
+ 
 import React, { PureComponent } from 'react';
 import Row from '../../components/Row';
 import TextField from '../../components/TextField';
@@ -193,4 +193,4 @@ const TestMenu = () => (
 );
 
 export default TestMenu;
-/* eslint-enable */
+ 

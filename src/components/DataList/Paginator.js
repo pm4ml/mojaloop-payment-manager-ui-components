@@ -15,7 +15,7 @@ function Page({ content, selected, disabled, onClick }) {
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+     
     <div className={cl.join(' ')} onClick={onClick} disabled role="button">
       {content}
     </div>

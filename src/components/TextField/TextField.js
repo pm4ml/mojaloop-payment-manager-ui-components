@@ -106,7 +106,7 @@ class TextField extends PureComponent {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
     document.body.appendChild(tmp);
-    // eslint-disable-next-line
+     
     element.style.width = tmp.getBoundingClientRect().width + 3 + 'px';
     document.body.removeChild(tmp);
   }
@@ -706,7 +706,7 @@ class TextField extends PureComponent {
       size === 's' && 'mb-input--small',
       size === 'm' && 'mb-input--medium',
       size === 'l' && 'mb-input--large',
-      /* eslint-disable */
+       
       isOpen &&
         'mb-input--open mb-input__borders--open mb-input__background--open mb-input__shadow--open',
       disabled && 'mb-input--disabled mb-input__borders--disabled mb-input__background--disabled',
@@ -717,7 +717,7 @@ class TextField extends PureComponent {
       required &&
         !hasValue &&
         'mb-input--required mb-input__borders--required mb-input__background--required mb-input__shadow--required',
-      /* eslint-enable */
+       
     ]);
 
     let passwordToggle = null;
