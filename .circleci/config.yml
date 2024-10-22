@@ -70,6 +70,21 @@ jobs:
           path: ./dependency-check-report.html
           destination: dependency-check-report.html
 
+  # License Audit using license-checker
+  license-audit:
+    executor: default-docker
+    steps:
+      - checkout
+      - run:
+          name: Install license-checker
+          command: npm install -g license-checker
+      - run:
+          name: Run license-checker
+          command: license-checker --json > license-audit-report.json
+      - store_artifacts:
+          path: ./license-audit-report.json
+          destination: license-audit-report.json
+
   test-unit:
     executor: default-docker
     steps:
@@ -131,7 +146,11 @@ workflows:
           context: pm4ml-ci
           requires:
             - setup
-      - vulnerability:  # Renamed OWASP Dependency-Check job to Vulnerability
+      - license-audit:  # Added License Audit job
+          context: pm4ml-ci
+          requires:
+            - setup
+      - vulnerability:
           context: pm4ml-ci
           requires:
             - setup
