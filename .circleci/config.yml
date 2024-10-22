@@ -187,7 +187,7 @@ workflows:
       - Unit Tests:
           context: pm4ml-ci
           requires:
-            - setup
+            - Setup
           filters:
             branches:
               ignore:
@@ -197,7 +197,7 @@ workflows:
       - Lint:
           context: pm4ml-ci
           requires:
-            - setup
+            - Setup
           filters:
             branches:
               ignore:
@@ -207,14 +207,14 @@ workflows:
       - License Audit:
           context: pm4ml-ci
           requires:
-            - setup
+            - Setup
       - Vulnerability Test: 
           context: pm4ml-ci
           requires:
-            - setup
+            - Setup
       - Build:
           context: pm4ml-ci
           requires:
-            - lint
-            - license-audit
-            - vulnerability
+            - Lint
+            - License Audit
+            - Vulnerability Test
