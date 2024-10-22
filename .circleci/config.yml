@@ -176,7 +176,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - setup:
+      - Setup:
           context: pm4ml-ci
           filters:
             branches:
@@ -184,17 +184,7 @@ workflows:
                 - /feature*/
                 - /bugfix*/
                 - /hotfix*/
-      - test-unit:
-          context: pm4ml-ci
-          requires:
-            - setup
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
-      - lint:
+      - Unit Tests:
           context: pm4ml-ci
           requires:
             - setup
@@ -204,15 +194,25 @@ workflows:
                 - /feature*/
                 - /bugfix*/
                 - /hotfix*/
-      - license-audit:  # Replaced audit-licenses with license-audit
+      - Lint:
           context: pm4ml-ci
           requires:
             - setup
-      - vulnerability:  # Vulnerability scan job added
+          filters:
+            branches:
+              ignore:
+                - /feature*/
+                - /bugfix*/
+                - /hotfix*/
+      - License Audit:
           context: pm4ml-ci
           requires:
             - setup
-      - build:
+      - Vulnerability Test: 
+          context: pm4ml-ci
+          requires:
+            - setup
+      - Build:
           context: pm4ml-ci
           requires:
             - lint
