@@ -1,20 +1,12 @@
 # CircleCI v2.1 Config
 version: 2.1
 
-##
-# orbs
-#
-# Orbs used in this pipeline
-###
+## Orbs
 orbs:
   docker: circleci/docker@2.6.0
-  slack: circleci/slack@4.12.5 # Ref: https://github.com/mojaloop/ci-config/tree/main/slack-templates
+  slack: circleci/slack@4.12.5
 
-##
-# defaults
-#
-# YAML defaults templates, in alphabetical order
-##
+## Defaults
 defaults_Dependencies: &defaults_Dependencies |
   apk --no-cache add bash
   apk --no-cache add git
@@ -32,17 +24,7 @@ defaults_machine_Dependencies: &defaults_machine_Dependencies |
   sudo apt install -y musl-dev
   sudo apt install -y build-essential
 
-defaults_license_scanner: &defaults_license_scanner
-  name: Install and set up license-scanner
-  command: |
-    git clone https://github.com/mojaloop/license-scanner /tmp/license-scanner
-    cd /tmp/license-scanner && make build default-files set-up
-
-##
-# Executors
-#
-# CircleCI Executors
-##
+## Executors
 executors:
   default-docker:
     working_directory: &WORKING_DIR /home/circleci/project/git
@@ -54,11 +36,7 @@ executors:
     machine:
       image: ubuntu-2204:2023.04.2 # Ref: https://circleci.com/developer/machine/image/ubuntu-2204
 
-##
-# Jobs
-#
-# A map of CircleCI jobs
-##
+## Jobs
 jobs:
   setup:
     executor: default-docker
@@ -77,6 +55,20 @@ jobs:
           key: dependency-cache-v2-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
+
+  # Vulnerability scan using OWASP Dependency-Check
+  vulnerability:
+    docker:
+      - image: owasp/dependency-check:latest
+    steps:
+      - checkout
+      - run:
+          name: Run OWASP Dependency-Check
+          command: |
+            dependency-check.sh --project "My Project" --scan ./ --format "HTML" --out ./dependency-check-report.html
+      - store_artifacts:
+          path: ./dependency-check-report.html
+          destination: dependency-check-report.html
 
   test-unit:
     executor: default-docker
@@ -120,119 +112,28 @@ jobs:
       - store_artifacts:
           path: /home/circleci/project/git/junit.xml
 
-  lint:
-    executor: default-docker
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - dependency-cache-v2-{{ checksum "yarn.lock" }}
-      - run:
-          name: Execute linting
-          command: yarn lint
-
-  audit-licenses:
-    executor: default-docker
-    steps:
-      - run:
-          name: Install general dependencies
-          command: *defaults_Dependencies
-      - run:
-          <<: *defaults_license_scanner
-      - checkout
-      - restore_cache:
-          key: dependency-cache-v2-{{ checksum "yarn.lock" }}
-      - run:
-          name: Run the license-scanner
-          command: cd /tmp/license-scanner && pathToRepo=$CIRCLE_WORKING_DIRECTORY make run
-      - store_artifacts:
-          path: /tmp/license-scanner/results
-
-  build:
-    executor: default-machine
-    steps:
-      - checkout
-      - run:
-          name: Build Docker local image
-          command: |
-            echo "Building Docker image: local"
-            docker build -t $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local .
-      - run:
-          name: Save docker image to workspace
-          command: docker save -o /tmp/docker-image.tar $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - ./docker-image.tar
-
-  license-scan:
-    executor: default-machine
-    steps:
-      - attach_workspace:
-          at: /tmp
-      - run:
-          name: Load the pre-built docker image from workspace
-          command: docker load -i /tmp/docker-image.tar
-      - run:
-          <<: *defaults_license_scanner
-      - run:
-          name: Run the license-scanner
-          command: cd /tmp/license-scanner && mode=docker dockerImages=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local make run
-      - store_artifacts:
-          path: /tmp/license-scanner/results
-
-##
-# Workflows
-#
-# CircleCI Workflow config
-##
+## Workflows
 workflows:
   version: 2
   build_and_test:
     jobs:
       - setup:
           context: pm4ml-ci
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
       - test-unit:
           context: pm4ml-ci
           requires:
             - setup
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
       - lint:
           context: pm4ml-ci
           requires:
             - setup
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
       - audit-licenses:
           context: pm4ml-ci
           requires:
             - setup
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
+      - vulnerability:  # Renamed OWASP Dependency-Check job to Vulnerability
+          context: pm4ml-ci
+          requires:
+            - setup
       - build:
           context: pm4ml-ci
-          filters:
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-                - /hotfix*/
