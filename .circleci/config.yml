@@ -45,17 +45,6 @@ jobs:
   Unit Tests:
     executor: default-docker
     steps:
-      - run:
-          name: Install general dependencies
-          command: |
-            apk --no-cache add bash
-            apk --no-cache add git
-            apk --no-cache add ca-certificates
-            apk --no-cache add curl
-            apk --no-cache add openssh-client
-            apk add --no-cache -t build-dependencies make gcc g++ python3 libtool autoconf automake jq
-            apk add --no-cache -t openssl ncurses coreutils libgcc linux-headers grep util-linux binutils findutils
-            npm install -g node-gyp
       - checkout
       - restore_cache:
           keys:
@@ -133,21 +122,19 @@ jobs:
           destination: dependency-check-report.html
 
   Build:
-    executor: default-machine
+    executor: default-docker
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
-          name: Build Docker local image
-          command: |
-            echo "Building Docker image: local"
-            docker build -t $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local .
-      - run:
-          name: Save docker image to workspace
-          command: docker save -o /tmp/docker-image.tar $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:local
+          name: Build the project
+          command: yarn build
       - persist_to_workspace:
-          root: /tmp
+          root: .
           paths:
-            - ./docker-image.tar
+            - ./dist  # Replace with your actual build directory
 
   Publish:
     executor: default-docker
@@ -157,7 +144,7 @@ jobs:
           keys:
             - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - attach_workspace:
-          at: /tmp  # Attach workspace to reuse build artifacts
+          at: /home/circleci/project/git
       - run:
           name: Publish to NPM
           command: |
