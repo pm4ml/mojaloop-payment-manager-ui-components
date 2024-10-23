@@ -108,11 +108,12 @@ jobs:
     executor: default-docker
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Run Yarn license audit
-          command: |
-            yarn install
-            yarn licenses list --json > license-audit-report.json
+          command: yarn licenses list --json > license-audit-report.json
       - store_artifacts:
           path: ./license-audit-report.json
           destination: license-audit-report.json
@@ -148,29 +149,25 @@ jobs:
           paths:
             - ./docker-image.tar
 
-  Publish:
-    executor: default-docker
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - dependency-cache-v2-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install dependencies
-          command: yarn install
-      - run:
-          name: Build package
-          command: yarn build
-      - run:
-          name: Publish to NPM
-          command: |
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-            npm publish --access public
-          environment:
-            NPM_TOKEN: $NPM_TOKEN
-      - slack/notify:
-          event: always
-          template: basic_success
+    Publish:
+      executor: default-docker
+      steps:
+        - checkout
+        - restore_cache:
+            keys:
+              - dependency-cache-v2-{{ checksum "yarn.lock" }}
+        - attach_workspace:
+            at: /tmp  # Attach workspace to reuse build artifacts
+        - run:
+            name: Publish to NPM
+            command: |
+              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+              npm publish --access public
+            environment:
+              NPM_TOKEN: $NPM_TOKEN
+        - slack/notify:
+            event: always
+            template: basic_success
 
 workflows:
   version: 2
