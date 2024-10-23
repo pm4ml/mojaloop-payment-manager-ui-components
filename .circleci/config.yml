@@ -103,7 +103,6 @@ jobs:
           name: Execute linting
           command: yarn lint
 
-  # Consolidated License Audit using license-checker
   License Audit:
     executor: default-docker
     steps:
@@ -118,10 +117,9 @@ jobs:
           path: ./license-audit-report.json
           destination: license-audit-report.json
 
-  # Vulnerability scan using OWASP Dependency-Check
   Vulnerability Test:
     docker:
-    - image: owasp/dependency-check:latest
+      - image: owasp/dependency-check:latest
     steps:
       - checkout
       - run:
@@ -132,7 +130,24 @@ jobs:
           path: ./dependency-check-report.html
           destination: dependency-check-report.html
 
+  # New Build job to run the yarn build
   Build:
+    executor: default-docker
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-v2-{{ checksum "yarn.lock" }}
+      - run:
+          name: Build the project
+          command: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./dist  # Replace with your actual build output
+
+  # Renamed the old Build step to Docker Build
+  Docker Build:
     executor: default-machine
     steps:
       - checkout
@@ -209,14 +224,18 @@ workflows:
           context: pm4ml-ci
           requires:
             - Setup
-      - Build:
+      - Build:  
           context: pm4ml-ci
           requires:
             - Lint
-      - Publish:
+      - Docker Build: 
           context: pm4ml-ci
           requires:
             - Build
+      - Publish:
+          context: pm4ml-ci
+          requires:
+            - Docker Build
           filters:
             branches:
               only:
