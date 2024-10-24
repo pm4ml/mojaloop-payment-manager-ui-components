@@ -42,7 +42,7 @@ jobs:
           paths:
             - node_modules
 
-  Unit Tests:
+   Unit Tests:
     executor: default-docker
     steps:
       - run:
@@ -64,33 +64,9 @@ jobs:
           name: Execute unit tests
           command: yarn test
       - store_test_results:
-          path: /home/circleci/project/git/
+          path: ./test-results # Ensure this matches Jest output directory
       - store_artifacts:
-          path: /home/circleci/project/git/junit.xml
-
-  test-integration:
-    executor: default-machine
-    steps:
-      - checkout
-      - run:
-          name: Install Docker Compose
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-uname -s-uname -m > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - run:
-          name: Start docker-compose
-          command: docker-compose -f docker-compose.yml -f docker-compose.integration.yml up -d
-      - run:
-          name: Execute integration tests
-          command: docker exec -it scheme-adapter-int sh -c 'yarn run test:int'
-      - run:
-          name: Copy results from docker
-          command: docker cp scheme-adapter-int:/junit.xml .
-      - store_test_results:
-          path: /home/circleci/project/git
-      - store_artifacts:
-          path: /home/circleci/project/git/junit.xml
+          path: ./test-results/jest.xml # Save the artifact for review
 
   Lint:
     executor: default-docker

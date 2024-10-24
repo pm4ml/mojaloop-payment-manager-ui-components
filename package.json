@@ -38,7 +38,8 @@
     "access": "public"
   },
   "resolutions": {
-    "cheerio": "0.22.0"
+    "cheerio": "0.22.0",
+    "babel-plugin-lodash/@babel/types": "~7.20.0"
   },
   "dependencies": {
     "@babel/cli": "^7.21.0",
@@ -107,6 +108,7 @@
     "html-webpack-plugin": "^5.6.2",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-junit": "^16.0.0",
     "lorem-ipsum": "^2.0.4",
     "postcss-loader": "^7.3.4",
     "prettier": "^3.0.0",
