@@ -207,14 +207,10 @@ workflows:
           context: pm4ml-ci
           requires:
             - Lint
-      - Docker Build: 
-          context: pm4ml-ci
-          requires:
-            - Build
       - Publish:
           context: pm4ml-ci
           requires:
-            - Docker Build
+            - Build
           filters:
             branches:
               only:
