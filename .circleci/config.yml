@@ -36,9 +36,6 @@ jobs:
       - run:
           name: Delete build dependencies
           command: apk del build-dependencies
-      - run:
-          name: Set NPM registry
-          command: npm config set registry https://registry.npmjs.org/
       - save_cache:
           key: dependency-cache-v2-{{ checksum "yarn.lock" }}
           paths:
@@ -157,18 +154,19 @@ jobs:
       - restore_cache:
           name: Restore Build Cache
           keys:
-            - build-cache-{{ checksum "yarn.lock" }}  # Ensure this key is used for the build cache
+            - build-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: Check NPM registry
-          command: npm config get registry
+          name: Set NPM registry
+          command: npm config set registry https://registry.npmjs.org/
       - run:
           name: Check build cache contents
-          command: ls -la dist  # Verify if dist is available
+          command: ls -la dist
+      - run:
+          name: Check .npmrc File
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc && cat ~/.npmrc
       - run:
           name: Publish to NPM with verbose logging
-          command: |
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-            npm publish --access public --verbose
+          command: npm publish --access public --verbose
           environment:
             NPM_TOKEN: $NPM_TOKEN
 
