@@ -66,7 +66,7 @@ const LeftNav = () => (
     </div>
 
     <div className="Title-Bar">
-      <div className="Title-Text">PortX</div>
+      <div className="Title-Text">PM4ML</div>
     </div>
   </div>
 );
