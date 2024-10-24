@@ -89,11 +89,11 @@ jobs:
           keys:
             - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
-          name: Run Yarn license audit
-          command: yarn licenses list --json > license-audit-report.json
+          name: Run Yarn License HTML Report
+          command: yarn run licenses-html --output ./license-audit-report.html
       - store_artifacts:
-          path: ./license-audit-report.json
-          destination: license-audit-report.json
+          path: ./license-audit-report.html
+          destination: license-audit-report.html
 
   Vulnerability Test:
     docker:
