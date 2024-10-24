@@ -1,7 +1,6 @@
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-console.log('Setting up Enzyme with React 16 Adapter');
 Enzyme.configure({ adapter: new Adapter() });
 
 global.shallow = Enzyme.shallow;

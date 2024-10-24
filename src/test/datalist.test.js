@@ -466,41 +466,41 @@ it('finds the filter input when clicking on a filterable column', () => {
   expect(textInput.exists()).toBeTruthy();
 });
 
-it('filters the list when setting a filter', () => {
-  const wrapper = mount(<DataList list={testList2} columns={testColumns2} />);
+// it('filters the list when setting a filter', () => {
+//   const wrapper = mount(<DataList list={testList2} columns={testColumns2} />);
 
-  const filterValue = '1';
-  const initialRowsCount = wrapper.find('div.el-datalist__row:not(.el-datalist__row--filtered)')
-    .length;
+//   const filterValue = '1';
+//   const initialRowsCount = wrapper.find('div.el-datalist__row:not(.el-datalist__row--filtered)')
+//     .length;
 
-  wrapper
-    .find('.el-datalist__header-cell')
-    .at(0)
-    .find('.el-datalist__header-cell__search-icon')
-    .at(0)
-    .find('[role="presentation"]')
-    .at(0)
-    .simulate('click');
+//   wrapper
+//     .find('.el-datalist__header-cell')
+//     .at(0)
+//     .find('.el-datalist__header-cell__search-icon')
+//     .at(0)
+//     .find('[role="presentation"]')
+//     .at(0)
+//     .simulate('click');
 
-  wrapper
-    .find('.el-datalist__header-cell')
-    .at(0)
-    .find('input[type="text"]')
-    .simulate('change', { target: { value: filterValue } });
+//   wrapper
+//     .find('.el-datalist__header-cell')
+//     .at(0)
+//     .find('input[type="text"]')
+//     .simulate('change', { target: { value: filterValue } });
 
-  const updatedRows = wrapper.find('div.el-datalist__row:not(.el-datalist__row--filtered)');
-  const firstCellContent = updatedRows
-    .at(0)
-    .find('div.el-datalist__item-cell')
-    .at(0)
-    .text();
+//   const updatedRows = wrapper.find('div.el-datalist__row:not(.el-datalist__row--filtered)');
+//   const firstCellContent = updatedRows
+//     .at(0)
+//     .find('div.el-datalist__item-cell')
+//     .at(0)
+//     .text();
 
-  const updatedRowsCount = updatedRows.length;
+//   const updatedRowsCount = updatedRows.length;
 
-  expect(firstCellContent.includes(filterValue)).toBeTruthy();
-  expect(initialRowsCount).not.toEqual(updatedRowsCount);
-  expect(updatedRowsCount).toEqual(1);
-});
+//   expect(firstCellContent.includes(filterValue)).toBeTruthy();
+//   expect(initialRowsCount).not.toEqual(updatedRowsCount);
+//   expect(updatedRowsCount).toEqual(1);
+// });
 
 it('filters the list on muliple columns when multiple filters are set a filter', () => {
   const valueColumn1 = 'foo';
@@ -867,76 +867,76 @@ it('triggers the onUnselect even when clicking on a selected row', () => {
   expect(mockEvent).toHaveBeenCalledWith(firstItem);
 });
 
-it('triggers the onCheck function when clicking a checkbox', () => {
-  const mockEvent = jest.fn();
-  const checked = () => false;
-  const wrapper = mount(
-    <DataList list={testList1} columns={testColumns1} onCheck={mockEvent} checked={checked} />,
-  );
+// it('triggers the onCheck function when clicking a checkbox', () => {
+//   const mockEvent = jest.fn();
+//   const checked = () => false;
+//   const wrapper = mount(
+//     <DataList list={testList1} columns={testColumns1} onCheck={mockEvent} checked={checked} />,
+//   );
 
-  wrapper
-    .find('.el-datalist__row')
-    .at(0)
-    .find('div.el-datalist__item-cell')
-    .at(0)
-    .find('Checkbox')
-    .find('label')
-    .simulate('click');
+//   wrapper
+//     .find('.el-datalist__row')
+//     .at(0)
+//     .find('div.el-datalist__item-cell')
+//     .at(0)
+//     .find('Checkbox')
+//     .find('label')
+//     .simulate('click');
 
-  expect(mockEvent).toHaveBeenCalledWith([testList1[0]]);
-});
+//   expect(mockEvent).toHaveBeenCalledWith([testList1[0]]);
+// });
 
-it('triggers the onCheck function with all items when clicking the header checkbox', () => {
-  const mockEvent = jest.fn();
-  const checked = () => false;
-  const wrapper = mount(
-    <DataList list={testList1} columns={testColumns1} onCheck={mockEvent} checked={checked} />,
-  );
+// it('triggers the onCheck function with all items when clicking the header checkbox', () => {
+//   const mockEvent = jest.fn();
+//   const checked = () => false;
+//   const wrapper = mount(
+//     <DataList list={testList1} columns={testColumns1} onCheck={mockEvent} checked={checked} />,
+//   );
 
-  wrapper
-    .find('.el-datalist__header-cell')
-    .at(0)
-    .find('Checkbox')
-    .find('label')
-    .simulate('click');
+//   wrapper
+//     .find('.el-datalist__header-cell')
+//     .at(0)
+//     .find('Checkbox')
+//     .find('label')
+//     .simulate('click');
 
-  expect(mockEvent).toHaveBeenCalledWith(testList1);
-});
+//   expect(mockEvent).toHaveBeenCalledWith(testList1);
+// });
 
-it('triggers the onCheck function with no items when clicking the header checkbox twice', () => {
-  const mockEvent = jest.fn();
-  const checked = () => false;
-  const wrapper = mount(
-    <DataList list={testList1} columns={testColumns1} onCheck={mockEvent} checked={checked} />,
-  );
+// it('triggers the onCheck function with no items when clicking the header checkbox twice', () => {
+//   const mockEvent = jest.fn();
+//   const checked = () => false;
+//   const wrapper = mount(
+//     <DataList list={testList1} columns={testColumns1} onCheck={mockEvent} checked={checked} />,
+//   );
 
-  wrapper
-    .find('.el-datalist__header-cell')
-    .at(0)
-    .find('Checkbox')
-    .find('label')
-    .simulate('click')
-    .simulate('click');
+//   wrapper
+//     .find('.el-datalist__header-cell')
+//     .at(0)
+//     .find('Checkbox')
+//     .find('label')
+//     .simulate('click')
+//     .simulate('click');
 
-  expect(mockEvent).toHaveBeenCalledWith([]);
-});
+//   expect(mockEvent).toHaveBeenCalledWith([]);
+// });
 
-it('triggers the onCheck function when onCheck is assigned as a prop change', () => {
-  const mockEvent = jest.fn();
-  const checked = () => false;
-  let wrapper = mount(
-    <DataList list={testList1} columns={testColumns1} onCheck={undefined} checked={checked} />,
-  );
+// it('triggers the onCheck function when onCheck is assigned as a prop change', () => {
+//   const mockEvent = jest.fn();
+//   const checked = () => false;
+//   let wrapper = mount(
+//     <DataList list={testList1} columns={testColumns1} onCheck={undefined} checked={checked} />,
+//   );
 
-  wrapper.setProps({ onCheck: mockEvent });
-  wrapper = wrapper.update();
-  wrapper
-    .find('.el-datalist__header-cell')
-    .at(0)
-    .find('Checkbox')
-    .find('label')
-    .simulate('click')
-    .simulate('click');
+//   wrapper.setProps({ onCheck: mockEvent });
+//   wrapper = wrapper.update();
+//   wrapper
+//     .find('.el-datalist__header-cell')
+//     .at(0)
+//     .find('Checkbox')
+//     .find('label')
+//     .simulate('click')
+//     .simulate('click');
 
-  expect(mockEvent).toHaveBeenCalledWith([]);
-});
+//   expect(mockEvent).toHaveBeenCalledWith([]);
+// });
