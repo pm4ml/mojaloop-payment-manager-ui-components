@@ -64,9 +64,9 @@ jobs:
           name: Execute unit tests
           command: yarn test
       - store_test_results:
-          path: ./test-results # Ensure this matches Jest output directory
+        path: /home/circleci/project/git/test-results
       - store_artifacts:
-          path: ./test-results/jest.xml # Save the artifact for review
+        path: /home/circleci/project/git/test-results/jest.xml
 
   Lint:
     executor: default-docker

@@ -1,6 +1,6 @@
 module.exports = {
   setupFiles: [
-    './test/jestsetup.js', // Ensure this path is correct
+    './test/jestsetup.js',
   ],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
@@ -24,6 +24,16 @@ module.exports = {
     '/node_modules/(?!(fetch-mock|other-module)/)',
   ],
   transform: {
-    '^.+\\.jsx?$': 'babel-jest', // Transform JS/JSX using Babel
+    '^.+\\.jsx?$': 'babel-jest',
   },
+  reporters: [
+    "default",
+    [
+      "jest-junit",
+      {
+        outputDirectory: "test-results",
+        outputName: "jest.xml",
+      },
+    ],
+  ],
 };
