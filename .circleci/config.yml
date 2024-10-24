@@ -119,14 +119,13 @@ jobs:
           name: Build the project
           command: yarn build
       - run:
-          name: Check build output
-          command: ls -la dist  # Check the dist directory after build
+          name: Check dist directory after build
+          command: ls -la dist  # Verify dist exists
       - save_cache:
           key: build-cache-{{ checksum "yarn.lock" }}
           paths:
-            - dist/  # Cache the dist directory for later steps
+            - dist/  # Ensure the dist directory is cached
 
-  # Renamed the old Build step to Docker Build
   Docker Build:
     executor: default-machine
     steps:
@@ -149,15 +148,19 @@ jobs:
     steps:
       - checkout
       - restore_cache:
+          name: Restore Node Modules
           keys:
             - dependency-cache-v2-{{ checksum "yarn.lock" }}
-            - build-cache-{{ checksum "yarn.lock" }}  # Restore the cached dist directory
+      - restore_cache:
+          name: Restore Build Cache
+          keys:
+            - build-cache-{{ checksum "yarn.lock" }}  # Ensure this key is used for the build cache
       - run:
           name: Check NPM registry
           command: npm config get registry
       - run:
-          name: Check package contents
-          command: ls -la dist  # Check that the dist folder is available after cache restore
+          name: Check build cache contents
+          command: ls -la dist  # Verify if dist is available
       - run:
           name: Publish to NPM with verbose logging
           command: |
@@ -165,9 +168,6 @@ jobs:
             npm publish --access public --verbose
           environment:
             NPM_TOKEN: $NPM_TOKEN
-      - run:
-          name: Clear Yarn cache (optional)
-          command: yarn cache clean
 
 workflows:
   version: 2
