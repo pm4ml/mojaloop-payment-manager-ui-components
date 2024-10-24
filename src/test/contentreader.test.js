@@ -27,6 +27,7 @@ it('generates the correct line count', () => {
   expect(wrapper.find('.content-reader__lines__line-n')).toHaveLength(6);
 });
 
+// ToDo: Fix this test
 // it('applies the correct json className', async () => {
 //   const wrapper = mount(<ContentReader data={jsonString} />);
 //   const classNames = wrapper
@@ -51,6 +52,7 @@ it('generates the correct line count', () => {
 //   expect(classNames.includes('xml')).toBe(true);
 // });
 
+// ToDo: Fix this test
 // it('applies the correct shell className', async () => {
 //   const wrapper = mount(<ContentReader data={shellString} />);
 //   const classNames = wrapper

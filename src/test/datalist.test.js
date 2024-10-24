@@ -466,6 +466,7 @@ it('finds the filter input when clicking on a filterable column', () => {
   expect(textInput.exists()).toBeTruthy();
 });
 
+// ToDo: Fix this test
 // it('filters the list when setting a filter', () => {
 //   const wrapper = mount(<DataList list={testList2} columns={testColumns2} />);
 
