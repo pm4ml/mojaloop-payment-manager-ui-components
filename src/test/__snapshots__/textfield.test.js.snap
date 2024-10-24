@@ -3,13 +3,13 @@
 exports[`renders the textfield correctly when multiple props are set 1`] = `
 <ValidationWrapper
   active={false}
-  messages={Array []}
+  messages={[]}
 >
   <div
     className="input-textfield__component mb-input mb-input__borders mb-input__background mb-input__shadow mb-input--large"
     onClick={[Function]}
     role="presentation"
-    style={Object {}}
+    style={{}}
   >
     <div
       className="mb-input__content input-textfield__content"

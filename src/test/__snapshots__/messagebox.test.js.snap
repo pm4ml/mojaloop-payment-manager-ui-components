@@ -4,7 +4,7 @@ exports[`renders the button correctly when multiple props are set 1`] = `
 <div
   className="el el-message-box el-message-box--secondary el-message-box--inactive"
   style={
-    Object {
+    {
       "borderWidth": "2px",
       "padding": "10px",
     }
@@ -13,7 +13,7 @@ exports[`renders the button correctly when multiple props are set 1`] = `
   <div
     className="el-message-box__icon-box"
     style={
-      Object {
+      {
         "marginRight": "10px",
       }
     }
@@ -28,7 +28,7 @@ exports[`renders the button correctly when multiple props are set 1`] = `
   <div
     className="el-message-box__messages"
     style={
-      Object {
+      {
         "fontSize": "13px",
       }
     }

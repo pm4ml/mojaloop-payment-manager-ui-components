@@ -11,7 +11,6 @@ exports[`renders the toggle correctly when multiple props are set 1`] = `
     id="test-id"
     onBlur={[Function]}
     onChange={[Function]}
-    onClick={[Function]}
     onFocus={[Function]}
     onKeyDown={[Function]}
     type="checkbox"
@@ -20,7 +19,9 @@ exports[`renders the toggle correctly when multiple props are set 1`] = `
     className="input-toggle__label--no-margin"
     htmlFor="test-id"
     onClick={[Function]}
+    onKeyDown={[Function]}
     role="button"
+    tabIndex={0}
   />
 </div>
 `;

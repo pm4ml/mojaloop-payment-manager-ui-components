@@ -3,7 +3,7 @@
 exports[`renders the fileuploader correctly when multiple props are set 1`] = `
 <ValidationWrapper
   active={false}
-  messages={Array []}
+  messages={[]}
 >
   <div
     className="input-fileuploader__component mb-input mb-input__borders mb-input__background mb-input__shadow mb-input--large"
@@ -11,7 +11,7 @@ exports[`renders the fileuploader correctly when multiple props are set 1`] = `
     onClick={[Function]}
     onKeyDown={[Function]}
     role="presentation"
-    style={Object {}}
+    style={{}}
   >
     <div
       className="input-fileuploader-box"

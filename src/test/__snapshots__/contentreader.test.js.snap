@@ -19,22 +19,17 @@ exports[`renders the ContentReader correctly when multiple props are set 1`] = `
     >
       <ScrollBox
         flex={true}
-        handleStyle={Object {}}
+        handleStyle={{}}
         showTrack={false}
-        style={Object {}}
-        trackStyle={Object {}}
+        style={{}}
+        trackStyle={{}}
       >
         <ResizeDetector
           handleHeight={true}
           handleWidth={true}
-          nodeType="div"
           onResize={[Function]}
-          querySelector={null}
-          refreshRate={1000}
-          skipOnMount={false}
-          targetDomEl={null}
           targetRef={
-            Object {
+            {
               "current": <div
                 class="element el-scrollbox__wrapper"
               >
@@ -104,14 +99,15 @@ exports[`renders the ContentReader correctly when multiple props are set 1`] = `
                       >
                         <pre>
                           <code
-                            class="hljs shell"
+                            class="hljs language-shell"
+                            data-highlighted="yes"
                           >
                             <span
-                              class="hljs-meta"
+                              class="hljs-meta prompt_"
                             >
-                              $
+                              $ 
                             </span>
-                             echo $EDITOR
+                            echo $EDITOR
                       vim
                       $ git checkout master
                       Switched to branch 'master'
@@ -131,22 +127,16 @@ exports[`renders the ContentReader correctly when multiple props are set 1`] = `
         >
           <div
             className="element el-scrollbox__wrapper"
-            style={Object {}}
+            style={{}}
           >
             <div
               className="el-scrollbox__content-box el-scrollbox__content-box--flexible"
             >
               <ResizeDetector
                 handleHeight={true}
-                handleWidth={true}
-                nodeType="div"
                 onResize={[Function]}
-                querySelector={null}
-                refreshRate={1000}
-                skipOnMount={false}
-                targetDomEl={null}
                 targetRef={
-                  Object {
+                  {
                     "current": <div
                       class="el-scrollbox__content el-scrollbox__content--flexible"
                       style="min-width: NaNpx; max-width: NaNpx;"
@@ -210,14 +200,15 @@ exports[`renders the ContentReader correctly when multiple props are set 1`] = `
                         >
                           <pre>
                             <code
-                              class="hljs shell"
+                              class="hljs language-shell"
+                              data-highlighted="yes"
                             >
                               <span
-                                class="hljs-meta"
+                                class="hljs-meta prompt_"
                               >
-                                $
+                                $ 
                               </span>
-                               echo $EDITOR
+                              echo $EDITOR
                       vim
                       $ git checkout master
                       Switched to branch 'master'
@@ -321,10 +312,10 @@ exports[`renders the ContentReader correctly when multiple props are set 1`] = `
               </ResizeDetector>
             </div>
             <ScrollBar
-              handleStyle={Object {}}
+              handleStyle={{}}
               onDrag={[Function]}
               showTrack={false}
-              trackStyle={Object {}}
+              trackStyle={{}}
             />
           </div>
         </ResizeDetector>
