@@ -61,12 +61,15 @@ jobs:
           keys:
             - dependency-cache-v2-{{ checksum "yarn.lock" }}
       - run:
+          name: Create test-results directory
+          command: mkdir -p /home/circleci/project/git/test-results
+      - run:
           name: Execute unit tests
           command: yarn test
       - store_test_results:
-        path: /home/circleci/project/git/test-results
+          path: /home/circleci/project/git/test-results
       - store_artifacts:
-        path: /home/circleci/project/git/test-results/jest.xml
+          path: /home/circleci/project/git/test-results/jest.xml
 
   Lint:
     executor: default-docker
