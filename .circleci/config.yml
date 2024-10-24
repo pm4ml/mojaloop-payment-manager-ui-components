@@ -119,10 +119,13 @@ jobs:
       - run:
           name: Build the project
           command: yarn build
+      - run:
+          name: Check build output
+          command: ls -la dist  # Confirm dist exists after build
       - persist_to_workspace:
           root: .
           paths:
-            - ./dist  # Replace with your actual build output
+            - dist  # Persisting the dist directory to workspace
 
   # Renamed the old Build step to Docker Build
   Docker Build:
@@ -156,10 +159,11 @@ jobs:
           command: npm config get registry
       - run:
           name: Check package contents
-          command: ls -la dist
+          command: ls -la /tmp/dist  # Check dist folder in attached workspace
       - run:
           name: Publish to NPM with verbose logging
           command: |
+            cd /tmp  # Change to workspace where dist is stored
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
             npm publish --access public --verbose
           environment:
