@@ -32,7 +32,8 @@
     "test": "jest",
     "prettier": "prettier --write webpack*.js 'src/**/*.{js,scss}'",
     "prepack": "yarn build",
-    "printversion": "node -p \"require('./package.json').version\""
+    "printversion": "node -p \"require('./package.json').version\"",
+    "licenses-html": "license-checker --json > license-audit-report.json && license-checker --html > license-audit-report.html"
   },
   "publishConfig": {
     "access": "public"

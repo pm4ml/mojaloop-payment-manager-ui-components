@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 *.tgz
 test-results/*
+license-audit-report.html
+license-audit-report.json
