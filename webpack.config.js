@@ -9,8 +9,11 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 // Configuration for resolving the path to your Sass variables
 const colorsSass = path.resolve(__dirname, 'src', 'assets', 'styles', 'vars', 'colors.scss');
 
+// Check if environment is production
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
-  mode: 'production', // Set mode to production
+  mode: 'production',
   entry: {
     index: './src/components/index.js',
     'redux-fetch': './src/reduxFetch/index.js',
@@ -40,18 +43,19 @@ module.exports = {
         },
       ],
     }),
-    new ESLintPlugin({
+    // Only use ESLint in development mode
+    ...(isProduction ? [] : [new ESLintPlugin({
       extensions: ['js', 'jsx'],
       context: path.resolve(__dirname, 'src'),
       overrideConfigFile: path.resolve(__dirname, 'eslint.config.js'),
       fix: true,
       emitWarning: true,
-    }),
+    })]),
   ],
   module: {
     rules: [
       {
-        test: /\.js$/, // Process JavaScript files
+        test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
         use: {
@@ -62,19 +66,19 @@ module.exports = {
         },
       },
       {
-        test: /\.(css|scss)$/, // Process CSS/SCSS files
+        test: /\.(css|scss)$/,
         use: [
-          MiniCssExtractPlugin.loader, // Use MiniCssExtractPlugin for production
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           'sass-loader',
         ],
       },
       {
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/i, // Process images and fonts
-        type: 'asset/resource', // Use Webpack 5's asset modules
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/i,
+        type: 'asset/resource',
         generator: {
-          filename: 'images/[name].[hash].[ext]', // Set output path for assets
+          filename: 'images/[name].[hash].[ext]',
         },
       },
     ],
@@ -84,7 +88,7 @@ module.exports = {
       new TerserPlugin({
         parallel: true,
         terserOptions: {
-          keep_fnames: true, // Keep function names for easier debugging
+          keep_fnames: true,
         },
       }),
     ],
