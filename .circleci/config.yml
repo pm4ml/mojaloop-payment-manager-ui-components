@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@2.6.0
-  slack: circleci/slack@4.12.5
 
 executors:
   default-docker:
@@ -42,7 +41,7 @@ jobs:
           paths:
             - node_modules
 
-  Unit Tests:
+  Tests:
     executor: default-docker
     steps:
       - run:
@@ -159,9 +158,6 @@ jobs:
             npm publish --access public
           environment:
             NPM_TOKEN: $NPM_TOKEN
-      - slack/notify:
-          event: always
-          template: basic_success
 
 workflows:
   version: 2
@@ -175,7 +171,7 @@ workflows:
                 - /feature*/
                 - /bugfix*/
                 - /hotfix*/
-      - Unit Tests:
+      - Tests:
           context: pm4ml-ci
           requires:
             - Setup
