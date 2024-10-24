@@ -108,7 +108,6 @@ jobs:
           path: ./dependency-check-report.html
           destination: dependency-check-report.html
 
-  # New Build job to run the yarn build
   Build:
     executor: default-docker
     steps:
@@ -121,11 +120,11 @@ jobs:
           command: yarn build
       - run:
           name: Check build output
-          command: ls -la dist  # Confirm dist exists after build
-      - persist_to_workspace:
-          root: .
+          command: ls -la dist  # Check the dist directory after build
+      - save_cache:
+          key: build-cache-{{ checksum "yarn.lock" }}
           paths:
-            - dist  # Persisting the dist directory to workspace
+            - dist/  # Cache the dist directory for later steps
 
   # Renamed the old Build step to Docker Build
   Docker Build:
@@ -152,18 +151,16 @@ jobs:
       - restore_cache:
           keys:
             - dependency-cache-v2-{{ checksum "yarn.lock" }}
-      - attach_workspace:
-          at: /tmp  # Attach workspace to reuse build artifacts
+            - build-cache-{{ checksum "yarn.lock" }}  # Restore the cached dist directory
       - run:
           name: Check NPM registry
           command: npm config get registry
       - run:
           name: Check package contents
-          command: ls -la /tmp/dist  # Check dist folder in attached workspace
+          command: ls -la dist  # Check that the dist folder is available after cache restore
       - run:
           name: Publish to NPM with verbose logging
           command: |
-            cd /tmp  # Change to workspace where dist is stored
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
             npm publish --access public --verbose
           environment:
