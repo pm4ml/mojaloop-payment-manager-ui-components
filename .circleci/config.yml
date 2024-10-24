@@ -42,7 +42,7 @@ jobs:
           paths:
             - node_modules
 
-   Unit Tests:
+  Unit Tests:
     executor: default-docker
     steps:
       - run:
