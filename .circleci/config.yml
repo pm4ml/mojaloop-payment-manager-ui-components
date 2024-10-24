@@ -152,12 +152,21 @@ jobs:
       - attach_workspace:
           at: /tmp  # Attach workspace to reuse build artifacts
       - run:
-          name: Publish to NPM
+          name: Check NPM registry
+          command: npm config get registry
+      - run:
+          name: Check package contents
+          command: ls -la dist
+      - run:
+          name: Publish to NPM with verbose logging
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-            npm publish --access public
+            npm publish --access public --verbose
           environment:
             NPM_TOKEN: $NPM_TOKEN
+      - run:
+          name: Clear Yarn cache (optional)
+          command: yarn cache clean
 
 workflows:
   version: 2
