@@ -36,6 +36,9 @@ jobs:
       - run:
           name: Delete build dependencies
           command: apk del build-dependencies
+      - run:
+          name: Set NPM registry
+          command: npm config set registry https://registry.npmjs.org/
       - save_cache:
           key: dependency-cache-v2-{{ checksum "yarn.lock" }}
           paths:
