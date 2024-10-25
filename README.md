@@ -112,4 +112,4 @@ To publish as a npm module, run the following command `npm publish --access publ
 
 A new release will be published at [https://www.npmjs.com/package/@pm4ml/mojaloop-payment-manager-ui-components](https://www.npmjs.com/package/@pm4ml/mojaloop-payment-manager-ui-components)
 
-**Note:** you need to be logged in the _pm4ml_ organization in npm, credentials can be found in _1Password_.
+**Note:** you need to be logged in the _pm4ml_ organization in npm
