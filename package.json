@@ -1,6 +1,6 @@
 {
   "name": "@pm4ml/mojaloop-payment-manager-ui-components",
-  "version": "1.23.2",
+  "version": "1.23.3",
   "description": "Mojaloop Payment Manager UI Components",
   "license": "Apache-2.0",
   "main": "dist/index.js",
