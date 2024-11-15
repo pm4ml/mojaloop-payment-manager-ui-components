@@ -1,6 +1,6 @@
 {
   "name": "@pm4ml/mojaloop-payment-manager-ui-components",
-  "version": "1.23.3",
+  "version": "1.24.0",
   "description": "Mojaloop Payment Manager UI Components",
   "license": "Apache-2.0",
   "main": "dist/index.js",
@@ -34,6 +34,9 @@
     "prepack": "yarn build",
     "printversion": "node -p \"require('./package.json').version\"",
     "licenses-html": "license-checker --json > license-audit-report.json && license-checker --html > license-audit-report.html"
+  },
+  "engines": {
+    "node": "16.x"
   },
   "publishConfig": {
     "access": "public"

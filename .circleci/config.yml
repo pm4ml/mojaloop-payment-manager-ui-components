@@ -7,12 +7,12 @@ executors:
   default-docker:
     working_directory: &WORKING_DIR /home/circleci/project/git
     docker:
-      - image: node:18-alpine # Ref: https://hub.docker.com/_/node?tab=tags&page=1&name=alpine
+      - image: node:16-alpine # Updated to Node.js 16
 
   default-machine:
     working_directory: *WORKING_DIR
     machine:
-      image: ubuntu-2204:2023.04.2 # Ref: https://circleci.com/developer/machine/image/ubuntu-2204
+      image: ubuntu-2204:2023.04.2
 
 jobs:
   Setup:
@@ -124,7 +124,7 @@ jobs:
       - save_cache:
           key: build-cache-{{ checksum "yarn.lock" }}
           paths:
-            - dist/  # Ensure the dist directory is cached
+            - dist/
 
   Docker Build:
     executor: default-machine
