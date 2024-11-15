@@ -7,7 +7,7 @@ executors:
   default-docker:
     working_directory: &WORKING_DIR /home/circleci/project/git
       docker:
-      - image: node:18-alpine # Updated to Node.js 18
+        - image: node:18-alpine # Updated to Node.js 18
 
   default-machine:
     working_directory: *WORKING_DIR
